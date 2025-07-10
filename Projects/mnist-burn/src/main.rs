@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{backend::AutodiffBackend, loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep, ValidStep}};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, optim::AdamConfig, prelude::*, tensor::{backend::AutodiffBackend, loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, LearnerBuilder, TrainOutput, TrainStep, ValidStep}};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
 use burn_dataset::vision::MnistItem;
 
@@ -76,6 +76,64 @@ impl <B: Backend> ValidStep<MnistItem, ClassificationOutput<B>> for Model<B> {
     }
 }
 
+// --- 4. Konfigurasi dan Jalankan Training ---
+#[derive(Config)]
+pub struct MnistTrainingConfig {
+    #[config(default = 10)]
+    pub num_epochs: usize,
+    #[config(default = 64)]
+    pub batch_size: usize,
+    #[config(default = 4)]
+    pub num_workers: usize,
+    #[config(default = 42)]
+    pub seed: u64,
+    pub optimizer: AdamConfig,
+}
+
+pub fn run() {
+    let config = MnistTrainingConfig::new(AdamConfig::new());
+    let device = Default::default(); // Otomatis memilih Candle backend
+
+    // Inisialisasi model dan learner
+    let learner = LearnerBuilder::new("./artefak_mnist") // Folder untuk menyimpan hasil
+        .devices(vec![device])
+        .num_workers(config.num_workers)
+        .build(
+            Model::<MyBackend>::new(10),
+            config.optimizer.init(),
+            1e-4, // Learning Rate
+        );
+
+    // Muat dataset
+    let dataset_train = MnistDataset::train();
+    let dataset_test = MnistDataset::test();
+
+    // Buat data loader untuk training dan testing
+    let dataloader_train = DataLoaderBuilder::new(dataset_train)
+        .batch_size(config.batch_size)
+        .shuffle(config.seed)
+        .num_workers(config.num_workers)
+        .build();
+
+    let dataloader_test = DataLoaderBuilder::new(dataset_test)
+        .batch_size(config.batch_size)
+        .shuffle(config.seed)
+        .num_workers(config.num_workers)
+        .build();
+    
+    // Mulai training!
+    println!("Memulai training CNN untuk MNIST dengan backend Candle...");
+    let model_trained = learner.fit(dataloader_train, dataloader_test, config.num_epochs);
+
+    // Simpan model yang sudah dilatih
+    model_trained
+        .save_file("./artefak_mnist/model", &CompactRecorder::new())
+        .expect("Gagal menyimpan model.");
+    
+    println!("Training selesai dan model telah disimpan!");
+}
+
+
 fn main() {
-    println!("Hello, world!");
+    run();
 }
