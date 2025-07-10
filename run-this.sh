@@ -1,2 +1,2 @@
 rustup default nightly
-export TERM=xterm-256color
+echo "export TERM=xterm-256color" >> ~/.bashrc
