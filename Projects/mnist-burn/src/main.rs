@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep}};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{backend::AutodiffBackend, loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep}};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
 use burn_dataset::vision::MnistItem;
 
