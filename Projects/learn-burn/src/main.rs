@@ -57,7 +57,7 @@ pub fn run() {
         // Mean square error(MSE)
         let loss = (output - y_train.clone()).powf_scalar(2.0).mean(); // (prediksi - benar)^2
 
-        if epoch % 10 == 0 {
+        if epoch % 1000 == 0 {
             println!("Epoch : {epoch}, Loss: {}", loss.to_data());
         }
 
