@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, pool::MaxPool2d, Linear, Relu}, prelude::*};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*};
 
 // Backend for MNIST model (using cpu with candle)
 // f32 for calculation and i64 for the dataset label
@@ -20,7 +20,13 @@ impl<B: Backend> Model<B> {
     pub fn new(num_class: usize) -> Self {
         // configuration of the layers.
         let device = Default::default();
-        let conv1 = Conv2dConfig::new([1, 8], [3,3]).init(device); 
+        let conv1 = Conv2dConfig::new([1, 8], [3,3]).init(device);
+        let conv2 = Conv2dConfig::new([8, 16], [3,3]).init(device);
+        let pool = MaxPool2dConfig::new([2,2]).with_strides([2,2]).init();
+        let relu = Relu::new();
+        let linear1 = LinearConfig::new(16*5*5, 128).init(device);
+        let linear2 = LinearConfig::new(128, num_class).init(device);
+        Self { conv1, conv2, pool, relu, linear1, linear2 } 
     }
 }
 
