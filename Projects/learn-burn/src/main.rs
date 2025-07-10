@@ -1,9 +1,9 @@
 use burn::{backend::NdArray, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig}, prelude::*};
-
+use burn_autodiff::Autodiff;
 
 // --- 1. Definisikan Backend(Mesin Penghitung) kita ---
 // kita akan menggunakan NdArray dengan elemen float f32 precision.
-type MyBackend = NdArray<f32>;
+type MyBackend = Autodiff<NdArray<f32>>;
 
 // --- 2. Definisikan Model Kita ---
 // Ini adalah otak dari mesin kita yang dibuat dengan sebuah struct.
