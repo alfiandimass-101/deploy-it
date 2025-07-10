@@ -21,7 +21,7 @@ impl<B: Backend> Model<B> {
     // LinearConfig(1, 1) berarti: 1 input fitur (x) -> 1 output fitur (y).
     pub fn new() -> Self {
         let config = LinearConfig::new(1, 1);
-        Self { linear: config.init(&B::Device) }
+        Self { linear: config.init(&Default::default()) }
     }
 }
 
