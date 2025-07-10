@@ -104,8 +104,8 @@ pub fn run() {
         );
 
     // Muat dataset
-    let dataset_train = MnistDataset::train().unwrap();
-    let dataset_test = MnistDataset::test().unwrap();
+    let dataset_train = MnistDataset::train();
+    let dataset_test = MnistDataset::test();
 
     // Buat data loader untuk training dan testing
     let dataloader_train = DataLoaderBuilder::new(MnistBatcher::new(device))
