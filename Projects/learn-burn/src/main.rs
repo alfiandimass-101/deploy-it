@@ -45,7 +45,7 @@ pub fn run() {
     // --- Data sintesis ---
     // X adalah input, Y adalah output yang benar.
     // y = 2x + 1
-    let x_train: Tensor<MyBackend, 2> = Tensor::from_floats([[1.0], [2.0], [3.0], [4.0]], &device);
+    let x_train: Tensor<MyBackend, 2> = Tensor::from_floats([[1.0], [2.0], [3.0], [4.0]], &device).require_grad();
     let y_train: Tensor<MyBackend, 2> = Tensor::from_floats([[3.0], [5.0], [7.0], [9.0]], &device);
 
     // --- Loop training ---
