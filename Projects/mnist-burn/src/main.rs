@@ -73,7 +73,7 @@ impl<B: Backend> Model<B> {
 }
 
 // --- Langkah training dan Validasi ---
-impl<B: AutodiffBackend> TrainStep for Model<B> {
+impl<B: Backend> TrainStep<MnistItem<B>, ClassificationOutput<B>> for Model<B> {
     fn step(&self, item: MnistItem) -> burn::train::TrainOutput<ClassificationOutput<B>> {
         let item = self.forward_classification(item);
         TrainOutput::new(self, item.loss.backward(), item)
