@@ -9,7 +9,7 @@ type MyBackend = Autodiff<Candle<f32, i64>>;
 
 // Model for MNIST (as the brain)
 #[derive(Debug, Module)]
-pub struct Model<B: Backend> {
+pub struct Model<B: MyBackend> {
     conv1: Conv2d<B>,
     conv2: Conv2d<B>,
     pool: MaxPool2d,
@@ -18,7 +18,7 @@ pub struct Model<B: Backend> {
     linear2: Linear<B>, //output
 }
 
-impl<B: Backend> Model<B> {
+impl<B: MyBackend> Model<B> {
     // create new model
     pub fn new(num_class: usize) -> Self {
         // configuration of the layers.
@@ -63,7 +63,7 @@ impl<B: Backend> Model<B> {
 }
 
 // --- Langkah training dan Validasi ---
-impl<B: Backend> TrainStep for Model<B> {
+impl<B: MyBackend> TrainStep for Model<B> {
     fn step(&self, item: MnistItem) -> burn::train::TrainOutput<ClassificationOutput<B>> {
         let item = self.forward_classification(item);
         TrainOutput::new(self, item.loss.backward(), item)
