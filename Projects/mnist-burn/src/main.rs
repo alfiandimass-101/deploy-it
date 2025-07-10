@@ -1,6 +1,6 @@
 use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, optim::AdamConfig, prelude::*, tensor::{backend::AutodiffBackend, loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, LearnerBuilder, TrainOutput, TrainStep, ValidStep}};
-use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
-use burn_dataset::vision::MnistItem;
+use burn::data::{dataloader::{DataLoaderBuilder, Batcher}, dataset::vision::MnistDataset};
+use burn_dataset::vision::{MnistItem, MnistBatcher};
 
 
 // Backend for MNIST model (using cpu with candle)
@@ -104,17 +104,19 @@ pub fn run() {
         );
 
     // Muat dataset
-    let dataset_train = MnistDataset::train();
-    let dataset_test = MnistDataset::test();
+    let dataset_train = MnistDataset::train().unwrap();
+    let dataset_test = MnistDataset::test().unwrap();
 
     // Buat data loader untuk training dan testing
-    let dataloader_train = DataLoaderBuilder::new(dataset_train)
+    let dataloader_train = DataLoaderBuilder::new(MnistBatcher::new(device))
+        .dataloader(dataset_train)
         .batch_size(config.batch_size)
         .shuffle(config.seed)
         .num_workers(config.num_workers)
         .build();
 
-    let dataloader_test = DataLoaderBuilder::new(dataset_test)
+    let dataloader_test = DataLoaderBuilder::new(MnistBatcher::new(device))
+        .dataloader(dataset_test)
         .batch_size(config.batch_size)
         .shuffle(config.seed)
         .num_workers(config.num_workers)
