@@ -19,7 +19,7 @@ impl<B: Backend> Model<B> {
     // create new model
     pub fn new(num_class: usize) -> Self {
         // configuration of the layers.
-        let device = Default::default();
+        let device = &Default::default();
         let conv1 = Conv2dConfig::new([1, 8], [3,3]).init(device);
         let conv2 = Conv2dConfig::new([8, 16], [3,3]).init(device);
         let pool = MaxPool2dConfig::new([2,2]).with_strides([2,2]).init();
