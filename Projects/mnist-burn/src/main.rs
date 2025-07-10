@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::Conv2d, pool::MaxPool2d, Relu}, prelude::*};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::Conv2d, pool::MaxPool2d, Relu, Linear}, prelude::*};
 
 // Backend for MNIST model (using cpu with candle)
 // f32 for calculation and i64 for the dataset label
