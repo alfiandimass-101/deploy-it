@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig, Optimizer}, prelude::*};
+use burn::{backend::{Autodiff, Candle}, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig, GradientsParams, Optimizer}, prelude::*};
 
 // --- 1. Definisikan Backend(Mesin Penghitung) kita ---
 // kita akan menggunakan NdArray dengan elemen float f32 precision.
@@ -62,7 +62,7 @@ pub fn run() {
         }
 
         // Backward pass(Backpropagation) : hitung gradien (siapa yang salah? gatau).
-        let gradi = loss.backward();
+        let gradi = GradientsParams::from_grads(loss.backward(), &model);
         // Optimizer step: perbarui weight model berdasarkan gradiens.
         model = optm.step(1e-2, model, gradi);
     }
