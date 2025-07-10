@@ -97,7 +97,6 @@ pub fn run() {
     // Inisialisasi model dan learner
     let learner = LearnerBuilder::new("./artefak_mnist") // Folder untuk menyimpan hasil
         .devices(vec![device])
-        .num_workers(config.num_workers)
         .build(
             Model::<MyBackend>::new(10),
             config.optimizer.init(),
