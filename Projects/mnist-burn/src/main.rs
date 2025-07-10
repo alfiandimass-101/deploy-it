@@ -53,8 +53,8 @@ impl<B: Backend> Model<B> {
         self.linear2.forward(x) // -> [batch_size, num_class]
     }
 
-    pub fn forward_classification(&self, item: MnistItem<B>) -> ClassificationOutput<B> {
-        
+    pub fn forward_classification(&self, item: MnistItem) -> ClassificationOutput<B> {
+
     }
 }
 
