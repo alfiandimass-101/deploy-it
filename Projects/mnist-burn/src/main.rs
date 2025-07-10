@@ -54,8 +54,8 @@ impl<B: Backend> Model<B> {
     }
 
     pub fn forward_classification(&self, item: MnistItem) -> ClassificationOutput<B> {
-        let targets = Tensor::<B, 2>::from_data([1, item.label].into(), &Default::default());
-        let output = self.forward(item.image.into()).reshape([]);
+        let targets = Tensor::<B, 1, Int>::from_data([item.label].into(), &Default::default());
+        let output = self.forward(item.image.into());
         // using burn efficient loss cross-entropy function.
         let loss = CrossEntropyLossConfig::new().init(&Default::default()).forward(output.clone(), targets.clone());
         ClassificationOutput { loss, output, targets }
