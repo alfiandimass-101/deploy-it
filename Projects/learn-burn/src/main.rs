@@ -1,5 +1,4 @@
 use burn::{backend::Candle, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig, Optimizer}, prelude::*};
-use burn_autodiff::Autodiff;
 
 // --- 1. Definisikan Backend(Mesin Penghitung) kita ---
 // kita akan menggunakan NdArray dengan elemen float f32 precision.
