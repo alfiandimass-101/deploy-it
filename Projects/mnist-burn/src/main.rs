@@ -1,8 +1,8 @@
-use burn::{backend::Candle, nn::{conv::Conv2d, pool::MaxPool2d, Relu}, prelude::*};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::Conv2d, pool::MaxPool2d, Relu}, prelude::*};
 
 // Backend for MNIST model (using cpu with candle)
 // f32 for calculation and i64 for the dataset label
-type MyBackend = AutoDiff<Candle<f32, i64>>;
+type MyBackend = Autodiff<Candle<f32, i64>>;
 
 #[derive(Debug, Module)]
 pub struct Model<B: Backend> {
