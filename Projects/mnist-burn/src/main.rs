@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{backend::AutodiffBackend, loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep}};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep}};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
 use burn_dataset::vision::MnistItem;
 
@@ -54,29 +54,19 @@ impl<B: Backend> Model<B> {
     }
 
     pub fn forward_classification(&self, item: MnistItem) -> ClassificationOutput<B> {
-        // Get the device from the model to ensure all tensors are on the same device.
-        let device = &self.conv1.devices()[0];
-
-        // 1. Create a 4D tensor from the 2D image for the forward pass.
-        let image = Tensor::<B, 2>::from_data(item.image.into(), device)
-            .reshape([1, 1, 28, 28]);
-
-        // 2. Create a 1D *integer* tensor for the target label.
-        //    The backend's integer type is i64, so we cast the label.
-        let targets = Tensor::<B::Int, 1>::from_data([item.label as i64].into(), device);
-
-        let output = self.forward(image);
-        let loss = cross_entropy_with_logits(&output, &targets);
-
+        let targets = Tensor::from_ints([item.label], &Default::default());
+        let output = self.forward(item.image.into());
+        // using burn efficient loss cross-entropy function.
+        let loss = CrossEntropyLossConfig::new().init(&Default::default()).forward(output.clone(), targets.clone());
         ClassificationOutput { loss, output, targets }
     }
 }
 
 // --- Langkah training dan Validasi ---
-impl<B: Backend> TrainStep<MnistItem<B>, ClassificationOutput<B>> for Model<B> {
+impl<B: Backend> TrainStep<MnistItem, ClassificationOutput<B>> for Model<B>  {
     fn step(&self, item: MnistItem) -> burn::train::TrainOutput<ClassificationOutput<B>> {
         let item = self.forward_classification(item);
-        TrainOutput::new(self, item.loss.backward(), item)
+        TrainOutput::new(self, item.loss.backward, item)
     }
 }
 
