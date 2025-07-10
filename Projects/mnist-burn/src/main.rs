@@ -1,5 +1,6 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::T};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::T, train::ClassificationOutput};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
+use burn_dataset::vision::MnistItem;
 
 
 // Backend for MNIST model (using cpu with candle)
@@ -52,7 +53,9 @@ impl<B: Backend> Model<B> {
         self.linear2.forward(x) // -> [batch_size, num_class]
     }
 
-    pub fn forward_classification(&self, item: )
+    pub fn forward_classification(&self, item: MnistItem<B>) -> ClassificationOutput<B> {
+        
+    }
 }
 
 fn main() {
