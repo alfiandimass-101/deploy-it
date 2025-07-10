@@ -26,8 +26,8 @@ impl<B: Backend> Model<B> {
 
     // Fungsi forward pass: bagaimana data mengalir melalui model.
     pub fn forward(&self, data: Tensor<B, 2>) -> Tensor<B, 2> {
-        self.linear.forward(data);
-    }
+        self.linear.forward(data)
+    }    
 }
 
 // --- 3. Proses Training
