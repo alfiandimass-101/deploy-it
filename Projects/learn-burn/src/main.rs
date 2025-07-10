@@ -1,4 +1,4 @@
-use burn::{backend::NdArray, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig}, prelude::*};
+use burn::{backend::NdArray, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig, Optimizer}, prelude::*};
 use burn_autodiff::Autodiff;
 
 // --- 1. Definisikan Backend(Mesin Penghitung) kita ---
@@ -64,6 +64,8 @@ pub fn run() {
 
         // Backward pass(Backpropagation) : hitung gradien (siapa yang salah? gatau).
         let gradi = loss.backward();
+        // Optimizer step: perbarui weight model berdasarkan gradiens.
+        model = optm.step(1e-2, model, gradi);
     }
 }
 
