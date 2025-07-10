@@ -4,6 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-burn = { version = "*", features = ["train", "ndarray"]}
-burn-ndarray = "*"
-burn-autodiff = "*"
+burn = { version = "*", features = ["train", "candle"]}
