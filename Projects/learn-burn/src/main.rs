@@ -63,7 +63,7 @@ pub fn run() {
         }
 
         // Backward pass(Backpropagation) : hitung gradien (siapa yang salah? gatau).
-        let gradi = loss.
+        let gradi = loss.backward();
     }
 }
 
