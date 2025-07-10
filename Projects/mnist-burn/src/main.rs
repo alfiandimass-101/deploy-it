@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::ClassificationOutput};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::ClassificationOutput};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
 use burn_dataset::vision::MnistItem;
 
@@ -57,7 +57,7 @@ impl<B: Backend> Model<B> {
         let targets = Tensor::<B, 1, Int>::from_data(item.label.into(), &Default::default());
         let output = self.forward(item.image.into());
         // using burn efficient loss cross-entropy function.
-        let loss = cross_entropy_with_logits(&output, Tensor::<B, 1>::from_ints(ints, device));
+        let loss = CrossEntropyLossConfig::new().init(&Default::default()).forward(output.clone(), targets.clone());
         ClassificationOutput { loss, output, targets }
     }
 }
