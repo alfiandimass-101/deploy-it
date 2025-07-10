@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 burn = { version = "*", features = ["train", "ndarray"]}
+burn-ndarray = "*"
+burn-autodiff = "*"
