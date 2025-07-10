@@ -54,16 +54,26 @@ impl<B: Backend> Model<B> {
     }
 
     pub fn forward_classification(&self, item: MnistItem) -> ClassificationOutput<B> {
-        let targets = Tensor::from_ints([item.label], &Default::default());
-        let output = self.forward(item.image.into());
-        // using burn efficient loss cross-entropy function.
-        let loss = CrossEntropyLossConfig::new().init(&Default::default()).forward(output.clone(), targets.clone());
+        // Get the device from the model to ensure all tensors are on the same device.
+        let device = &self.conv1.devices()[0];
+
+        // 1. Create a 4D tensor from the 2D image for the forward pass.
+        let image = Tensor::<B, 2>::from_data(item.image.into(), device)
+            .reshape([1, 1, 28, 28]);
+
+        // 2. Create a 1D *integer* tensor for the target label.
+        //    The backend's integer type is i64, so we cast the label.
+        let targets = Tensor::<B::Int, 1>::from_data([item.label as i64].into(), device);
+
+        let output = self.forward(image);
+        let loss = cross_entropy_with_logits(&output, &targets);
+
         ClassificationOutput { loss, output, targets }
     }
 }
 
 // --- Langkah training dan Validasi ---
-impl<B: Backend> TrainStep for Model<B> {
+impl<B: AutodiffBackend> TrainStep for Model<B> {
     fn step(&self, item: MnistItem) -> burn::train::TrainOutput<ClassificationOutput<B>> {
         let item = self.forward_classification(item);
         TrainOutput::new(self, item.loss.backward(), item)
