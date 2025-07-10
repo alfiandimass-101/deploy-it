@@ -39,7 +39,7 @@ pub fn run() {
 
     // Inisialisasi optimizer. Adam yang akan digunakan.
     // Optimizer inilah yang akan memperbarui weight model.
-    let optm = AdamConfig::new().init();
+    let mut optm = AdamConfig::new().init();
     
     // --- Data sintesis ---
     // X adalah input, Y adalah output yang benar.
