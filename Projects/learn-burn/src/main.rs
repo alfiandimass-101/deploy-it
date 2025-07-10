@@ -49,7 +49,7 @@ pub fn run() {
 
     // --- Loop training ---
     println!("Memulai training...");
-    for epoch in 1..=10s000 {
+    for epoch in 1..=10000 {
         // Forward pass: berikan input kepada model dan dapatkan sebuah prediksi.
         let output = model.forward(x_train.clone());
 
