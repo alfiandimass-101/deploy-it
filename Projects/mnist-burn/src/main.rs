@@ -54,10 +54,25 @@ impl<B: Backend> Model<B> {
     }
 
     pub fn forward_classification(&self, item: MnistItem) -> ClassificationOutput<B> {
-        let targets = Tensor::<B, 1>::from_data([item.label].into(), &Default::default());
-        let output = self.forward(item.image.into());
-        // using burn efficient loss cross-entropy function.
+        // It's best practice to use the same device as the model's layers.
+        let device = &self.conv1.devices()[0];
+
+        // 1. The target label must be an *integer* tensor.
+        //    - Use `B::Int` instead of `B` for the tensor type.
+        //    - Cast the u8 label to `i64`, which is the integer type for your Candle backend.
+        let targets = Tensor::<B, 1>::from_data([item.label as i64].into(), device);
+
+        // 2. The input to `forward` must be a 4D tensor.
+        //    - First, create a 2D tensor from the image data.
+        //    - Then, reshape it to the [batch, channel, height, width] format.
+        let image_tensor = Tensor::<B, 2>::from_data(item.image.into(), device)
+            .reshape([1, 1, 28, 28]);
+        let output = self.forward(image_tensor);
+
+        // 3. Pass the `output` and `targets` tensors to the loss function by reference (`&`).
         let loss = cross_entropy_with_logits(output, targets);
+
+        // Now all types match what `ClassificationOutput` expects.
         ClassificationOutput { loss, output, targets }
     }
 }
