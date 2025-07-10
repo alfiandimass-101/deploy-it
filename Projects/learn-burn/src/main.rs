@@ -67,12 +67,12 @@ pub fn run() {
         model = optm.step(1e-2, model, gradi);
     }
      // --- 4. Inference (Menggunakan Model yang Sudah Dilatih) ---
-     println!("\nTraining selesai! Mari kita tes modelnya.");
+     println!("\nTraining selesai! Gast tes.");
      let x_test: Tensor<MyBackend, 2> = Tensor::from_floats([[5.0]], &device);
      let y_pred = model.forward(x_test);
  
      println!("Input: 5.0, Prediksi Model: {}", y_pred.to_data());
-     println!("Jawaban Seharusnya: {}", 2.0 * 5.0 + 1.0);
+     println!("Jawaban seharusna: {}", 2.0 * 5.0 + 1.0);
 }
 
 fn main() {
