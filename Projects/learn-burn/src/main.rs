@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{Linear, LinearConfig}, optim::{Adam, AdamConfig, GradientsParams, Optimizer}, prelude::*};
+use burn::{backend::{Autodiff, Candle}, nn::{Linear, LinearConfig}, optim::{AdamConfig, GradientsParams, Optimizer}, prelude::*};
 
 // --- 1. Definisikan Backend(Mesin Penghitung) kita ---
 // kita akan menggunakan NdArray dengan elemen float f32 precision.
@@ -66,8 +66,15 @@ pub fn run() {
         // Optimizer step: perbarui weight model berdasarkan gradiens.
         model = optm.step(1e-2, model, gradi);
     }
+     // --- 4. Inference (Menggunakan Model yang Sudah Dilatih) ---
+     println!("\nTraining selesai! Mari kita tes modelnya.");
+     let x_test: Tensor<MyBackend, 2> = Tensor::from_floats([[5.0]], &device);
+     let y_pred = model.forward(x_test);
+ 
+     println!("Input: 5.0, Prediksi Model: {}", y_pred.to_data());
+     println!("Jawaban Seharusnya: {}", 2.0 * 5.0 + 1.0);
 }
 
 fn main() {
-    println!("Hello, world!");
+    run();
 }
