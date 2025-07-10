@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::ClassificationOutput};
+use burn::{backend::{Autodiff, Candle}, nn::{conv::{Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{MaxPool2d, MaxPool2dConfig}, Linear, LinearConfig, Relu}, prelude::*, tensor::{loss::cross_entropy_with_logits, T}, train::{ClassificationOutput, TrainOutput, TrainStep}};
 use burn::data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset};
 use burn_dataset::vision::MnistItem;
 
@@ -59,6 +59,14 @@ impl<B: Backend> Model<B> {
         // using burn efficient loss cross-entropy function.
         let loss = CrossEntropyLossConfig::new().init(&Default::default()).forward(output.clone(), targets.clone());
         ClassificationOutput { loss, output, targets }
+    }
+}
+
+// --- Langkah training dan Validasi ---
+impl<B: Backend> TrainStep for Model<B> {
+    fn step(&self, item: MnistItem) -> burn::train::TrainOutput<ClassificationOutput<B>> {
+        let item = self.forward_classification(item);
+        TrainOutput::new(self, item.loss.backward(), item)
     }
 }
 
