@@ -4,8 +4,7 @@ type MyBackend = Candle<f32, i64>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
 
 #[derive(Debug, Module)]
-pub struct Model<B>
-where B: Backend
+pub struct Model<B: Backend>
 {
     linear1: Linear<B>,
     linear2: Linear<B>,
