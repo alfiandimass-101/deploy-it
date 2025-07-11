@@ -1,5 +1,5 @@
 // src/data.rs
-use burn::data::dataset::{huggingface::HuggingfaceDatasetLoader, Dataset};
+use burn::data::dataset::{HuggingfaceDatasetLoader, Dataset};
 use burn::prelude::*;
 use serde::{Deserialize, Serialize};
 
