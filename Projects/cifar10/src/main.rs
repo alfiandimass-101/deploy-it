@@ -28,6 +28,9 @@ impl<B: Backend> Model<B> {
         
         let linear1 = LinearConfig::new(16*6*6, 512).init(device);
         let linear2 = LinearConfig::new(512, num_classes).init(device);
+
+        let activation = Relu::new();
+        Self { conv1, conv2, pool, dropout, linear1, linear2, activation }
     }
 }
 
