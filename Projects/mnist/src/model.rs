@@ -1,4 +1,4 @@
-use burn::{nn::{conv::{Conv1dConfig, Conv2d, Conv2dConfig}, pool::{AdaptiveAvgPool2d, AdaptiveAvgPool2dConfig}, Dropout, DropoutConfig, Linear, LinearConfig, Relu}, prelude::*};
+use burn::{nn::{conv::{Conv1dConfig, Conv2d, Conv2dConfig}, loss::CrossEntropyLossConfig, pool::{AdaptiveAvgPool2d, AdaptiveAvgPool2dConfig}, Dropout, DropoutConfig, Linear, LinearConfig, Relu}, prelude::*, train::ClassificationOutput};
 
 #[derive(Debug, Module)]
 pub struct Model<B: Backend> {
@@ -51,5 +51,14 @@ impl<B: Backend> Model<B> {
         let x = self.activation.forward(x);
 
         self.linear2.forward(x)
+    }
+
+    pub fn forward_classification(&self, images: Tensor<B, 3>, targets: Tensor<B, 1, Int>) -> ClassificationOutput<B> {
+        let output = self.forward(x);
+        let loss = CrossEntropyLossConfig::new()
+            .init(&output.device())
+            .forward(output.clone(), targets.clone());
+
+        ClassificationOutput { loss, output, targets }
     }
 }
