@@ -31,7 +31,7 @@ pub fn train<B: AutodiffBackend>(artifact_dir: &str, config: TrainingConfig, dev
 
     let batcher = MnistBatcher::default();
 
-    let dataloader_train = DataLoaderBuilder::new(batcher)
+    let dataloader_train = DataLoaderBuilder::new(batcher.clone())
     .batch_size(config.batch_size)
     .num_workers(config.num_workers)
     .shuffle(config.seed)
