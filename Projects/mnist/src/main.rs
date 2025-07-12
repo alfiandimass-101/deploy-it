@@ -12,7 +12,7 @@ type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
     let device = CandleDevice::default();
-    let artifact_dir = "/tmp/guide";
+    let artifact_dir = "../model";
     crate::train::train::<MyAutodiffBackend>(
         artifact_dir,
         TrainingConfig::new(ModelConfig::new(10, 512), AdamConfig::new()),
