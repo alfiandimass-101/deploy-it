@@ -23,5 +23,7 @@ impl<B: Backend> Batcher<B, MnistItem, MnistBatch<B>> for MnistBatcher {
 
         let images = Tensor::cat(images, 0);
         let targets = Tensor::cat(targets, 0);
+
+        MnistBatch { images, targets }
     }
 }
