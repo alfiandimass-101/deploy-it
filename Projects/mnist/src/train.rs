@@ -27,7 +27,7 @@ pub fn train<B: AutodiffBackend>(artifact_dir: &str, config: TrainingConfig, dev
     config.save(format!("{artifact_dir}/config.json"))
     .expect("Config ga tersimpan");
 
-    B::seed(config.seed);
+    // B::seed(config.seed);
 
     let batcher = MnistBatcher::default();
 
