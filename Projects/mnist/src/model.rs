@@ -18,7 +18,7 @@ pub struct Model<B: Backend> {
     conv1: Conv2d<B>,
     conv2: Conv2d<B>,
     // 2. Change the type of the 'pool' field to AvgPool2d
-    pool: AvgPool2d<B>, // MODIFIED: Was MaxPool2d
+    pool: AvgPool2d, // MODIFIED: Was MaxPool2d
     dropout: Dropout,
     linear1: Linear<B>,
     linear2: Linear<B>,
@@ -43,7 +43,7 @@ impl ModelConfig {
         // ensuring the tensor dimensions remain correct.
         let pool = AvgPool2dConfig::new([3, 3])
             .with_strides([3, 3])
-            .init(device); // MODIFIED
+            .init(); // MODIFIED
 
         let dropout = DropoutConfig::new(self.drop_prob).init();
         let linear1 = LinearConfig::new(16 * 8 * 8, self.hidden_size).init(device);
