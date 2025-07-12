@@ -10,3 +10,8 @@ pub struct Model<B: Backend> {
     linear2: Linear<B>,
     activation: Relu,
 }
+
+#[derive(Debug, Config)]
+pub struct ModelConfig {
+
+}
