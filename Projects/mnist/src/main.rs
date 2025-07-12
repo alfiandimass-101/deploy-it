@@ -7,7 +7,7 @@ mod train;
 use train::TrainingConfig;
 use model::{Model, ModelConfig};
 
-type MyBackend = Candle<f32, i32>;
+type MyBackend = Candle<f32>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
