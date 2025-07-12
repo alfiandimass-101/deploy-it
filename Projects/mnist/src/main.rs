@@ -1,4 +1,4 @@
-use burn::{backend::{candle::CandleDevice, Autodiff, Candle}, optim::AdamConfig, prelude::*};
+use burn::{backend::{candle::CandleDevice, ndarray::NdArrayDevice, Autodiff, Candle, NdArray}, optim::AdamConfig, prelude::*};
 
 mod model;
 mod data;
@@ -7,11 +7,11 @@ mod train;
 use train::TrainingConfig;
 use model::{Model, ModelConfig};
 
-type MyBackend = Candle<f32>;
+type MyBackend = NdArray<f32>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
-    let device = CandleDevice::default();
+    let device = NdArrayDevice::default();
     let artifact_dir = "../model";
     crate::train::train::<MyAutodiffBackend>(
         artifact_dir,
