@@ -13,5 +13,8 @@ pub struct Model<B: Backend> {
 
 #[derive(Debug, Config)]
 pub struct ModelConfig {
-
+    num_classes: usize,
+    hidden_size: usize,
+    #[config(default = "0.5")]
+    drop_prob: f64
 }
