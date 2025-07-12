@@ -1,9 +1,9 @@
-// 1. Import the new modules you need: MaxPool2d and MaxPool2dConfig
+// 1. Import the new modules: AvgPool2d and AvgPool2dConfig
 use burn::{
     nn::{
         conv::{Conv2d, Conv2dConfig},
         loss::CrossEntropyLossConfig,
-        pool::{MaxPool2d, MaxPool2dConfig}, // MODIFIED: Changed imports
+        pool::{AvgPool2d, AvgPool2dConfig}, // MODIFIED: Changed imports
         Dropout, DropoutConfig, Linear, LinearConfig, Relu,
     },
     prelude::*,
@@ -17,8 +17,8 @@ use crate::data::MnistBatch;
 pub struct Model<B: Backend> {
     conv1: Conv2d<B>,
     conv2: Conv2d<B>,
-    // 2. Change the type of the 'pool' field in the model struct
-    pool: MaxPool2d, // MODIFIED: Was AdaptiveAvgPool2d
+    // 2. Change the type of the 'pool' field to AvgPool2d
+    pool: AvgPool2d<B>, // MODIFIED: Was MaxPool2d
     dropout: Dropout,
     linear1: Linear<B>,
     linear2: Linear<B>,
@@ -39,16 +39,13 @@ impl ModelConfig {
         let conv1 = Conv2dConfig::new([1, 8], [3, 3]).init(device);
         let conv2 = Conv2dConfig::new([8, 16], [3, 3]).init(device);
 
-        // 3. Initialize MaxPool2d instead of AdaptiveAvgPool2d.
-        // We choose a kernel and stride that produces the same output dimensions (8x8)
-        // as your original adaptive pool layer intended.
-        let pool = MaxPool2dConfig::new([3, 3])
+        // 3. Initialize AvgPool2d. The configuration is the same as before,
+        // ensuring the tensor dimensions remain correct.
+        let pool = AvgPool2dConfig::new([3, 3])
             .with_strides([3, 3])
-            .init(); // MODIFIED
+            .init(device); // MODIFIED
 
         let dropout = DropoutConfig::new(self.drop_prob).init();
-        // The linear layer input size is still correct because our new pool layer
-        // maintains the same output dimensions.
         let linear1 = LinearConfig::new(16 * 8 * 8, self.hidden_size).init(device);
         let linear2 = LinearConfig::new(self.hidden_size, self.num_classes).init(device);
         let activation = Relu::new();
@@ -78,7 +75,7 @@ impl<B: Backend> Model<B> {
         let x = self.dropout.forward(x);
         let x = self.activation.forward(x);
 
-        let x = self.pool.forward(x); // This now calls the supported MaxPool2d layer
+        let x = self.pool.forward(x); // This now calls the supported AvgPool2d layer
         let x = x.reshape([batch_size, 16 * 8 * 8]);
         let x = self.linear1.forward(x);
         let x = self.dropout.forward(x);
