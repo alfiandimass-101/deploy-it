@@ -1,4 +1,4 @@
-use burn::{nn::{conv::Conv2d, pool::AdaptiveAvgPool2d, Dropout, Linear, Relu}, prelude::*};
+use burn::{nn::{conv::{Conv1dConfig, Conv2d, Conv2dConfig}, pool::{AdaptiveAvgPool2d, AdaptiveAvgPool2dConfig}, Dropout, DropoutConfig, Linear, LinearConfig, Relu}, prelude::*};
 
 #[derive(Debug, Module)]
 pub struct Model<B: Backend> {
@@ -20,9 +20,15 @@ pub struct ModelConfig {
 }
 
 impl ModelConfig {
-    pub fn init<B>(&self)
-    where B: Backend,
-    -> Model {
-        
+    pub fn init<B: Backend>(&self) -> Model<B> {
+        let device = &Default::default();
+        let conv1 = Conv2dConfig::new([1,8], [3,3]).init(device);
+        let conv2 = Conv2dConfig::new([8, 16], [3,3]).init(device);
+        let pool = AdaptiveAvgPool2dConfig::new([8,8]).init();
+        let dropout = DropoutConfig::new(self.drop_prob).init();
+        let linear1 = LinearConfig::new(16*8*8, self.hidden_size).init(device);
+        let linear2 = LinearConfig::new(self.hidden_size, self.num_classes).init(device);
+        let activation = Relu::new();
+        Model { conv1, conv2, pool, dropout, linear1, linear2, activation }
     }
 }
