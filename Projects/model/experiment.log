@@ -1,15 +1,15 @@
-2025-07-12T04:22:59.813932Z  INFO burn_train::learner::train_val: Fitting the model:
+2025-07-12T04:25:13.802620Z  INFO burn_train::learner::train_val: Fitting the model:
  Model {
   conv1: Conv2d {stride: [1, 1], kernel_size: [3, 3], dilation: [1, 1], groups: 1, padding: Valid, params: 80}
   conv2: Conv2d {stride: [1, 1], kernel_size: [3, 3], dilation: [1, 1], groups: 1, padding: Valid, params: 1168}
-  pool: AdaptiveAvgPool2d {output_size: [8, 8]}
+  pool: MaxPool2d {kernel_size: [3, 3], stride: [3, 3], padding: Valid, dilation: [1, 1]}
   dropout: Dropout {prob: 0.5}
   linear1: Linear {d_input: 1024, d_output: 512, bias: true, params: 524800}
   linear2: Linear {d_input: 512, d_output: 10, bias: true, params: 5130}
   activation: Relu
   params: 531178
 }    
-2025-07-12T04:22:59.815888Z  INFO burn_train::learner::epoch: Executing training step for epoch 1    
-2025-07-12T04:22:59.818564Z  INFO burn_train::learner::epoch: Iteration 1    
-2025-07-12T04:22:59.861119Z ERROR burn_train::learner::application_logger: PANIC => panicked at /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/burn-candle-0.17.1/src/ops/module.rs:269:9:
-adaptive_avg_pool2 is not supported by Candle    
+2025-07-12T04:25:13.805363Z  INFO burn_train::learner::epoch: Executing training step for epoch 1    
+2025-07-12T04:25:13.808565Z  INFO burn_train::learner::epoch: Iteration 1    
+2025-07-12T04:25:13.848811Z ERROR burn_train::learner::application_logger: PANIC => panicked at /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/burn-candle-0.17.1/src/ops/module.rs:253:9:
+max_pool2d_with_indices is not supported by Candle    

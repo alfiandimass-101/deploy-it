@@ -44,7 +44,7 @@ impl ModelConfig {
         // as your original adaptive pool layer intended.
         let pool = MaxPool2dConfig::new([3, 3])
             .with_strides([3, 3])
-            .init(device); // MODIFIED
+            .init(); // MODIFIED
 
         let dropout = DropoutConfig::new(self.drop_prob).init();
         // The linear layer input size is still correct because our new pool layer
