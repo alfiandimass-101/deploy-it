@@ -1,4 +1,4 @@
-use burn::{data::{dataloader::batcher::Batcher, dataset::vision::MnistItem}, prelude::*, tensor::ops::FloatElem};
+use burn::{data::{dataloader::batcher::Batcher, dataset::vision::MnistItem}, prelude::*, tensor::ops::{FloatElem, IntElem}};
 
 #[derive(Clone, Default)]
 pub struct MnistBatcher {}
@@ -17,6 +17,7 @@ impl<B: Backend> Batcher<B, MnistItem, MnistBatch<B>> for MnistBatcher {
             .map(|tensor| tensor.reshape([1,28,28]))
             .map(|tensor| ((tensor/255)- 0.1307) / 0.3081)
             .collect();
-    
+        let targets = items.iter()
+            .map(|item| Tensor::from_data([(item.label as i64).elem::<IntElem<B>>()], device))
     }
 }
