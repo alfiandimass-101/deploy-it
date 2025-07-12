@@ -10,5 +10,7 @@ pub struct MnistBatch<B: Backend> {
 }
 
 impl<B: Backend> Batcher<B, MnistItem, MnistBatch<B>> for MnistBatcher {
-    
+    fn batch(&self, items: Vec<MnistItem>, device: &<B as Backend>::Device) -> MnistBatch<B> {
+        
+    }
 }
