@@ -1,4 +1,4 @@
-use burn::{backend::Candle, nn::{conv::Conv2d, pool::AdaptiveAvgPool2d, Dropout}, prelude::*};
+use burn::{nn::{conv::Conv2d, pool::AdaptiveAvgPool2d, Dropout, Linear}, prelude::*};
 
 #[derive(Debug, Module)]
 pub struct Model<B: Backend> {
