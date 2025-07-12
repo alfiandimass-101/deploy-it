@@ -1,4 +1,4 @@
-use burn::{nn::{conv::Conv2d, pool::AdaptiveAvgPool2d, Dropout, Linear}, prelude::*};
+use burn::{nn::{conv::Conv2d, pool::AdaptiveAvgPool2d, Dropout, Linear, Relu}, prelude::*};
 
 #[derive(Debug, Module)]
 pub struct Model<B: Backend> {
@@ -8,4 +8,5 @@ pub struct Model<B: Backend> {
     dropout: Dropout,
     linear1: Linear<B>,
     linear2: Linear<B>,
+    activation: Relu,
 }
