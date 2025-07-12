@@ -4685,3 +4685,127 @@
 2025-07-12T04:51:46.840649Z  INFO burn_train::learner::epoch: Iteration 890    
 2025-07-12T04:51:47.110915Z  INFO burn_train::learner::epoch: Iteration 891    
 2025-07-12T04:51:47.383540Z  INFO burn_train::learner::epoch: Iteration 892    
+2025-07-12T04:51:47.684865Z  INFO burn_train::learner::epoch: Iteration 893    
+2025-07-12T04:51:47.972064Z  INFO burn_train::learner::epoch: Iteration 894    
+2025-07-12T04:51:48.244834Z  INFO burn_train::learner::epoch: Iteration 895    
+2025-07-12T04:51:48.529570Z  INFO burn_train::learner::epoch: Iteration 896    
+2025-07-12T04:51:48.829431Z  INFO burn_train::learner::epoch: Iteration 897    
+2025-07-12T04:51:49.103862Z  INFO burn_train::learner::epoch: Iteration 898    
+2025-07-12T04:51:49.375091Z  INFO burn_train::learner::epoch: Iteration 899    
+2025-07-12T04:51:49.657731Z  INFO burn_train::learner::epoch: Iteration 900    
+2025-07-12T04:51:49.944089Z  INFO burn_train::learner::epoch: Iteration 901    
+2025-07-12T04:51:50.216454Z  INFO burn_train::learner::epoch: Iteration 902    
+2025-07-12T04:51:50.490171Z  INFO burn_train::learner::epoch: Iteration 903    
+2025-07-12T04:51:50.763815Z  INFO burn_train::learner::epoch: Iteration 904    
+2025-07-12T04:51:51.048881Z  INFO burn_train::learner::epoch: Iteration 905    
+2025-07-12T04:51:51.320542Z  INFO burn_train::learner::epoch: Iteration 906    
+2025-07-12T04:51:51.591980Z  INFO burn_train::learner::epoch: Iteration 907    
+2025-07-12T04:51:51.863776Z  INFO burn_train::learner::epoch: Iteration 908    
+2025-07-12T04:51:52.145845Z  INFO burn_train::learner::epoch: Iteration 909    
+2025-07-12T04:51:52.418293Z  INFO burn_train::learner::epoch: Iteration 910    
+2025-07-12T04:51:52.690995Z  INFO burn_train::learner::epoch: Iteration 911    
+2025-07-12T04:51:52.969226Z  INFO burn_train::learner::epoch: Iteration 912    
+2025-07-12T04:51:53.243173Z  INFO burn_train::learner::epoch: Iteration 913    
+2025-07-12T04:51:53.516613Z  INFO burn_train::learner::epoch: Iteration 914    
+2025-07-12T04:51:53.788203Z  INFO burn_train::learner::epoch: Iteration 915    
+2025-07-12T04:51:54.071467Z  INFO burn_train::learner::epoch: Iteration 916    
+2025-07-12T04:51:54.344106Z  INFO burn_train::learner::epoch: Iteration 917    
+2025-07-12T04:51:54.622485Z  INFO burn_train::learner::epoch: Iteration 918    
+2025-07-12T04:51:54.895436Z  INFO burn_train::learner::epoch: Iteration 919    
+2025-07-12T04:51:55.181071Z  INFO burn_train::learner::epoch: Iteration 920    
+2025-07-12T04:51:55.453710Z  INFO burn_train::learner::epoch: Iteration 921    
+2025-07-12T04:51:55.561811Z  INFO burn_train::learner::epoch: Iteration 922    
+2025-07-12T04:51:55.834437Z  INFO burn_train::learner::epoch: Iteration 923    
+2025-07-12T04:51:55.943094Z  INFO burn_train::learner::epoch: Iteration 924    
+2025-07-12T04:51:56.228916Z  INFO burn_train::learner::epoch: Iteration 925    
+2025-07-12T04:51:56.503079Z  INFO burn_train::learner::epoch: Iteration 926    
+2025-07-12T04:51:56.775511Z  INFO burn_train::learner::epoch: Iteration 927    
+2025-07-12T04:51:56.883802Z  INFO burn_train::learner::epoch: Iteration 928    
+2025-07-12T04:51:57.156757Z  INFO burn_train::learner::epoch: Iteration 929    
+2025-07-12T04:51:57.443324Z  INFO burn_train::learner::epoch: Iteration 930    
+2025-07-12T04:51:57.718828Z  INFO burn_train::learner::epoch: Iteration 931    
+2025-07-12T04:51:57.991648Z  INFO burn_train::learner::epoch: Iteration 932    
+2025-07-12T04:51:58.263766Z  INFO burn_train::learner::epoch: Iteration 933    
+2025-07-12T04:51:58.548904Z  INFO burn_train::learner::epoch: Iteration 934    
+2025-07-12T04:51:58.821746Z  INFO burn_train::learner::epoch: Iteration 935    
+2025-07-12T04:51:59.099383Z  INFO burn_train::learner::epoch: Iteration 936    
+2025-07-12T04:51:59.372351Z  INFO burn_train::learner::epoch: Iteration 937    
+2025-07-12T04:51:59.663676Z  INFO burn_train::learner::epoch: Iteration 938    
+2025-07-12T04:51:59.936560Z  INFO burn_train::learner::epoch: Iteration 939    
+2025-07-12T04:52:00.209491Z  INFO burn_train::learner::epoch: Iteration 940    
+2025-07-12T04:52:00.317451Z  INFO burn_train::learner::epoch: Executing validation step for epoch 5    
+2025-07-12T04:52:00.921765Z  INFO burn_train::checkpoint::file: Saving checkpoint 5 to ../model/checkpoint/model-5    
+2025-07-12T04:52:00.921772Z  INFO burn_train::checkpoint::file: Saving checkpoint 5 to ../model/checkpoint/optim-5    
+2025-07-12T04:52:00.921826Z  INFO burn_train::checkpoint::file: Saving checkpoint 5 to ../model/checkpoint/scheduler-5    
+2025-07-12T04:52:00.935889Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/model-3.mpk    
+2025-07-12T04:52:00.949902Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/optim-3.mpk    
+2025-07-12T04:52:00.949936Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/model-1.mpk    
+2025-07-12T04:52:00.949935Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/scheduler-3.mpk    
+2025-07-12T04:52:00.950325Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/optim-1.mpk    
+2025-07-12T04:52:00.950337Z  INFO burn_train::learner::epoch: Executing training step for epoch 6    
+2025-07-12T04:52:00.950349Z  INFO burn_train::checkpoint::file: Removing checkpoint ../model/checkpoint/scheduler-1.mpk    
+2025-07-12T04:52:00.953566Z  INFO burn_train::learner::epoch: Iteration 1    
+2025-07-12T04:52:01.281477Z  INFO burn_train::learner::epoch: Iteration 2    
+2025-07-12T04:52:01.554896Z  INFO burn_train::learner::epoch: Iteration 3    
+2025-07-12T04:52:01.841798Z  INFO burn_train::learner::epoch: Iteration 4    
+2025-07-12T04:52:02.115540Z  INFO burn_train::learner::epoch: Iteration 5    
+2025-07-12T04:52:02.387958Z  INFO burn_train::learner::epoch: Iteration 6    
+2025-07-12T04:52:02.661613Z  INFO burn_train::learner::epoch: Iteration 7    
+2025-07-12T04:52:02.948949Z  INFO burn_train::learner::epoch: Iteration 8    
+2025-07-12T04:52:03.221814Z  INFO burn_train::learner::epoch: Iteration 9    
+2025-07-12T04:52:03.494234Z  INFO burn_train::learner::epoch: Iteration 10    
+2025-07-12T04:52:03.766531Z  INFO burn_train::learner::epoch: Iteration 11    
+2025-07-12T04:52:04.051938Z  INFO burn_train::learner::epoch: Iteration 12    
+2025-07-12T04:52:04.324101Z  INFO burn_train::learner::epoch: Iteration 13    
+2025-07-12T04:52:04.605653Z  INFO burn_train::learner::epoch: Iteration 14    
+2025-07-12T04:52:04.879420Z  INFO burn_train::learner::epoch: Iteration 15    
+2025-07-12T04:52:05.163691Z  INFO burn_train::learner::epoch: Iteration 16    
+2025-07-12T04:52:05.436071Z  INFO burn_train::learner::epoch: Iteration 17    
+2025-07-12T04:52:05.709431Z  INFO burn_train::learner::epoch: Iteration 18    
+2025-07-12T04:52:05.989908Z  INFO burn_train::learner::epoch: Iteration 19    
+2025-07-12T04:52:06.265096Z  INFO burn_train::learner::epoch: Iteration 20    
+2025-07-12T04:52:06.538572Z  INFO burn_train::learner::epoch: Iteration 21    
+2025-07-12T04:52:06.812849Z  INFO burn_train::learner::epoch: Iteration 22    
+2025-07-12T04:52:07.096839Z  INFO burn_train::learner::epoch: Iteration 23    
+2025-07-12T04:52:07.368988Z  INFO burn_train::learner::epoch: Iteration 24    
+2025-07-12T04:52:07.641572Z  INFO burn_train::learner::epoch: Iteration 25    
+2025-07-12T04:52:07.914668Z  INFO burn_train::learner::epoch: Iteration 26    
+2025-07-12T04:52:08.202412Z  INFO burn_train::learner::epoch: Iteration 27    
+2025-07-12T04:52:08.475560Z  INFO burn_train::learner::epoch: Iteration 28    
+2025-07-12T04:52:08.747840Z  INFO burn_train::learner::epoch: Iteration 29    
+2025-07-12T04:52:09.028018Z  INFO burn_train::learner::epoch: Iteration 30    
+2025-07-12T04:52:09.313870Z  INFO burn_train::learner::epoch: Iteration 31    
+2025-07-12T04:52:09.597304Z  INFO burn_train::learner::epoch: Iteration 32    
+2025-07-12T04:52:09.870501Z  INFO burn_train::learner::epoch: Iteration 33    
+2025-07-12T04:52:10.143273Z  INFO burn_train::learner::epoch: Iteration 34    
+2025-07-12T04:52:10.430074Z  INFO burn_train::learner::epoch: Iteration 35    
+2025-07-12T04:52:10.705891Z  INFO burn_train::learner::epoch: Iteration 36    
+2025-07-12T04:52:10.979439Z  INFO burn_train::learner::epoch: Iteration 37    
+2025-07-12T04:52:11.251876Z  INFO burn_train::learner::epoch: Iteration 38    
+2025-07-12T04:52:11.537420Z  INFO burn_train::learner::epoch: Iteration 39    
+2025-07-12T04:52:11.810630Z  INFO burn_train::learner::epoch: Iteration 40    
+2025-07-12T04:52:12.083009Z  INFO burn_train::learner::epoch: Iteration 41    
+2025-07-12T04:52:12.355581Z  INFO burn_train::learner::epoch: Iteration 42    
+2025-07-12T04:52:12.641302Z  INFO burn_train::learner::epoch: Iteration 43    
+2025-07-12T04:52:12.914933Z  INFO burn_train::learner::epoch: Iteration 44    
+2025-07-12T04:52:13.187619Z  INFO burn_train::learner::epoch: Iteration 45    
+2025-07-12T04:52:13.460466Z  INFO burn_train::learner::epoch: Iteration 46    
+2025-07-12T04:52:13.747113Z  INFO burn_train::learner::epoch: Iteration 47    
+2025-07-12T04:52:14.020712Z  INFO burn_train::learner::epoch: Iteration 48    
+2025-07-12T04:52:14.292426Z  INFO burn_train::learner::epoch: Iteration 49    
+2025-07-12T04:52:14.573092Z  INFO burn_train::learner::epoch: Iteration 50    
+2025-07-12T04:52:14.870911Z  INFO burn_train::learner::epoch: Iteration 51    
+2025-07-12T04:52:15.143590Z  INFO burn_train::learner::epoch: Iteration 52    
+2025-07-12T04:52:15.415406Z  INFO burn_train::learner::epoch: Iteration 53    
+2025-07-12T04:52:15.689185Z  INFO burn_train::learner::epoch: Iteration 54    
+2025-07-12T04:52:15.974375Z  INFO burn_train::learner::epoch: Iteration 55    
+2025-07-12T04:52:16.248530Z  INFO burn_train::learner::epoch: Iteration 56    
+2025-07-12T04:52:16.520391Z  INFO burn_train::learner::epoch: Iteration 57    
+2025-07-12T04:52:16.792592Z  INFO burn_train::learner::epoch: Iteration 58    
+2025-07-12T04:52:17.072458Z  INFO burn_train::learner::epoch: Iteration 59    
+2025-07-12T04:52:17.344914Z  INFO burn_train::learner::epoch: Iteration 60    
+2025-07-12T04:52:17.617542Z  INFO burn_train::learner::epoch: Iteration 61    
+2025-07-12T04:52:17.905698Z  INFO burn_train::learner::epoch: Iteration 62    
+2025-07-12T04:52:18.180615Z  INFO burn_train::learner::epoch: Iteration 63    
+2025-07-12T04:52:18.453838Z  INFO burn_train::learner::epoch: Iteration 64    
+2025-07-12T04:52:18.728681Z  INFO burn_train::learner::epoch: Iteration 65    
