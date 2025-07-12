@@ -5,6 +5,7 @@ mod data;
 mod train;
 
 use train::TrainingConfig;
+use model::{Model, ModelConfig};
 
 type MyBackend = Candle<f32, i32>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
