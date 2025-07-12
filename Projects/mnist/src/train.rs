@@ -1,4 +1,4 @@
-use burn::{data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset}, optim::AdamConfig, prelude::*, tensor::backend::AutodiffBackend, train::LearnerBuilder};
+use burn::{data::{dataloader::DataLoaderBuilder, dataset::vision::MnistDataset}, optim::AdamConfig, prelude::*, record::CompactRecorder, tensor::backend::AutodiffBackend, train::{metric::{AccuracyMetric, LossMetric}, LearnerBuilder}};
 use crate::{data::MnistBatcher, model::ModelConfig};
 
 #[derive(Config)]
