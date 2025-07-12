@@ -17,3 +17,7 @@ pub struct TrainingConfig {
     pub learning_rate: f64,
 }
 
+fn create_artifact_dir(artifact_dir: &str) {
+    std::fs::remove_dir_all(artifact_dir).ok();
+    std::fs::create_dir_all(artifact_dir).ok();
+}
