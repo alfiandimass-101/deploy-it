@@ -1,4 +1,4 @@
-use burn::{backend::{Autodiff, Candle}, prelude::*};
+use burn::{backend::{candle::CandleDevice, Autodiff, Candle}, prelude::*};
 
 mod model;
 mod data;
@@ -11,7 +11,7 @@ type MyBackend = Candle<f32, i32>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
-    let device = burn::backend::Candle::default();
+    let device = CandleDevice::default();
     let artifact_dir = "/tmp/guide";
     crate::train::train::<MyAutodiffBackend>(
         artifact_dir,
