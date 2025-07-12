@@ -1,4 +1,4 @@
-use burn::{backend::{candle::CandleDevice, Autodiff, Candle}, prelude::*};
+use burn::{backend::{candle::CandleDevice, Autodiff, Candle}, optim::AdamConfig, prelude::*};
 
 mod model;
 mod data;
