@@ -32,3 +32,24 @@ impl ModelConfig {
         Model { conv1, conv2, pool, dropout, linear1, linear2, activation }
     }
 }
+
+impl<B: Backend> Model<B> {
+    pub fn forward(&self, x: Tensor<B, 3>) -> Tensor<B, 2> {
+        let [batch_size, height, width] = x.dims();
+        let x = x.reshape([batch_size, 1, height, width]);
+
+        let x = self.conv1.forward(x);
+        let x = self.dropout.forward(x);
+        let x = self.conv2.forward(x);
+        let x = self.dropout.forward(x);
+        let x = self.activation.forward(x);
+
+        let x = self.pool.forward(x);
+        let x = x.reshape([batch_size, 16*8*8]);
+        let x = self.linear1.forward(x);
+        let x = self.dropout.forward(x);
+        let x = self.activation.forward(x);
+
+        self.linear2.forward(x)
+    }
+}
