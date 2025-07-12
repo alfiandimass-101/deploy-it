@@ -18,3 +18,11 @@ pub struct ModelConfig {
     #[config(default = "0.5")]
     drop_prob: f64
 }
+
+impl ModelConfig {
+    pub fn init<B>(&self)
+    where B: Backend,
+    -> Model {
+        
+    }
+}
