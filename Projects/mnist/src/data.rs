@@ -1,4 +1,4 @@
-use burn::{data::{dataloader::batcher::Batcher, dataset::vision::MnistItem}, prelude::*};
+use burn::{data::{dataloader::batcher::Batcher, dataset::vision::MnistItem}, prelude::*, tensor::ops::FloatElem};
 
 #[derive(Clone, Default)]
 pub struct MnistBatcher {}
@@ -11,6 +11,8 @@ pub struct MnistBatch<B: Backend> {
 
 impl<B: Backend> Batcher<B, MnistItem, MnistBatch<B>> for MnistBatcher {
     fn batch(&self, items: Vec<MnistItem>, device: &<B as Backend>::Device) -> MnistBatch<B> {
-        
+        let images = items.iter()
+            .map(|item| TensorData::from(item.image).convert::<FloatElem<B>>())
+
     }
 }
