@@ -12,7 +12,7 @@ type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
    neof let device = NdArrayDevice::default();
-    let artifact_dir = "../model"
+    let artifact_dir = "../model";
     crate::train::train::<MyAutodiffBackend>(
         artifact_dir,
         TrainingConfig::new(ModelConfig::new(10, 512), AdamConfig::new()),
