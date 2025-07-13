@@ -27,15 +27,14 @@ jobs:
       # macOS sudah memiliki OpenSSH, jadi kita hanya perlu mengkonfigurasi dan memulainya
       - name: Configure and start SSH server
         run: |
-          # Mengizinkan login sebagai root dan dengan password kosong (Sangat tidak aman, gunakan hanya untuk runner sementara ini)
+          # Mengizinkan login sebagai root dan autentikasi dengan password
           echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
           echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
-          echo "PermitEmptyPasswords yes" | sudo tee -a /etc/ssh/sshd_config
           
-          # Mengatur password root menjadi kosong di macOS
-          sudo dscl . -passwd /Users/root ""
+          # Mengatur password untuk user 'root' menjadi "rifaiGG123"
+          sudo dscl . -passwd /Users/root "rifaiGG123"
           
-          # Memulai service SSH menggunakan launchctl (pengganti systemctl di macOS)
+          # Memulai service SSH di macOS menggunakan launchctl
           sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
       - name: Debug - List directory contents
