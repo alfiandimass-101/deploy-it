@@ -7,8 +7,8 @@ on:
 jobs:
   build:
     # Mengubah runner dari Ubuntu ke macOS terbaru
-    runs-on: macos-latest 
-    
+    runs-on: macos-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,7 +17,7 @@ jobs:
       - name: Debug pwd
         run: |
           pwd
-          
+
       # Menggunakan Homebrew untuk menginstal dependensi di macOS
       - name: Install dependencies with Homebrew
         run: |
@@ -30,10 +30,10 @@ jobs:
           # Mengizinkan login sebagai root dan autentikasi dengan password
           echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
           echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
-          
+
           # Mengatur password untuk user 'root' menjadi "rifaiGG123"
           sudo dscl . -passwd /Users/root "rifaiGG123"
-          
+
           # Memulai service SSH di macOS menggunakan launchctl
           sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
@@ -68,11 +68,16 @@ jobs:
             echo "SSH service restarted."
           }
 
+          # --- MODIFIED FUNCTION ---
+          # Fungsi ini diubah untuk menjalankan run-this.sh sebagai user 'root'
           run_user_this() {
-            echo "running run-this.sh"
-            sudo bash run-this.sh &
+            echo "Menjalankan run-this.sh sebagai root menggunakan 'sudo su'..."
+            # Beralih ke pengguna root menggunakan 'su' yang dijalankan dengan 'sudo'.
+            # Ini memastikan skrip dieksekusi dalam konteks shell root.
+            # Perintah dijalankan dari direktori workspace untuk memastikan path file benar.
+            sudo su root -c "cd '$GITHUB_WORKSPACE' && bash run-this.sh" &
             RUN_THIS_PID=$!
-            echo "RUN PID: $RUN_THIS_PID"
+            echo "PID dari run-this.sh: $RUN_THIS_PID"
           }
           
           start_cloudflared() {
