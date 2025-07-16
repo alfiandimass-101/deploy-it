@@ -1,4 +1,4 @@
-name: MacOS Root Execution
+name: MacOS
 on:
   workflow_dispatch:
 
