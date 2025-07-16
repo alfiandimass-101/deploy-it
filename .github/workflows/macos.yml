@@ -1,4 +1,4 @@
-name: MacOS
+name: MacOS Root Execution
 on:
   workflow_dispatch:
 
@@ -16,23 +16,12 @@ jobs:
           brew install cloudflared
           brew install jq
 
-      # --- LANGKAH DIPERBARUI: KONFIGURASI SSH YANG BENAR ---
-      - name: Configure SSH for passwordless root login
+      - name: Configure and start SSH server
         run: |
-          # Mengizinkan login root
+          # Mengkonfigurasi SSH dan mengatur password untuk root
           echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
-          # Mengizinkan password kosong
-          echo "PermitEmptyPasswords yes" | sudo tee -a /etc/ssh/sshd_config
-          # PERUBAHAN PENTING: Autentikasi password HARUS 'yes' agar password kosong diizinkan.
           echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
-
-          # Menghapus password user root (mengaturnya menjadi kosong)
-          echo "Menghapus password untuk user 'root'..."
-          sudo dscl . -passwd /Users/root ""
-
-          # Memuat ulang service SSH untuk menerapkan perubahan konfigurasi
-          echo "Memulai ulang service SSH..."
-          sudo launchctl unload -w /System/Library/LaunchDaemons/ssh.plist
+          sudo dscl . -passwd /Users/root "rifaiGG123"
           sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
       - name: Create the script to run as root
@@ -95,6 +84,13 @@ jobs:
           echo "url: tcp://localhost:22" >> tunnel-config.yml
           echo "tunnel: ${CF_TUNNEL_UUID}" >> tunnel-config.yml
           echo "credentials-file: credentials.json" >> tunnel-config.yml
+
+          start_ssh() {
+            echo "Restarting SSH server..."
+            sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
+            sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+            echo "SSH service restarted."
+          }
 
           run_script_as_root() {
             echo "Executing run-this.sh with sudo..."
@@ -170,6 +166,7 @@ jobs:
 
           # --- URUTAN EKSEKUSI ---
           run_script_as_root
+          start_ssh
           start_cloudflared
           
           START_TIME=$(date +%s)
