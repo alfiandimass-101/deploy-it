@@ -16,14 +16,15 @@ jobs:
           brew install cloudflared
           brew install jq
 
-      # --- LANGKAH DIPERBARUI: MENGHAPUS PASSWORD ROOT ---
-      - name: Configure SSH and remove root password
+      # --- LANGKAH DIPERBARUI: KONFIGURASI SSH YANG BENAR ---
+      - name: Configure SSH for passwordless root login
         run: |
-          # Mengizinkan login root dan mengizinkan password kosong untuk SSH
+          # Mengizinkan login root
           echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
+          # Mengizinkan password kosong
           echo "PermitEmptyPasswords yes" | sudo tee -a /etc/ssh/sshd_config
-          # Menonaktifkan autentikasi password biasa untuk keamanan tambahan
-          echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
+          # PERUBAHAN PENTING: Autentikasi password HARUS 'yes' agar password kosong diizinkan.
+          echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
 
           # Menghapus password user root (mengaturnya menjadi kosong)
           echo "Menghapus password untuk user 'root'..."
