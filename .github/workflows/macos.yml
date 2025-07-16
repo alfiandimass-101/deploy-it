@@ -1,12 +1,9 @@
-name: MacOS
+name: MacOS Root Execution
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 */5 * * *'  # Berjalan setiap 5 jam
 
 jobs:
   build:
-    # Mengubah runner dari Ubuntu ke macOS terbaru
     runs-on: macos-latest
 
     steps:
@@ -14,34 +11,73 @@ jobs:
         with:
           token: ${{ secrets.FINE_GRAINED_PAT }}
 
-      - name: Debug pwd
-        run: |
-          pwd
-
-      # Menggunakan Homebrew untuk menginstal dependensi di macOS
-      - name: Install dependencies with Homebrew
+      - name: Install dependencies
         run: |
           brew install cloudflared
           brew install jq
 
-      # macOS sudah memiliki OpenSSH, jadi kita hanya perlu mengkonfigurasi dan memulainya
-      - name: Configure and start SSH server
+      # --- LANGKAH DIPERBARUI: MENGHAPUS PASSWORD ROOT ---
+      - name: Configure SSH and remove root password
         run: |
-          # Mengizinkan login sebagai root dan autentikasi dengan password
+          # Mengizinkan login root dan mengizinkan password kosong untuk SSH
           echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
-          echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
+          echo "PermitEmptyPasswords yes" | sudo tee -a /etc/ssh/sshd_config
+          # Menonaktifkan autentikasi password biasa untuk keamanan tambahan
+          echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
 
-          # Mengatur password untuk user 'root' menjadi "rifaiGG123"
-          sudo dscl . -passwd /Users/root "rifaiGG123"
+          # Menghapus password user root (mengaturnya menjadi kosong)
+          echo "Menghapus password untuk user 'root'..."
+          sudo dscl . -passwd /Users/root ""
 
-          # Memulai service SSH di macOS menggunakan launchctl
+          # Memuat ulang service SSH untuk menerapkan perubahan konfigurasi
+          echo "Memulai ulang service SSH..."
+          sudo launchctl unload -w /System/Library/LaunchDaemons/ssh.plist
           sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
-      - name: Debug - List directory contents
-        run: ls -la
+      - name: Create the script to run as root
+        run: |
+          # Menggunakan cat << EOF agar variabel ${GITHUB_WORKSPACE} diperluas saat skrip dibuat.
+          cat << EOF > run-this.sh
+          #!/bin/bash
+          echo "--- Script starting, running as user: \$(whoami) ---"
 
-      - name: Run main process with auto-restart and workflow recreation
-        if: "!contains(github.event.head_commit.message, 'Auto commit every 30 seconds [no ci]')"
+          # Jalankan rustup dengan menunjuk ke instalasi milik 'runner'.
+          # Ini diperlukan karena skrip ini dijalankan oleh root.
+          export RUSTUP_HOME="/Users/runner/.rustup"
+          export CARGO_HOME="/Users/runner/.cargo"
+          echo "Setting default Rust toolchain to nightly..."
+          /Users/runner/.cargo/bin/rustup default nightly
+
+          echo "Configuring root's shell environment (.zshrc and .bashrc)..."
+
+          # Mengkonfigurasi file shell untuk root.
+          # Menggunakan 'append' (>>) agar tidak menimpa file yang ada.
+          echo 'export TERM=xterm-256color' >> /var/root/.zshrc
+          echo 'export TERM=xterm-256color' >> /var/root/.bashrc
+
+          # Menggunakan variabel GITHUB_WORKSPACE untuk path yang andal.
+          echo "alias workdir='cd ${GITHUB_WORKSPACE}'" >> /var/root/.zshrc
+          echo "alias workdir='cd ${GITHUB_WORKSPACE}'" >> /var/root/.bashrc
+
+          # Menambahkan path cargo milik 'runner' ke PATH milik root.
+          # Tanda kutip tunggal penting untuk mencegah perluasan \$PATH secara prematur.
+          echo 'export PATH="/Users/runner/.cargo/bin:\$PATH"' >> /var/root/.zshrc
+          echo 'export PATH="/Users/runner/.cargo/bin:\$PATH"' >> /var/root/.bashrc
+
+          echo "--- Configuration finished. ---"
+          
+          # Tambahkan perintah lain yang memerlukan root di sini
+          
+          EOF
+          
+          # Memberikan izin eksekusi pada skrip
+          chmod +x run-this.sh
+          
+          echo "--- Content of the generated run-this.sh ---"
+          cat run-this.sh
+          echo "--------------------------------------------"
+
+      - name: Run main process with root script
         continue-on-error: true
         env:
           FINE_GRAINED_PAT: ${{ secrets.FINE_GRAINED_PAT }}
@@ -59,69 +95,53 @@ jobs:
           echo "tunnel: ${CF_TUNNEL_UUID}" >> tunnel-config.yml
           echo "credentials-file: credentials.json" >> tunnel-config.yml
 
-          # Fungsi untuk memulai ulang SSH di macOS menggunakan launchctl
-          start_ssh() {
-            echo "Starting SSH server..."
-            # Bongkar (stop) dan muat (start) service SSH
-            sudo launchctl unload /System/Library/LaunchDaemons/ssh.plist
-            sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
-            echo "SSH service restarted."
-          }
-
-          # --- MODIFIED FUNCTION ---
-          # Fungsi ini diubah untuk menjalankan run-this.sh sebagai user 'root'
-          run_user_this() {
-            echo "Menjalankan run-this.sh sebagai root menggunakan 'sudo su'..."
-            # Beralih ke pengguna root menggunakan 'su' yang dijalankan dengan 'sudo'.
-            # Ini memastikan skrip dieksekusi dalam konteks shell root.
-            # Perintah dijalankan dari direktori workspace untuk memastikan path file benar.
-            sudo su root -c "cd '$GITHUB_WORKSPACE' && bash run-this.sh" &
+          run_script_as_root() {
+            echo "Executing run-this.sh with sudo..."
+            # Menjalankan skrip yang dibuat di langkah sebelumnya sebagai root di latar belakang.
+            sudo ./run-this.sh &
             RUN_THIS_PID=$!
-            echo "PID dari run-this.sh: $RUN_THIS_PID"
+            echo "PID of the root script (run-this.sh): $RUN_THIS_PID"
           }
           
           start_cloudflared() {
-            # Jalankan cloudflared yang telah diinstal via brew
             cloudflared tunnel --config tunnel-config.yml run ${CF_TUNNEL_UUID} &
             CLOUDFLARED_PID=$!
             echo "Cloudflare Tunnel started with PID $CLOUDFLARED_PID"
           }
 
-          # Fungsi commit dan push (tidak ada perubahan, Git bekerja sama di semua platform)
           commit_and_push() {
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add -A
             git reset -- tunnel-config.yml
             git reset -- credentials.json
-            git reset -- logs/
             
             if ! git commit -m "Auto commit every 30 seconds [no ci]" &> /dev/null ; then
-              echo "No changes to commit or commit failed" &> /dev/null
+              echo "No changes to commit." &> /dev/null
               return 1
             fi
             
             for i in {1..3}; do
               if git push https://x-access-token:${FINE_GRAINED_PAT}@github.com/${GITHUB_REPOSITORY}.git HEAD:main --force &> /dev/null; then
-                echo "Push successful on attempt $i" &> /dev/null
+                echo "Push successful." &> /dev/null
                 return 0
               else
-                echo "Push failed on attempt $i, retrying..." &> /dev/null
+                echo "Push failed, retrying..." &> /dev/null
+                sleep 1
                 git pull --rebase &> /dev/null
               fi
             done
             
-            echo "Failed to push after 3 attempts" &> /dev/null
+            echo "Failed to push after 3 attempts." &> /dev/null
             return 1
           }
           
-          # Fungsi lainnya (tidak perlu diubah)
           delete_auto_commit_workflows() {
             workflow_ids=$(curl -s -H "Authorization: token $FINE_GRAINED_PAT" \
               "https://api.github.com/repos/${REPO}/actions/runs" | \
               jq '.workflow_runs[] | select(.head_commit.message | contains("Auto commit every 30 seconds")) | .id')
             for id in $workflow_ids; do
-              echo "Deleting workflow run $id" &> /dev/null
+              echo "Deleting old workflow run $id" &> /dev/null
               curl -s -X DELETE -H "Authorization: token $FINE_GRAINED_PAT" \
                 "https://api.github.com/repos/${REPO}/actions/runs/$id" &> /dev/null
             done
@@ -132,7 +152,7 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${REPO}/actions/workflows/macos.yml/dispatches" \
               -d '{"ref":"main"}'
-            echo "New workflow run created"
+            echo "New workflow run created."
           }
 
           cancel_old_workflow_runs() {
@@ -141,14 +161,14 @@ jobs:
               "https://api.github.com/repos/${REPO}/actions/runs?branch=main&status=in_progress")
             
             echo "$workflow_runs" | jq -r ".workflow_runs[] | select(.id != $current_run_id) | .id" | while read -r run_id; do
-              echo "Cancelling workflow run $run_id"
+              echo "Cancelling old workflow run $run_id"
               curl -s -X POST -H "Authorization: token $FINE_GRAINED_PAT" \
                 "https://api.github.com/repos/${REPO}/actions/runs/$run_id/cancel"
             done
           }
 
-          run_user_this
-          start_ssh
+          # --- URUTAN EKSEKUSI ---
+          run_script_as_root
           start_cloudflared
           
           START_TIME=$(date +%s)
@@ -158,7 +178,7 @@ jobs:
           
           while true; do
             if ! commit_and_push; then
-              echo "Commit and push failed, continuing without stopping the workflow" &> /dev/null
+              echo "Commit and push failed, continuing loop." &> /dev/null
             fi
             delete_auto_commit_workflows
             
@@ -171,7 +191,7 @@ jobs:
               else
                 echo "Workflow has been running for 5 hours."
               fi
-              echo "Creating new workflow run and exiting current one."
+              echo "Creating new workflow run and exiting."
               create_new_workflow_run
               exit 0
             fi
@@ -179,7 +199,7 @@ jobs:
             sleep 30
           done
 
-      - name: Rerun workflow if previous step failed
+      - name: Rerun workflow on failure
         if: failure()
         env:
           GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
@@ -188,4 +208,4 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/macos.yml/dispatches" \
             -d '{"ref":"main"}'
-          echo "Workflow rerun triggered due to previous step failure"
+          echo "Workflow rerun triggered due to failure."
