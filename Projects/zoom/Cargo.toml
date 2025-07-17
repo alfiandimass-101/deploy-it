@@ -6,4 +6,3 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.98"
 headless_chrome = "1.0.17"
-tokio = "1.46.1"

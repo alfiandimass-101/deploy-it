@@ -55,3 +55,8 @@ fn browse_wikipedia() -> Result<(), Box<dyn Error>> {
 
    Ok(())
 }
+
+fn main() -> anyhow::Result<()> {
+    browse_wikipedia()?;
+    Ok(())
+}
