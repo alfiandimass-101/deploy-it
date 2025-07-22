@@ -1,30 +1,26 @@
 #!/bin/bash
 echo "--- Script starting, running as user: $(whoami) ---"
 
-# Jalankan rustup dengan menunjuk ke instalasi milik 'runner'.
-# Ini diperlukan karena skrip ini dijalankan oleh root.
-export RUSTUP_HOME="/Users/runner/.rustup"
-export CARGO_HOME="/Users/runner/.cargo"
+# Run rustup pointing to the 'runner' user's installation.
+# This is necessary because this script is run by root.
+export RUSTUP_HOME="/home/runner/.rustup"
+export CARGO_HOME="/home/runner/.cargo"
 echo "Setting default Rust toolchain to nightly..."
-/Users/runner/.cargo/bin/rustup default nightly
+/home/runner/.cargo/bin/rustup default nightly
 
-echo "Configuring root's shell environment (.zshrc and .bashrc)..."
+echo "Configuring root's shell environment (.bashrc)..."
 
-# Mengkonfigurasi file shell untuk root.
-# Menggunakan 'append' (>>) agar tidak menimpa file yang ada.
-echo 'export TERM=xterm-256color' >> /var/root/.zshrc
-echo 'export TERM=xterm-256color' >> /var/root/.bashrc
+# Configure the shell file for root.
+# Use 'append' (>>) to avoid overwriting the existing file.
+echo 'export TERM=xterm-256color' >> /root/.bashrc
 
-# Menggunakan variabel GITHUB_WORKSPACE untuk path yang andal.
-echo "alias workdir='cd /Users/runner/work/deploy-it/deploy-it'" >> /var/root/.zshrc
-echo "alias workdir='cd /Users/runner/work/deploy-it/deploy-it'" >> /var/root/.bashrc
+# Use the GITHUB_WORKSPACE variable for a reliable path.
+echo "alias workdir='cd /home/runner/work/deploy-it/deploy-it'" >> /root/.bashrc
 
-# Menambahkan path cargo milik 'runner' ke PATH milik root.
-# Tanda kutip tunggal penting untuk mencegah perluasan $PATH secara prematur.
-echo 'export PATH="/Users/runner/.cargo/bin:$PATH"' >> /var/root/.zshrc
-echo 'export PATH="/Users/runner/.cargo/bin:$PATH"' >> /var/root/.bashrc
+# Add the 'runner' user's cargo bin path to the root's PATH.
+# Single quotes are important to prevent premature expansion of $PATH.
+echo 'export PATH="/home/runner/.cargo/bin:$PATH"' >> /root/.bashrc
 
 echo "--- Configuration finished. ---"
 
-# Tambahkan perintah lain yang memerlukan root di sini
-
+# Add any other commands that require root here
