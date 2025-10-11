@@ -1,7 +1,3 @@
-fn main() {
-    println!("Hello, world!");
-use azalea::prelude::*;
-
 #[tokio::main]
 async fn main() {
     // The username for our bot.
