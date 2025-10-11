@@ -11,7 +11,7 @@ type MyBackend = NdArray<f32>;
 type MyAutodiffBackend = Autodiff<MyBackend>;
 
 fn main() {
-   neof let device = NdArrayDevice::default();
+   let device = NdArrayDevice::default();
     let artifact_dir = "../model";
     crate::train::train::<MyAutodiffBackend>(
         artifact_dir,
