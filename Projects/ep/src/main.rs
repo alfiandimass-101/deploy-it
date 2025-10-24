@@ -20,7 +20,7 @@ impl<'a> Human<'a> {
     }
 }
 
-impl<'_> Display for Human<'_> {
+impl std::fmt::Display for Human<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}", format!("name: {self.name}\nage: {self.age}"))
     }
