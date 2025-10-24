@@ -29,4 +29,5 @@ fn main() {
     human1.set_name("apa ya");
     human1.set_age(16);
     println!("{}", human1);
+    println!("{:?}", human1);
 }
