@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct Human<'a> {
     name: &'a str,
     age: u32,
