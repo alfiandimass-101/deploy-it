@@ -28,7 +28,5 @@ fn main() {
     let mut human1 = Human::default();
     human1.set_name("apa ya");
     human1.set_age(16);
-    println!("{:?}", human1);
-    let (nm, ag) = human1.desonstruct();
-    human1.set_name("aa");
+    println!("{}", human1);
 }
