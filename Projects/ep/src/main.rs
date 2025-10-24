@@ -20,9 +20,8 @@ impl<'a> Human<'a> {
 
 impl std::fmt::Display for Human<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "
-        name: {}
-        age: {}", self.name, self.age)
+        write!(f, "name: {}
+age: {}", self.name, self.age)
     }
 }
 
