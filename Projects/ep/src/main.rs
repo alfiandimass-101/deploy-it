@@ -12,6 +12,10 @@ impl<'a> Human<'a> {
     fn set_age(&mut self, age: u32) {
         self.age = age;
     }
+
+    fn desonstruct(self) -> (&'a str, u32) {
+        (self.name, self.age)
+    }
 }
 
 fn main() {
@@ -19,4 +23,6 @@ fn main() {
     human1.set_name("apa ya");
     human1.set_age(16);
     println!("{:?}", human1);
+    let (nm, ag) = human1.desonstruct();
+    
 }
