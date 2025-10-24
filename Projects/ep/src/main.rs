@@ -20,7 +20,7 @@ impl<'a> Human<'a> {
 
 impl std::fmt::Display for Human<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "name: {} age: {}", self.name, self.age)
+        write!(f, "name: {}\nage: {}", self.name, self.age)
     }
 }
 
@@ -29,5 +29,6 @@ fn main() {
     human1.set_name("apa ya");
     human1.set_age(16);
     println!("{}", human1);
-    println!("{:?}", human1);
+    println!("{:?}", 
+    human1);
 }
