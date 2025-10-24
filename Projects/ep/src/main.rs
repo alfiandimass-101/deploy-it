@@ -11,6 +11,7 @@ impl<'a> Human<'a> {
 }
 
 fn main() {
-    let human1 = Human::default();
-    
+    let mut human1 = Human::default();
+    human1.set_name("apa ya");
+    println!("{:?}", human1);
 }
