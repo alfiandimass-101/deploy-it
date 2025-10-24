@@ -8,6 +8,10 @@ impl<'a> Human<'a> {
     fn set_name(&mut self, name: &'a str) {
         self.name = name;
     }
+
+    fn set_age(&mut self, age: u32) {
+        self.age = age;
+    }
 }
 
 fn main() {
