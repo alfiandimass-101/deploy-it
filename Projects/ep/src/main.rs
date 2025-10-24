@@ -1,5 +1,3 @@
-use std::ffi::os_str::Display;
-
 #[derive(Debug, Default)]
 struct Human<'a> {
     name: &'a str,
@@ -21,8 +19,8 @@ impl<'a> Human<'a> {
 }
 
 impl std::fmt::Display for Human<'_> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", format!("name: {self.name}\nage: {self.age}"))
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", format!("name: {self.0}\nage: {self.1}"))
     }
 }
 
