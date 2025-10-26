@@ -3,6 +3,7 @@ use std::thread::{self, JoinHandle};
 static mut COUNTER: u128 = 0;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("{:p}", &raw const COUNTER);
     let mut thread_collection: Vec<JoinHandle<()>> = Vec::default();
     for _ in 0..10 {
         thread_collection.push(thread::spawn(|| {
