@@ -6,8 +6,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut thread_collection: Vec<JoinHandle<()>> = Vec::default();
     for _ in 0..10 {
         thread_collection.push(thread::spawn(|| {
-            unsafe {
-                COUNTER += 1;
+            for _ in 0..1_000_000 {
+                unsafe {
+                    COUNTER += 1;
+                }
             }
         }));
     }
