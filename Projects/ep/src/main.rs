@@ -17,7 +17,8 @@ impl Default for Water {
 
 impl std::ops::Add for Water {
     fn add(self, rhs: Self) -> Self::Output {
-        self.ammount += rhs.ammount
+        self.ammount += rhs.ammount;
+        self
     }
 }
 
