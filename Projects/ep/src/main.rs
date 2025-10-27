@@ -15,9 +15,9 @@ fn main() {
     // Kita siapkan buffer untuk menampung data (jika berhasil)
     let mut buffer: Vec<u8> = Vec::with_capacity(size_to_read);
 
-    println!("PERINGATAN: 'Segala cara' dimulai.");
-    println!("Mencoba membaca {} byte, SATU PER SATU dengan pointer...", size_to_read);
-    println!("Ini akan 100% CRASH dengan 'Segmentation Fault' (SIGSEGV) setelah byte ke-100.");
+    // println!("PERINGATAN: 'Segala cara' dimulai.");
+    // println!("Mencoba membaca {} byte, SATU PER SATU dengan pointer...", size_to_read);
+    // println!("Ini akan 100% CRASH dengan 'Segmentation Fault' (SIGSEGV) setelah byte ke-100.");
     
     // 3. Blok unsafe - "Segala Cara"
     unsafe {
