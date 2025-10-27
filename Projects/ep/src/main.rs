@@ -1,10 +1,19 @@
 #[derive(PartialEq, Eq)]
-struct Water;
+struct Water {
+    ammount: usize,
+}
+
 type Air = Water;
 
 impl Default for Water {
     fn default() -> Self {
         Water
+    }
+}
+
+impl std::ops::Add for Water {
+    fn add(self, rhs: Self) -> Self::Output {
+        
     }
 }
 
