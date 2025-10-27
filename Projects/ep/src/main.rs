@@ -7,7 +7,7 @@ fn main() {
     let data: Vec<u8> = (0..100).collect();
     let ptr = data.as_ptr();
 
-    println!("Alamat memori 'data' dimulai di: {:?}", ptr);
+    println!("Mem addr: {:?}", ptr);
 
     // 2. Target 20 MB
     let size_to_read = 20 * 1024 * 1024; // 20 MB
