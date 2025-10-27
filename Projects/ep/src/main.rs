@@ -1,3 +1,4 @@
+#[derive(PartialEq, Eq)]
 struct Water;
 type Air = Water;
 
