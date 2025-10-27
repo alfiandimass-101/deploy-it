@@ -1,3 +1,5 @@
+use std::default;
+
 #[derive(PartialEq, Eq)]
 struct Water {
     ammount: usize,
@@ -7,7 +9,9 @@ type Air = Water;
 
 impl Default for Water {
     fn default() -> Self {
-        Water
+        Water {
+            ammount: 0,
+        }
     }
 }
 
