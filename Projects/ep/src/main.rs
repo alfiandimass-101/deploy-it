@@ -15,7 +15,8 @@ impl Default for Water {
     }
 }
 
-impl std::ops::Add for Water {
+impl std::ops::Add<Water> for Water {
+    type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
         self.ammount += rhs.ammount;
         self
