@@ -1,49 +1,44 @@
-#![feature(dropck_eyepatch)]
-
-use std::marker::PhantomData;
-
-struct ReferensiMasaHidupKhusus<'a, T>(&'a T, PhantomData<&'a ()>);
-
-// Atribut `#[may_dangle]` secara khusus memberi tahu kompilator 
-// bahwa tipe T (data yang dipinjam) bisa dijatuhkan sebelum ReferensiMasaHidupKhusus
-// tanpa memicu kesalahan lifetime.
-unsafe impl<'a, #[may_dangle] T> Drop for ReferensiMasaHidupKhusus<'a, T> {
-    fn drop(&mut self) {
-        println!("Referensi khusus dijatuhkan. Data T mungkin sudah tidak ada. (Ini diizinkan oleh #[may_dangle])");
-    }
-}
-
-fn buat_dan_hancurkan_s() -> ReferensiMasaHidupKhusus<'static, String> {
-    let referensi_gantung: ReferensiMasaHidupKhusus<'static, String>;
-
-    { // Cakupan (Scope) sementara
-        let s = String::from("data yang akan hilang");
-        
-        // Pinjam `s` dan secara paksa memberikannya 'static lifetime (TIDAK AMAN)
-        // Note: Penggunaan `transmute` adalah operasi C-Style UNSAFE!
-        // Ini adalah cara untuk memanipulasi lifetime untuk menciptakan referensi gantung.
-        let pinjaman: &String = &s;
-        let pinjaman_static = unsafe { std::mem::transmute::<&String, &'static String>(pinjaman) };
-
-        referensi_gantung = ReferensiMasaHidupKhusus(pinjaman_static, PhantomData);
-        
-        // Ketika cakupan ini berakhir, `s` akan dijatuhkan secara OTOMATIS.
-    } // <-- `s` dijatuhkan di sini!
-
-    println!("Data `s` telah dihancurkan, tetapi `referensi_gantung` masih ada.");
-
-    referensi_gantung
-}
+use std::fs::File;
+use std::io::Write;
+use std::slice;
 
 fn main() {
-    let referensi = buat_dan_hancurkan_s();
+    // 1. Alokasikan variabel 'x' (dalam hal ini, sebuah Vec)
+    // Kita alokasikan 100 byte.
+    let data: Vec<u8> = (0..100).collect();
+    let ptr = data.as_ptr();
 
-    // WARNING: Jangan mencoba mengakses referensi.0. Ini akan menyebabkan UB (Undefined Behavior).
-    // Bahkan meskipun kompiler mengizinkan struktur ini untuk dijatuhkan lebih akhir
-    // karena adanya #[may_dangle], data yang ditunjuknya sudah tidak ada.
+    println!("Alamat memori 'data' dimulai di: {:?}", ptr);
+
+    // 2. Ini adalah permintaan Anda: 20MB
+    // 1 MB = 1024 * 1024 byte
+    let size_to_read = 20 * 1024 * 1024; // 20 MB
+
+    println!("PERINGATAN: Mencoba membaca {} byte dari pointer...", size_to_read);
+    println!("Program ini hampir pasti akan CRASH (Segmentation Fault) sekarang.");
+    println!("Kita hanya mengalokasikan 100 byte, tapi kita mencoba membaca 20,971,520 byte.");
     
-    println!("Menjatuhkan `referensi`...");
-    println!("{}", referensi.0);
-    drop(referensi); 
-    println!("Selesai.");
+    // 3. Blok unsafe untuk mencoba membaca memori
+    // Ini adalah operasi yang sangat tidak aman dan akan gagal.
+    // OS akan menghentikan program ini.
+    let memory_slice = unsafe {
+        // PERINTAH INI AKAN MENYEBABKAN SEGMENTATION FAULT
+        slice::from_raw_parts(ptr, size_to_read)
+    };
+
+    // 4. Kode ini tidak akan pernah tercapai
+    println!("(Keajaiban) Berhasil membaca memori! Menulis ke file...");
+    
+    // Jika program secara ajaib tidak crash, ia akan mencoba menulis ke file.
+    match File::create("memory_dump.txt") {
+        Ok(mut file) => {
+            match file.write_all(memory_slice) {
+                Ok(_) => println!("Berhasil menulis 20MB memori ke memory_dump.txt"),
+                Err(e) => println!("Gagal menulis file: {}", e),
+            }
+        }
+        Err(e) => println!("Gagal membuat file: {}", e),
+    }
+
+    println!("Selesai. (Anda seharusnya tidak melihat pesan ini)");
 }
