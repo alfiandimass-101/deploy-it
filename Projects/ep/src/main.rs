@@ -10,14 +10,14 @@ type Air = Water;
 impl Default for Water {
     fn default() -> Self {
         Water {
-            ammount: 0,
+            ammount: 1,
         }
     }
 }
 
 impl std::ops::Add for Water {
     fn add(self, rhs: Self) -> Self::Output {
-        
+        self.ammount += rhs.ammount
     }
 }
 
