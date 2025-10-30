@@ -1,29 +1,12 @@
-use std::default;
+// nama : ItzYuuRz
+/*
+Program by ItzYuuRz 30/Sep
+*/
 
-#[derive(PartialEq, Eq)]
-struct Water {
-    ammount: usize,
+struct DataKontak<'a> {
+    
 }
 
-type Air = Water;
+fn main() {
 
-impl Default for Water {
-    fn default() -> Self {
-        Water {
-            ammount: 1,
-        }
-    }
-}
-
-impl std::ops::Add<Water> for Water {
-    type Output = Self;
-    fn add(self, rhs: Self) -> Self::Output {
-        self.ammount += rhs.ammount;
-        self
-    }
-}
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("{}", std::cmp::PartialEq::eq(&Water::default(), &Air::default()));
-    Ok(())
 }
