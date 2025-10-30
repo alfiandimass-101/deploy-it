@@ -14,10 +14,11 @@ struct DataKontak<'a> {
 
 impl Display for DataKontak<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "===========")?;
+        write!(f, "===========\n")?;
         write!(f, "Nama: [{}]\n", self.nama)?;
         write!(f, "Email: [{}]\n", self.email)?;
-        write!(f, "Telepon: +62 {}", self.telepon)
+        write!(f, "Telepon: +62 {}\n", self.telepon)?;
+        write!(f, "===========\n")
     }
 }
 
