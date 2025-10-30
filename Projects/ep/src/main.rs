@@ -1,33 +1,11 @@
-// Fungsi yang menerima closure dan memanggilnya.
-// Closure harus mengimplementasikan trait `FnOnce` (dipanggil sekali).
-fn apply<F>(f: F) where
-    F: FnOnce() {
-    f();
-}
-
-// Fungsi yang menerima closure dan mengembalikan i32.
-// Closure harus mengimplementasikan trait `Fn` (dapat dipanggil berulang kali).
-fn apply_to_3<F>(f: F) -> i32 where
-    F: Fn(i32) -> i32 {
-    f(3)
+// Mengembalikan sebuah closure menggunakan `impl Fn`.
+// Ini adalah cara yang direkomendasikan untuk mengembalikan closure.
+fn create_adder(a: i32) -> impl Fn(i32) -> i32 {
+    // Kata kunci `move` diperlukan jika kita menangkap variabel dari lingkungan
+    move |b| a + b
 }
 
 fn main() {
-    let greeting = "hello".to_owned();
-    let mut farewell = "goodbye".to_owned();
-
-    // Contoh closure yang mengimplementasikan `FnOnce` karena `mem::drop`
-    // memaksa `farewell` dipindahkan ke dalam closure.
-    let diary = || {
-        println!("Saya bilang {}", greeting);
-        farewell.push_str("!");
-        println!("Kemudian saya bilang {}", farewell);
-        std::mem::drop(farewell); // Memaksa `farewell` dipindahkan
-    };
-
-    apply(diary);
-
-    // Contoh closure yang mengimplementasikan `Fn`
-    let double = |x| x * 2;
-    println!("3 digandakan: {}", apply_to_3(double));
+    let add_five = create_adder(5);
+    println!("5 + 3 = {}", add_five(3)); // Output: 5 + 3 = 8
 }
