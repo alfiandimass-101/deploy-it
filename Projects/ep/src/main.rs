@@ -8,6 +8,6 @@ fn main() {
         inventaris_item2,
         inventaris_item3,
         inventaris_item4
-    ] else { [0;4] };
+    ];
 
 }
