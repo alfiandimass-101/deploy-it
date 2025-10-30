@@ -14,8 +14,8 @@ struct DataKontak<'a> {
 
 impl Display for DataKontak {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write(f, "===========")?;
-        write(f, "Nama: [{}]", self.nama)?;
+        write!(f, "===========")?;
+        write!(f, "Nama: [{}]", self.nama)?;
         
     }
 }
