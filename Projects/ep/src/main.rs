@@ -16,7 +16,8 @@ impl Display for DataKontak {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "===========")?;
         write!(f, "Nama: [{}]", self.nama)?;
-        
+        write!(f, "Email: [{}]", self.email)?;
+        write!(f, "Telepon: +62 {}", self.telepon)
     }
 }
 
