@@ -1,5 +1,8 @@
+#[cfg(some_condition)]
+fn conditional_function() {
+    println!("condition met!");
+}
+
 fn main() {
-    let mut a = 10;
-    let b = &a;
-    println!("{}", *b**&a);
+    conditional_function();
 }
