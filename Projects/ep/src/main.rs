@@ -3,7 +3,7 @@
 Program by ItzYuuRz 30/Sep
 */
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct DataKontak<'a> {
     nama: &'a str,
     email: &'a str,
@@ -12,5 +12,6 @@ struct DataKontak<'a> {
 
 
 fn main() {
-
+    let kontak1 = DataKontak::default();
+    println!("{:#?}", kontak1);
 }
