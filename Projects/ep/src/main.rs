@@ -1,13 +1,33 @@
-fn main() {
-    let inventaris_item1: (i32, f64, u32) = (1, 15., 12);
-    let inventaris_item2: (i32, f64, u32) = (2, 16., 13);
-    let inventaris_item3: (i32, f64, u32) = (3, 17., 14);
-    let inventaris_item4: (i32, f64, u32) = (1, 18., 19);
-    let inventaris: [(i32, f64, u32); 4] = [
-        inventaris_item1,
-        inventaris_item2,
-        inventaris_item3,
-        inventaris_item4
-    ];
+// Fungsi yang menerima closure dan memanggilnya.
+// Closure harus mengimplementasikan trait `FnOnce` (dipanggil sekali).
+fn apply<F>(f: F) where
+    F: FnOnce() {
+    f();
+}
 
+// Fungsi yang menerima closure dan mengembalikan i32.
+// Closure harus mengimplementasikan trait `Fn` (dapat dipanggil berulang kali).
+fn apply_to_3<F>(f: F) -> i32 where
+    F: Fn(i32) -> i32 {
+    f(3)
+}
+
+fn main() {
+    let greeting = "hello".to_owned();
+    let mut farewell = "goodbye".to_owned();
+
+    // Contoh closure yang mengimplementasikan `FnOnce` karena `mem::drop`
+    // memaksa `farewell` dipindahkan ke dalam closure.
+    let diary = || {
+        println!("Saya bilang {}", greeting);
+        farewell.push_str("!");
+        println!("Kemudian saya bilang {}", farewell);
+        std::mem::drop(farewell); // Memaksa `farewell` dipindahkan
+    };
+
+    apply(diary);
+
+    // Contoh closure yang mengimplementasikan `Fn`
+    let double = |x| x * 2;
+    println!("3 digandakan: {}", apply_to_3(double));
 }
