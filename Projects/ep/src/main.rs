@@ -3,7 +3,7 @@
 Program by ItzYuuRz 30/Sep
 */
 
-use std::fmt::{Display, write};
+use std::fmt::Display;
 
 #[derive(Debug, Default)]
 struct DataKontak<'a> {
