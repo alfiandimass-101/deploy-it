@@ -12,7 +12,7 @@ struct DataKontak<'a> {
     telepon: u64,
 }
 
-impl Display for DataKontak {
+impl Display for DataKontak<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "===========")?;
         write!(f, "Nama: [{}]", self.nama)?;
@@ -24,4 +24,5 @@ impl Display for DataKontak {
 fn main() {
     let kontak1 = DataKontak::default();
     println!("{:#?}", kontak1);
+    println!("{}", kontak1);
 }
