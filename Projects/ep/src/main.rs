@@ -26,4 +26,5 @@ fn main() {
     let kontak1 = DataKontak::default();
     println!("{:#?}", kontak1);
     println!("{}", kontak1);
+    println!("size: {}", std::mem::size_of_val(&kontak1));
 }
