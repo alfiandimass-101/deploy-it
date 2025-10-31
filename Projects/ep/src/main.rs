@@ -23,6 +23,8 @@ impl<T> GenVal<T> {
 fn main() {
     let x = Val { val: 3.0 };
     let y = GenVal { gen_val: 3i32 };
+    let a = *x.value();
+    let b = *y.value();
 
     println!("{}, {}", x.value(), y.value());
 }
