@@ -20,7 +20,6 @@ impl PluginGroup for BotPlugins {
 
 #[tokio::main]
 async fn main() {
-    let plugins = PluginGroupBuilder::
     let account = Account::offline("itzbot");
     ClientBuilder::new()
     .set_handler(handle)
