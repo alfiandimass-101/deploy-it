@@ -30,6 +30,7 @@ pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
             *word + " "
              }).collect::<&str>().trim();
             bot.chat(content);
+        }
     }
 }
 
