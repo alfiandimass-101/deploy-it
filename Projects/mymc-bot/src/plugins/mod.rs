@@ -1,4 +1,5 @@
 //! Modul ini mendefinisikan plugin-plugin yang digunakan oleh bot.
+//! Modul untuk menampung semua logika tugas bot.
 
 use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin};
 
@@ -14,3 +15,4 @@ impl PluginGroup for BotPlugins {
         .add(AutoRespawnPlugin)
     }
 }
+pub mod chunk_eater;
