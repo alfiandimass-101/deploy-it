@@ -15,4 +15,3 @@ impl PluginGroup for BotPlugins {
         .add(AutoRespawnPlugin)
     }
 }
-pub mod chunk_eater;
