@@ -1,4 +1,5 @@
 use azalea::prelude::*;
+use crate::component::BotComponent;
 
 pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
     match event {

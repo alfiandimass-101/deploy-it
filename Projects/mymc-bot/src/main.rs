@@ -11,7 +11,7 @@ use handler::handle;
 #[tokio::main]
 async fn main() {
     let account = Account::offline("itzbot");
-    let client = ClientBuilder::new()
+    ClientBuilder::new()
     .set_handler(handle)
     .start(account, "in1.svrx.top:27674")
     .await.unwrap();
