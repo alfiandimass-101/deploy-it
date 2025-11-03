@@ -20,7 +20,7 @@ impl Default for BotComponent {
 }
 
 impl BotComponent {
-    fn get_task() -> Arc<Mutex<Task>> {
-        
+    fn get_task(&self) -> Arc<Mutex<Task>> {
+        self.task.clone()
     }
 }
