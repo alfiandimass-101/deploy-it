@@ -9,7 +9,7 @@ enum Task {
 
 #[derive(Clone, Component)]
 pub struct BotComponent {
-    task: Arc<Task>,
+    task: Arc<Mutex<Task>>,
 }
 
 impl Default for BotComponent {
