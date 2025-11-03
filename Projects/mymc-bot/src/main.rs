@@ -7,9 +7,13 @@ async fn main() {
     .set_state(BotComponent)
     .start(account, ServerAddress::from("in1.svrx.top:27674"))
     .await.unwrap();
+
 }
 
 #[derive(Debug, Default, Clone, Component)]
 pub struct BotComponent {
 }
 
+async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
+    
+}
