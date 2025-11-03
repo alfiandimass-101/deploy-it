@@ -1,6 +1,10 @@
 use azalea::{ClientInformation, prelude::*};
 use crate::component::BotComponent;
 
+pub fn tick_commands(bot: &Client, event: &Event, state: &mut BotComponent) -> impl FnMut() {
+    let mut task = BotComponent.get
+}
+
 pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
     match event {
         Event::Chat(msg) => {
@@ -16,6 +20,10 @@ pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::R
                 view_distance: 32,
                 ..Default::default()
             });
+        }
+
+        Event::Tick => {
+
         }
         _ => {}
     }
