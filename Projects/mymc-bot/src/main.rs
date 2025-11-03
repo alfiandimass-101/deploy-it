@@ -26,6 +26,6 @@ async fn main() {
     .set_handler(handle)
     // .add_plugins(BotPlugins)
     .set_state(BotComponent::default())
-    .start(account, "in1.svrx.top:27674")
+    .start(account, "itzyuurz.aternos.me:11068")
     .await.unwrap();
 }
