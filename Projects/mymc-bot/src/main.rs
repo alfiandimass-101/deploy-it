@@ -1,4 +1,4 @@
-use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin, prelude::*};
+use azalea::{app::{PluginGroup, PluginGroupBuilder}, prelude::*};
 
 // Modules
 mod component;
