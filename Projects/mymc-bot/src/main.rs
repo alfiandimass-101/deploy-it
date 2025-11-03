@@ -1,4 +1,4 @@
-use azalea::{prelude::*, protocol::ServerAddress};
+use azalea::prelude::*;
 
 #[tokio::main]
 async fn main() {
@@ -15,5 +15,5 @@ pub struct BotComponent {
 }
 
 async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
-
+    Ok(())
 }
