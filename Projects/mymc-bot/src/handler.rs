@@ -1,4 +1,4 @@
-use azalea::prelude::*;
+use azalea::{ClientInformation, prelude::*};
 use crate::component::BotComponent;
 
 pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
@@ -9,6 +9,13 @@ pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::R
                     println!("{}", msg.content());
                 }
             }
+        }
+
+        Event::Init => {
+            bot.set_client_information(ClientInformation {
+                view_distance: 32,
+                ..Default::default()
+            });
         }
         _ => {}
     }
