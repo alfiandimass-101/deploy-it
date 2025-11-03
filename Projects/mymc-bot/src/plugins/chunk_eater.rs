@@ -18,5 +18,5 @@ pub fn run(bot: Client, state: BotComponent) {
     thread::sleep(Duration::from_secs(10));
 
     println!("Bot: Tugas Chunk Eater selesai.");
-    state.set_task(super::super::component::Task::DoNothing);
+    state.set_task(crate::component::Task::DoNothing);
 }
