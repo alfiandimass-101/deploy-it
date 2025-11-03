@@ -1,5 +1,4 @@
-use std::sync::Arc;
-
+use std::sync::{Arc, Mutex};
 use azalea::prelude::*;
 
 enum Task {
@@ -15,7 +14,7 @@ pub struct BotComponent {
 impl Default for BotComponent {
     fn default() -> Self {
         BotComponent { 
-            task: Arc::new(Task::DoNothing),
+            task: Arc::new(Mutex::new(Task::DoNothing)),
          }
     }
 }
