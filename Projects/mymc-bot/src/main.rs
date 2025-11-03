@@ -1,6 +1,15 @@
-use azalea::prelude::*;
+use azalea::{prelude::*, protocol::ServerAddress};
 
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
+    let account = Account::offline("itzbot");
+    let client = ClientBuilder::new()
+    .set_state(BotComponent)
+    .start(account, ServerAddress::from("in1.svrx.top:27674"))
+    .await.unwrap();
 }
+
+#[derive(Debug, Default, Clone, Component)]
+pub struct BotComponent {
+}
+
