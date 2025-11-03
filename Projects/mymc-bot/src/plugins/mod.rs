@@ -11,7 +11,7 @@ impl PluginGroup for BotPlugins {
     /// Membangun grup plugin.
     fn build(self) -> PluginGroupBuilder {
         PluginGroupBuilder::start::<Self>()
-        .add(AutoReconnectPlugin)
-        .add(AutoRespawnPlugin)
+        // .add(AutoReconnectPlugin)
+        // .add(AutoRespawnPlugin)
     }
 }
