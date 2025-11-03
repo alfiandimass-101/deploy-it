@@ -1869,6 +1869,7 @@ dependencies = [
  "anyhow",
  "azalea",
  "tokio",
+ "uuid",
 ]
 
 [[package]]
