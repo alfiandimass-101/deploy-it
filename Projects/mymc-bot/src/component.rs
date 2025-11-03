@@ -17,15 +17,17 @@ pub struct BotComponent {
 impl Default for BotComponent {
     fn default() -> Self {
         BotComponent { 
-            task: Arc::new(Mutex::new(RefCell::new(Task::DoNothing))),
+            task: TaskModel<Task>,
          }
     }
 }
 
 impl BotComponent {
-    pub fn get_task(&self) -> Arc<Mutex<RefTask>> {
+    pub fn get_task(&self) -> TaskModel<Task> {
         self.task.clone()
     }
 
-    pub fn set_task(&mut self) ->
+    pub fn set_task(&mut self) -> TaskModel<Task> {
+        
+    }
 }
