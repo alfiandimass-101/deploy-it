@@ -1,5 +1,19 @@
+use std::sync::Arc;
+
 use azalea::prelude::*;
 
-#[derive(Debug, Default, Clone, Component)]
+enum Task {
+    Attack,
+    DoNothing,
+}
+
+#[derive(Clone, Component)]
 pub struct BotComponent {
+    task: Arc<Task>,
+}
+
+impl Default for BotComponent {
+    fn default() -> Self {
+        task: Arc::new(Task::DoNothing)
+    }
 }
