@@ -27,7 +27,7 @@ impl BotComponent {
         self.task.clone()
     }
 
-    pub fn set_task(&mut self, new_state: Task) -> TaskModel<Task> {
+    pub fn set_task(&mut self, new_state: Task) {
         self.task = Arc::new(Mutex::new(RefCell::new(new_state)));
     }
 }
