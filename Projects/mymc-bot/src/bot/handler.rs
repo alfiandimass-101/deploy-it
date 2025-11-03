@@ -22,15 +22,24 @@ pub fn tick_commands(_bot: &Client, _event: &Event, state: &mut BotComponent) {
 }
 
 pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
-    let word_collection: Vec<&str> = msg.trim().split_whitespace().collect::<Vec<&str>>();
-    match msg {
-        
+    let mut words = msg.trim().split_whitespace();
+    // Ambil kata pertama sebagai perintah
+    let command = if let Some(c) = words.next() {
+        c
+    } else {
+        return; // Pesan kosong, tidak ada perintah
+    };
+
+    match command {
         "!say" => {
-            let content = word_collection.iter().next().iter().map(|&word| {
-            
-             }).collect::<&str>().trim();
-            bot.chat(content);
+            // `words` sekarang adalah iterator yang berisi sisa kata.
+            // Kita gabungkan kembali menjadi satu String.
+            let content_to_say = words.collect::<Vec<&str>>().join(" ");
+            if !content_to_say.is_empty() {
+                bot.chat(&content_to_say);
+            }
         }
+        _ => {} // Perintah tidak dikenal
     }
 }
 
