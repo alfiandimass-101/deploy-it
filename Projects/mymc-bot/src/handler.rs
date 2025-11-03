@@ -2,9 +2,10 @@ use azalea::{ClientInformation, prelude::*};
 use crate::component::BotComponent;
 
 pub fn tick_commands(bot: &Client, event: &Event, state: &mut BotComponent) -> impl FnMut() {
-    let mut task = state.get_task();
-    // if task.lock()
-    move || todo!()
+    move || {
+        let task = state.get_task();
+        
+    }
 }
 
 pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) -> anyhow::Result<()> {
