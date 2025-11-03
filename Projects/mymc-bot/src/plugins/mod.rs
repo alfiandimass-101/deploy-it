@@ -1,5 +1,4 @@
 //! Modul ini mendefinisikan plugin-plugin yang digunakan oleh bot.
-//! Modul untuk menampung semua logika tugas bot.
 
 use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin};
 
@@ -11,7 +10,7 @@ impl PluginGroup for BotPlugins {
     /// Membangun grup plugin.
     fn build(self) -> PluginGroupBuilder {
         PluginGroupBuilder::start::<Self>()
-        // .add(AutoReconnectPlugin)
-        // .add(AutoRespawnPlugin)
+        .add(AutoReconnectPlugin)
+        .add(AutoRespawnPlugin)
     }
 }

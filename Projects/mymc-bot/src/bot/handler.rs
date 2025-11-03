@@ -27,7 +27,7 @@ pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
         
         "!say" => {
             let content = word_collection.iter().next().iter().map(|&word| {
-            format!("{} ", word).as_str()
+            format!("{} ", *word).as_str()
              }).collect::<&str>().trim();
             bot.chat(content);
         }
