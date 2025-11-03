@@ -6,7 +6,7 @@ pub fn tick_commands(bot: &Client, event: &Event, state: &mut BotComponent) -> i
     // if task.lock()
 }
 
-pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
+pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) -> anyhow::Result<()> {
     match event {
         Event::Chat(msg) => {
             if let Some(uuid) = msg.sender_uuid() {
@@ -24,7 +24,7 @@ pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::R
         }
 
         Event::Tick => {
-            let tick_fn = tick_commands(&bot, &event, &mut state);
+            let mut tick_fn = tick_commands(&bot, &event, &mut state);
             tick_fn();
         }
         _ => {}
