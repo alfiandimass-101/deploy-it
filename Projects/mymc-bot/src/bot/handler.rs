@@ -32,14 +32,12 @@ pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
 
     match command {
         "!say" => {
-            // `words` sekarang adalah iterator yang berisi sisa kata.
-            // Kita gabungkan kembali menjadi satu String.
             let content_to_say = words.collect::<Vec<&str>>().join(" ");
             if !content_to_say.is_empty() {
                 bot.chat(&content_to_say);
             }
         }
-        _ => {} // Perintah tidak dikenal
+        _ => {}
     }
 }
 
