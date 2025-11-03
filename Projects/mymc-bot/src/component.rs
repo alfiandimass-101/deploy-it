@@ -14,6 +14,6 @@ pub struct BotComponent {
 
 impl Default for BotComponent {
     fn default() -> Self {
-        task: Arc::new(Task::DoNothing)
+        task: Arc::new(Task::DoNothing),
     }
 }
