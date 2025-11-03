@@ -6,7 +6,7 @@ mod handler;
 
 // re-export
 use component::BotComponent;
-
+use handler::handle;
 
 #[tokio::main]
 async fn main() {

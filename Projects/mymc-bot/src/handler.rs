@@ -1,6 +1,6 @@
 use azalea::prelude::*;
 
-async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
+pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Result<()> {
     match event {
         Event::Chat(msg) => {
             if let Some(uuid) = msg.sender_uuid() {
