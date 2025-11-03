@@ -32,21 +32,6 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
                 if uuid == OWNER_UUID {
                     let content = msg.content();
                     println!("Owner said: {}", content);
-
-                    if content == "chunk" {
-                        // Hanya mulai jika tidak sedang melakukan tugas lain
-                        let task = state.get_task();
-                        let mut current_task = task.lock().unwrap();
-                        if let Task::DoNothing = *current_task {
-                            println!("Bot: Menerima perintah 'chunk', akan memulai tugas.");
-                            *current_task = Task::DoChunkEater;
-
-                            // Klon bot dan state untuk dipindahkan ke thread baru
-                            let bot_clone = bot.clone();
-                            let state_clone = state.clone();
-                            // tokio::task::spawn_blocking(move || tasks::chunk_eater::run(bot_clone, state_clone));
-                        }
-                    }
                 }
             }
         }
