@@ -18,9 +18,10 @@ async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Resul
     match event {
         Event::Chat(msg) => {
             if let Some(uuid) = msg.sender() {
-                if uuid.as_str() == "452cb59a-adf3-3ebe-814b-53015c4e4279" {
-                    println!("{}", msg.content());
-                }
+                println!("{:?}: {:?}: {}", msg.sender(), msg.sender_uuid(), msg.content());
+                // if uuid.as_str() == "452cb59a-adf3-3ebe-814b-53015c4e4279" {
+                //     println!("{}", msg.content());
+                // }
             } 
         }
         _ => {}
