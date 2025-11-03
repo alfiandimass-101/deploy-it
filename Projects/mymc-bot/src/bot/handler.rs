@@ -21,6 +21,13 @@ pub fn tick_commands(_bot: &Client, _event: &Event, state: &mut BotComponent) {
     }
 }
 
+pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
+    let word_collection = msg.trim().split_whitespace().collect::<&str>();
+    match msg {
+        "!say" => bot.chat(content),
+    }
+}
+
 /// Fungsi utama untuk menangani event-event yang diterima oleh bot.
 pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) -> anyhow::Result<()> {
     match event {
