@@ -24,7 +24,8 @@ pub async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::R
         }
 
         Event::Tick => {
-
+            let tick_fn = tick_commands(&bot, &event, &mut state);
+            tick_fn();
         }
         _ => {}
     }
