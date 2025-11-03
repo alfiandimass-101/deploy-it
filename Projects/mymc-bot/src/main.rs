@@ -1,6 +1,6 @@
 //! Bot Minecraft sederhana yang dibuat dengan Azalea.
 
-use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin, prelude::*};
+use azalea::prelude::*;
 
 mod bot;
 mod plugins;
