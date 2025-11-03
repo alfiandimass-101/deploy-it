@@ -1,7 +1,7 @@
 use std::sync::{Arc, Mutex};
 use azalea::prelude::*;
 
-enum Task {
+pub enum Task {
     Attack,
     DoNothing,
 }
