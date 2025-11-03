@@ -24,6 +24,7 @@ pub fn tick_commands(_bot: &Client, _event: &Event, state: &mut BotComponent) {
 pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
     let word_collection: Vec<&str> = msg.trim().split_whitespace().collect::<Vec<&str>>();
     match msg {
+        let content = word_collection.iter().next().iter().collect::<&str>();
         "!say" => bot.chat(content),
     }
 }
