@@ -18,7 +18,7 @@ async fn handle(bot: Client, event: Event, state: BotComponent) -> anyhow::Resul
     match event {
         Event::Chat(msg) => {
             if let Some(uuid) = msg.sender_uuid() {
-                if uuid.as_bytes() == "452cb59a-adf3-3ebe-814b-53015c4e4279".as_bytes() {
+                if uuid == uuid::parse_str(452cb59a-adf3-3ebe-814b-53015c4e4279) {
                     println!("{}", msg.content());
                 }
             } 
