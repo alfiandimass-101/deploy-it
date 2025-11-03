@@ -1,7 +1,7 @@
 //! Modul ini menangani event-event yang diterima oleh bot.
 
 use azalea::{ClientInformation, prelude::*};
-use super::component::BotComponent;
+use super::{component::{BotComponent, Task}, tasks};
 
 /// UUID dari pemilik bot.
 const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
@@ -12,11 +12,14 @@ pub fn tick_commands(_bot: &Client, _event: &Event, state: &mut BotComponent) {
     let task = task.lock().unwrap();
 
     match *task {
-        super::component::Task::Attack => {
+        Task::Attack => {
             // TODO: Implement attack logic
         }
-        super::component::Task::DoNothing => {
+        Task::DoNothing => {
             // Do nothing
+        }
+        Task::DoChunkEater => {
+            // Logika sedang berjalan di thread terpisah, jangan lakukan apa-apa di sini.
         }
     }
 }
@@ -27,7 +30,22 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
         Event::Chat(msg) => {
             if let Some(uuid) = msg.sender_uuid() {
                 if uuid == OWNER_UUID {
-                    println!("{}", msg.content());
+                    let content = msg.content();
+                    println!("Owner said: {}", content);
+
+                    if content == "chunk" {
+                        // Hanya mulai jika tidak sedang melakukan tugas lain
+                        let mut current_task = state.get_task().lock().unwrap();
+                        if let Task::DoNothing = *current_task {
+                            println!("Bot: Menerima perintah 'chunk', akan memulai tugas.");
+                            *current_task = Task::DoChunkEater;
+
+                            // Klon bot dan state untuk dipindahkan ke thread baru
+                            let bot_clone = bot.clone();
+                            let state_clone = state.clone();
+                            tokio::task::spawn_blocking(move || tasks::chunk_eater::run(bot_clone, state_clone));
+                        }
+                    }
                 }
             }
         }

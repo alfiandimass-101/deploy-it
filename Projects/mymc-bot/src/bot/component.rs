@@ -12,6 +12,8 @@ pub enum Task {
     Attack,
     /// Tugas untuk tidak melakukan apa-apa.
     DoNothing,
+    /// Tugas untuk memakan chunk.
+    DoChunkEater,
 }
 
 /// Komponen yang menyimpan status bot.
@@ -37,7 +39,7 @@ impl BotComponent {
     }
 
     /// Mengatur tugas bot ke status baru.
-    pub fn set_task(&mut self, new_state: Task) {
+    pub fn set_task(&self, new_state: Task) {
         let mut task = self.task.lock().unwrap();
         *task = new_state;
     }
