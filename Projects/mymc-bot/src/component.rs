@@ -11,7 +11,7 @@ pub enum Task {
 
 #[derive(Clone, Component)]
 pub struct BotComponent {
-    pub task: Arc<Mutex<RefCell<Task>>>,
+    pub task: TaskModel<Task>,
 }
 
 impl Default for BotComponent {
