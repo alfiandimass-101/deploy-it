@@ -5,7 +5,7 @@ mod component;
 mod handler;
 
 // re-export
-use component::BotComponent;
+// use component::BotComponent;
 use handler::handle;
 
 #[tokio::main]
