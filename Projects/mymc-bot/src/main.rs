@@ -15,5 +15,4 @@ async fn main() {
     .set_handler(handle)
     .start(account, "in1.svrx.top:27674")
     .await.unwrap();
-
 }
