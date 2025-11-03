@@ -1,4 +1,4 @@
-use azalea::{app::{PluginGroup, PluginGroupBuilder}, prelude::*};
+use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin, prelude::*};
 
 // Modules
 mod component;
@@ -11,7 +11,11 @@ use handler::handle;
 struct BotPlugins;
 
 impl PluginGroup for BotPlugins {
-    fn
+    fn build(self) -> PluginGroupBuilder {
+        PluginGroupBuilder::start::<self>()
+        .add(AutoReconnectPlugin)
+        .add(AutoRespawnPlugin)
+    }
 }
 
 #[tokio::main]
