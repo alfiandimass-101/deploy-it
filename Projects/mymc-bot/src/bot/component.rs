@@ -12,8 +12,6 @@ pub enum Task {
     Attack,
     /// Tugas untuk tidak melakukan apa-apa.
     DoNothing,
-    /// Tugas untuk memakan chunk.
-    DoChunkEater,
 }
 
 /// Komponen yang menyimpan status bot.

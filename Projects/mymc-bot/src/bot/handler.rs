@@ -18,9 +18,6 @@ pub fn tick_commands(_bot: &Client, _event: &Event, state: &mut BotComponent) {
         Task::DoNothing => {
             // Do nothing
         }
-        Task::DoChunkEater => {
-            // Logika sedang berjalan di thread terpisah, jangan lakukan apa-apa di sini.
-        }
     }
 }
 
