@@ -35,7 +35,8 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
 
                     if content == "chunk" {
                         // Hanya mulai jika tidak sedang melakukan tugas lain
-                        let mut current_task = state.get_task().lock().unwrap();
+                        let task = state.get_task();
+                        let mut current_task = task.lock().unwrap();
                         if let Task::DoNothing = *current_task {
                             println!("Bot: Menerima perintah 'chunk', akan memulai tugas.");
                             *current_task = Task::DoChunkEater;
