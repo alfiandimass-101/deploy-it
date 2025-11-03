@@ -26,7 +26,7 @@ pub fn owner_commands(msg: &str, bot: &Client, state: &mut BotComponent) {
     match msg {
         let content = word_collection.iter().next().iter().map(|&word| {
             *word + " "
-        }).collect::<&str();
+        }).collect::<&str>();
         "!say" => bot.chat(content),
     }
 }
