@@ -1,7 +1,7 @@
 //! Modul ini menangani event-event yang diterima oleh bot.
 
 use azalea::{ClientInformation, prelude::*};
-use super::{component::{BotComponent, Task}, tasks};
+use super::{component::{BotComponent, Task}};
 
 /// UUID dari pemilik bot.
 const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
@@ -43,7 +43,7 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
                             // Klon bot dan state untuk dipindahkan ke thread baru
                             let bot_clone = bot.clone();
                             let state_clone = state.clone();
-                            tokio::task::spawn_blocking(move || tasks::chunk_eater::run(bot_clone, state_clone));
+                            // tokio::task::spawn_blocking(move || tasks::chunk_eater::run(bot_clone, state_clone));
                         }
                     }
                 }
