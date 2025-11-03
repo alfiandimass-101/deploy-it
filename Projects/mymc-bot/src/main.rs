@@ -13,8 +13,8 @@ struct BotPlugins;
 impl PluginGroup for BotPlugins {
     fn build(self) -> PluginGroupBuilder {
         PluginGroupBuilder::start::<Self>()
-        .add(AutoReconnectPlugin)
-        .add(AutoRespawnPlugin)
+        // .add(AutoReconnectPlugin)
+        // .add(AutoRespawnPlugin)
     }
 }
 
