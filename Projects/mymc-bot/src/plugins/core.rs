@@ -60,7 +60,7 @@ pub struct CoreLogicPlugin;
 impl Plugin for CoreLogicPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, startup_message)
-            .add_systems(Update, tick_counter);
+            
     }
 }
 
@@ -69,12 +69,14 @@ fn startup_message() {
     println!("CoreLogicPlugin berhasil dimuat!");
 }
 
-fn tick_counter(mut query: Query<&mut BotComponent>) {
-    for mut bot in query.iter_mut() {
-        bot.tick += 1;
-        if bot.tick > 20 {
-            bot.tick = 0;
+/// Penghitung Tick dan Reset.
+fn tick_master(query: Query<(&mut BotComponent)>) {
+    for (mut state) in query {
+        state.tick += 1;
+        if state.tick >= 20 {
+            state.tick = 0;
         }
-        println!("Tick: {}", bot.tick);
+        println!("Tick: {}", state.tick);
+    
     }
 }
