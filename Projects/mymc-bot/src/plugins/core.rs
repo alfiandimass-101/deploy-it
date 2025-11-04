@@ -60,7 +60,7 @@ pub struct CoreLogicPlugin;
 impl Plugin for CoreLogicPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, startup_message)
-            
+        .add_systems(Update, tick_master)
     }
 }
 
@@ -77,6 +77,5 @@ fn tick_master(query: Query<(&mut BotComponent)>) {
             state.tick = 0;
         }
         println!("Tick: {}", state.tick);
-    
     }
 }
