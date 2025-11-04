@@ -19,6 +19,8 @@ pub enum Task {
 pub struct BotComponent {
     /// Tugas yang sedang dijalankan oleh bot.
     pub task: TaskModel<Task>,
+    /// Penghitung tick, harus reset ketika sudah 20.
+    pub tick: u8,
 }
 
 impl Default for BotComponent {
@@ -26,6 +28,7 @@ impl Default for BotComponent {
     fn default() -> Self {
         BotComponent {
             task: Arc::new(Mutex::new(Task::DoNothing)),
+            tick: 0,
          }
     }
 }

@@ -63,6 +63,10 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
 
         Event::Tick => {
             // tick_commands(&bot, &event, &mut state);
+            state.tick += 1;
+            if state.tick >= 20 {
+                state.tick = 0;
+            }
         }
         _ => {}
     }
