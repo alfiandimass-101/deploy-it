@@ -60,7 +60,7 @@ pub struct CoreLogicPlugin;
 impl Plugin for CoreLogicPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, startup_message)
-        .add_systems(Update, tick_master)
+        .add_systems(Update, tick_master);
     }
 }
 
