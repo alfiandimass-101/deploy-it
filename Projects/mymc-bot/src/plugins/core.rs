@@ -1,5 +1,5 @@
 
-use azalea::{prelude::*, app::{App, Plugin}};
+use azalea::{app::{App, Plugin, Startup, Update}, prelude::*};
 
 pub struct CoreLogicPlugin;
 
