@@ -3,7 +3,6 @@
 use azalea::{app::{PluginGroup, PluginGroupBuilder}, auto_reconnect::AutoReconnectPlugin, auto_respawn::AutoRespawnPlugin};
 
 pub mod core;
-pub mod master_commands;
 
 /// Grup plugin yang digunakan oleh bot.
 #[allow(dead_code)]
@@ -16,6 +15,5 @@ impl PluginGroup for BotPlugins {
         // .add(AutoReconnectPlugin)
         // .add(AutoRespawnPlugin)
         .add(core::CoreLogicPlugin)
-        .add(master_commands::MasterCommandsPlugin)
     }
 }
