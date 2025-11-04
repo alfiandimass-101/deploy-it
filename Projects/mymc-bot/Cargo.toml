@@ -8,6 +8,7 @@ anyhow = "1.0.100"
 azalea = { git = "https://github.com/azalea-rs/azalea", version = "0.14.0" }
 tokio = { version = "1.48.0", features = ["full"] }
 uuid = "1.18.1"
+bevy = "0.17.2"
 
 [profile.dev]
 opt-level = 1
