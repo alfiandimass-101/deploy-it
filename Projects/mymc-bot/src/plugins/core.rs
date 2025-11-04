@@ -66,3 +66,5 @@ impl Plugin for CoreLogicPlugin {
 fn startup_message() {
     println!("CoreLogicPlugin berhasil dimuat!");
 }
+
+///
