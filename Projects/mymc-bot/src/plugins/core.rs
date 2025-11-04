@@ -1,5 +1,5 @@
 
-use azalea::{app::{App, Plugin, Startup, Update}, ecs::system::ResMut, prelude::*};
+use azalea::{app::{App, Plugin, Startup, Update}, ecs::{event::EventReader, system::ResMut}, prelude::*};
 
 const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
 
