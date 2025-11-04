@@ -1,21 +1,22 @@
 //! Bot Minecraft sederhana yang dibuat dengan Azalea.
 
-use azalea::{prelude::*, app::App};
+use azalea::prelude::*;
 
 mod bot;
 mod plugins;
 
 use bot::component::BotComponent;
+use bot::handler::handle;
 use plugins::BotPlugins;
 
+/// Fungsi utama untuk menjalankan bot.
 #[tokio::main]
 async fn main() {
     let account = Account::offline("itzyuurzbot");
-
-    App::new()
-        .add_plugins(BotPlugins)
-        .insert_resource(BotComponent::default())
-        .run(account, "OWCC.minehut.gg")
-        .await
-        .unwrap();
+    ClientBuilder::new()
+    .set_handler(handle)
+    .add_plugins(BotPlugins)
+    .set_state(BotComponent::default())
+    .start(account, "OWCC.minehut.gg")
+    .await.unwrap();
 }
