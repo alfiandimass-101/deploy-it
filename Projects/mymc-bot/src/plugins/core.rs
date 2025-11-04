@@ -51,18 +51,30 @@
 //                    - Tables (Default): Baik untuk iterasi cepat (cache friendly).
 //                    - Sparse Sets: Lebih cepat saat menambah/menghapus Component.
 
-use azalea::{app::{App, Plugin, Startup}, prelude::*};
+use azalea::{app::{App, Plugin, Startup, Update}, prelude::*};
+use crate::bot::component::BotComponent;
 
 /// Plugin untuk logika inti bot.
 pub struct CoreLogicPlugin;
 
 impl Plugin for CoreLogicPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, startup_message);
+        app.add_systems(Startup, startup_message)
+            .add_systems(Update, tick_counter);
     }
 }
 
 /// Sistem yang berjalan sekali saat startup untuk menampilkan pesan.
 fn startup_message() {
     println!("CoreLogicPlugin berhasil dimuat!");
+}
+
+fn tick_counter(mut query: Query<&mut BotComponent>) {
+    for mut bot in query.iter_mut() {
+        bot.tick += 1;
+        if bot.tick > 20 {
+            bot.tick = 0;
+        }
+        println!("Tick: {}", bot.tick);
+    }
 }
