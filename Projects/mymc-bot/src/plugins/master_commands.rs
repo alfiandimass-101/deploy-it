@@ -1,5 +1,5 @@
-use azalea::{prelude::*, chat::ChatPacket};
-use azalea::app::Plugin;
+use azalea::{prelude::*, chat::ChatPacket, app::{PluginGroup, PluginGroupBuilder}};
+
 use crate::bot::component::BotComponent;
 
 /// UUID dari pemilik bot.
@@ -8,7 +8,16 @@ const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279
 #[derive(Default, Clone)]
 pub struct MasterCommandsPlugin;
 
-impl Plugin for MasterCommandsPlugin {
+impl PluginGroup for MasterCommandsPlugin {
+    fn build(self) -> PluginGroupBuilder {
+        PluginGroupBuilder::start::<Self>().add(MasterCommandsPluginInternal)
+    }
+}
+
+#[derive(Default, Clone)]
+struct MasterCommandsPluginInternal;
+
+impl Plugin for MasterCommandsPluginInternal {
     fn handle(self: Box<Self>, event: Event, bot: Client, state: State<BotComponent>) {
         tokio::spawn(async move {
             if let Event::Chat(msg) = event {
