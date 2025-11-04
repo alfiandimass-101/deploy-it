@@ -1,5 +1,5 @@
 
-use azalea::{app::{App, Plugin, Startup, Update}, prelude::*};
+use azalea::{app::{App, Plugin, Startup, Update}, ecs::system::ResMut, prelude::*};
 
 pub struct CoreLogicPlugin;
 
