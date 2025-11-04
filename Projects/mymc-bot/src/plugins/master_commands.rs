@@ -1,5 +1,6 @@
 use azalea::{prelude::*, chat::ChatPacket};
-
+use azalea::app::Plugin;
+use azalea::ecs::state::State;
 use crate::bot::component::BotComponent;
 
 /// UUID dari pemilik bot.
