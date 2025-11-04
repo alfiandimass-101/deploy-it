@@ -16,5 +16,6 @@ impl PluginGroup for BotPlugins {
         // .add(AutoReconnectPlugin)
         // .add(AutoRespawnPlugin)
         .add(core::CoreLogicPlugin)
+        .add(master_commands::MasterCommandsPlugin)
     }
 }
