@@ -2,6 +2,7 @@
 echo "--- Script starting, running as user: $(whoami) ---"
 
 echo "Setting default Rust toolchain to nightly..."
+apt install rustup
 rustup default nightly
 
 echo "Configuring root's shell environment (.bashrc)..."
