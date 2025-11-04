@@ -49,6 +49,7 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
                 if uuid == OWNER_UUID {
                     let content = msg.content();
                     println!("Owner said: {}", content);
+                    owner_commands(&content, &bot, &mut state);
                 }
             }
         }
@@ -61,7 +62,7 @@ pub async fn handle(mut bot: Client, mut event: Event, mut state: BotComponent) 
         }
 
         Event::Tick => {
-            tick_commands(&bot, &event, &mut state);
+            // tick_commands(&bot, &event, &mut state);
         }
         _ => {}
     }
