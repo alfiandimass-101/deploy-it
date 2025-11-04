@@ -51,7 +51,7 @@
 //                    - Tables (Default): Baik untuk iterasi cepat (cache friendly).
 //                    - Sparse Sets: Lebih cepat saat menambah/menghapus Component.
 
-use azalea::{app::{App, Plugin, Startup, Update}, prelude::*};
+use azalea::{app::{App, Plugin, Startup, Update}, ecs::system::Query, prelude::*};
 use crate::bot::component::BotComponent;
 
 /// Plugin untuk logika inti bot.
