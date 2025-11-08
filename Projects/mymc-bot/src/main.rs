@@ -47,7 +47,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 bot.chat(format!("HEALTH: {health}"));
                                 info!("BOT HEALTH: {health}");
                             },
-                            "!scanblock" => tokio::task::spawn(async move || {
+                            "!scanblock" => {
+                                let handle = tokio::task::spawn(async move || {
                                 let bot_pos = bot.position();
                                 let world = bot.world().read();
                                 let command_arg = command.1.parse::<u16>()?;
@@ -55,7 +56,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 let block_from_id = unsafe {
                                     azalea::registry::Block::from_u32_unchecked(command_arg)
                                 };
-                                let block_find = world.find_blocks(bot_pos, block)
+                                // let block_find = world.find_blocks(bot_pos, block)
                             }),
                             _ => {}
                         }
