@@ -20,7 +20,7 @@ pub struct BotState {
     task: Arc<Mutex<TaskState>>,
 }
 
-pub fn process_owner_command(content: &str) -> Option<OwnerCommand> {
+pub fn process_owner_command(content: &'_ str) -> Option<OwnerCommand> {
     if !content.starts_with("!") {
         return None;
     }
