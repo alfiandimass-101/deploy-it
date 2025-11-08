@@ -38,8 +38,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             },
                             "!position" => {
                                 let bot_pos = bot.position();
-                                let pos_str = format!("x: {x},y: {y},z: {z}", y=bot_pos.y, x=bot_pos.x, z=bot_pos.z).as_str();
-                                bot.chat(pos_str);
+                                let pos_str = format!("x: {x},y: {y},z: {z}", y=bot_pos.y, x=bot_pos.x, z=bot_pos.z);
+                                bot.chat(&pos_str);
                                 info!(name: "BOT POSITION", pos_str);
                             }
                             _ => {}
