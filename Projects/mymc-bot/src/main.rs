@@ -49,7 +49,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             },
                             "!scanblock" => tokio::task::block_in_place(async move || {
                                 let bot_pos = bot.position();
-                                let world = bot.world().read();
+                                let world = bot.world();
+                                let readed_world = world.read();
                                 let command_arg = command.1.parse::<u32>().unwrap();
                                 if command_arg > 1165 { panic!("not valid block_id"); }
                                 let block_from_id = unsafe {
