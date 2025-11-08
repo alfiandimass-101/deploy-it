@@ -30,6 +30,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                     if let Some(command) = processed {
                         match command.0 {
                             "!say" => bot.chat(command.1),
+                            _ => {}
                         }
                     } else {
                         info!(name: "OWNER LOG", "OWNER SAID: {}", content);
