@@ -1,4 +1,4 @@
-use azalea::{Account, ClientBuilder, Event, prelude::*};
+use azalea::{Account, prelude::*};
 use tracing_subscriber::util::SubscriberInitExt;
 
 #[derive(Debug, Default, Component)]
@@ -14,8 +14,4 @@ async fn main() -> anyhow::Result<()> {
     .reconnect_after(1)
     .set_handler(handler)
     Ok(())
-}
-
-async fn handler(bot: mut Client, event: mut Event, state: BotState) -> anyhow::Result<()> {
-    
 }
