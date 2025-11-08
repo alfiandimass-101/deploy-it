@@ -34,7 +34,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             "!killaura" => match command.0.parse::<u8>()? {
                                 1 => state.can_kill = true,
                                 0 => state.can_kill = false,
-                                _ => warn!("Cannot assign killaura to neither 0 or 1"),
+                                _ => warn!("Cannot assign killaura to n'either 0 or 1"),
                             }
                             _ => {}
                         }
