@@ -1,5 +1,5 @@
 use azalea::{Account, ClientInformation, prelude::*};
-use tracing::info;
+use tracing::{info, warn};
 
 mod utils;
 pub use utils::*;
@@ -31,6 +31,11 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                         info!(name: "OWNER COMMAND", "COMMAND: {command}, ARG: {arg}", command=command.0, arg=command.1);
                         match command.0 {
                             "!say" => bot.chat(command.1),
+                            "!killaura" => match command.0.parse::<u8>()? {
+                                1 => state.can_kill = 1,
+                                0 => state.can_kill = 0,
+                                _ => warn!("Cannot assign killaura to neither 0 or 1"),
+                            }
                             _ => {}
                         }
                     } else {
