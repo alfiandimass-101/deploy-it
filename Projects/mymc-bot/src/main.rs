@@ -61,6 +61,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 block_find.enumerate().for_each(|(index, block)| {
                                     if !(index > 16) {
                                         bot.chat(format!("{block:?}"));
+                                        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
                                     }
                                 });
                             }).await,
