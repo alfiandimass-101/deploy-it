@@ -4,7 +4,7 @@ use tokio::sync::Mutex;
 
 use azalea::{
     Account, ClientInformation,
-    blocks::{BlockState, BlockStates},
+    blocks::BlockStates,
     prelude::*,
 };
 use tracing::{info, warn};
