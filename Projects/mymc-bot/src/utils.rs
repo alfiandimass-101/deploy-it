@@ -35,7 +35,7 @@ pub fn process_owner_command<'a>(content: &'a str) -> Option<OwnerCommand<'a>> {
                 return Some(OwnerCommand(command, trimmed_content[end_of_command_index..].trim_start()));
             }
         }
-        return None;
+        return Some(OwnerCommand(command, ""));
     }
     None
 }
