@@ -1,4 +1,4 @@
-use azalea::{Account, ClientInformation, prelude::*};
+use azalea::{Account, ClientInformation, blocks::BlockState, prelude::*};
 use tracing::{info, warn};
 
 mod utils;
@@ -55,6 +55,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 let block_from_id = unsafe {
                                     azalea::registry::Block::from_u32_unchecked(command_arg)
                                 };
+                                let block_state = BlockState::from(block_from_id);
                                 let block_find = world.find_blocks(bot_pos, block_from_id)
                             }).await,
                             _ => {}
