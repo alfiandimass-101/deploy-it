@@ -1869,6 +1869,8 @@ dependencies = [
  "anyhow",
  "azalea",
  "tokio",
+ "tracing",
+ "tracing-subscriber",
  "uuid",
 ]
 
