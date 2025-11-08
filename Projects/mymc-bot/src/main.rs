@@ -66,7 +66,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                         std::thread::sleep(std::time::Duration::from_millis(100));
                                     }
                                 });
-                            }),
+                            });
+                            handle.await;
                             }
                             _ => {}
                         }
