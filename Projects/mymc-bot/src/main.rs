@@ -15,10 +15,9 @@ async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt().init();
     let account = Account::offline("itzbot");
     ClientBuilder::new()
-        .set_handler(handler)
-        .start(account, "itzyuurz.aternos.me:11068")
-        .await
-        .unwrap();
+    .set_handler(handler)
+    .start(account, "itzyuurz.aternos.me:11068")
+    .await?;
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
