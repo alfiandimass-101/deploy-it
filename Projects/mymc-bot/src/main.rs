@@ -1,4 +1,8 @@
-use azalea::{Account, ClientInformation, blocks::{BlockState, BlockStates}, prelude::*};
+use azalea::{
+    Account, ClientInformation,
+    blocks::{BlockState, BlockStates},
+    prelude::*,
+};
 use tracing::{info, warn};
 
 mod utils;
@@ -9,9 +13,9 @@ async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt().init();
     let account = Account::offline("itzbot");
     ClientBuilder::new()
-    .set_handler(handler)
-    .start(account, "itzyuurz.aternos.me:11068")
-    .await?;
+        .set_handler(handler)
+        .start(account, "itzyuurz.aternos.me:11068")
+        .await?;
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
@@ -38,47 +42,56 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             },
                             "!position" => {
                                 let bot_pos = bot.position();
-                                let pos_str = format!("x: {x},y: {y},z: {z}", y=bot_pos.y, x=bot_pos.x, z=bot_pos.z);
+                                let pos_str = format!(
+                                    "x: {x},y: {y},z: {z}",
+                                    y = bot_pos.y,
+                                    x = bot_pos.x,
+                                    z = bot_pos.z
+                                );
                                 bot.chat(&pos_str);
                                 info!(name: "BOT POSITION", pos_str);
-                            },
+                            }
                             "!health" => {
                                 let health = bot.health();
                                 bot.chat(format!("HEALTH: {health}"));
                                 info!("BOT HEALTH: {health}");
-                            },
+                            }
                             "!scanblock" => {
-    let bot_clone: Client = bot.clone();
-    let command_arg = command.1.parse::<u32>()?;
-    let bot_pos = bot_clone.position();
-    let world = bot_clone.world();
-    
-    let block_locations = {
-        let readed_world = world.read(); 
-        if command_arg > 1165 { panic!("not valid block_id"); }
-        let block_from_id = unsafe {
-            azalea::registry::Block::from_u32_unchecked(command_arg)
-        };
-        let block_states = BlockStates::from(block_from_id);
-        
-        readed_world.find_blocks(bot_pos, &block_states)
-            .enumerate()
-            .take(17)
-            .collect::<Vec<(usize, azalea::BlockPos)>>() 
-    };
-    
-    let handle = tokio::task::spawn(async move {
-        let bot = bot_clone;
-        info!("[EXECUTED SCAN BLOCK]");
-        
-        for (_index, block_pos) in block_locations {
-            bot.chat(format!("Block at {:?}", block_pos));
-            info!("Block at {:?}", block_pos);
-            tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
-        }
-    });
-    handle.await?
-}
+                                let bot_clone: Client = bot.clone();
+                                let command_arg = command.1.parse::<u32>()?;
+                                let bot_pos = bot_clone.position();
+                                let world = bot_clone.world();
+
+                                let block_locations = {
+                                    let readed_world = world.read();
+                                    if command_arg > 1165 {
+                                        panic!("not valid block_id");
+                                    }
+                                    let block_from_id = unsafe {
+                                        azalea::registry::Block::from_u32_unchecked(command_arg)
+                                    };
+                                    let block_states = BlockStates::from(block_from_id);
+
+                                    readed_world
+                                        .find_blocks(bot_pos, &block_states)
+                                        .enumerate()
+                                        .take(17)
+                                        .collect::<Vec<(usize, azalea::BlockPos)>>()
+                                };
+
+                                let handle = tokio::task::spawn(async move {
+                                    let bot = bot_clone;
+                                    info!("[EXECUTED SCAN BLOCK]");
+
+                                    for (_index, block_pos) in block_locations {
+                                        bot.chat(format!("Block at {:?}", block_pos));
+                                        info!("Block at {:?}", block_pos);
+                                        tokio::time::sleep(tokio::time::Duration::from_millis(500))
+                                            .await;
+                                    }
+                                });
+                                handle.await?
+                            }
                             _ => {}
                         }
                     } else {
