@@ -15,7 +15,7 @@ pub enum TaskState {
 #[derive(Debug, Default, Component, Clone)]
 pub struct BotState {
     pub can_kill: bool,
-    task: Arc<>
+    task: Arc<Mutex<TaskState>>,
 }
 
 #[tokio::main]
