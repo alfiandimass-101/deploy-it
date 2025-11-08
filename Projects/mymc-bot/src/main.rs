@@ -74,7 +74,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
         for (_index, block_pos) in block_locations {
             bot.chat(format!("Block at {:?}", block_pos));
             info!("Block at {:?}", block_pos);
-            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+            tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
         }
     });
     handle.await?
