@@ -47,7 +47,9 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 bot.chat(format!("HEALTH: {health}"));
                                 info!("BOT HEALTH: {health}");
                             },
-                            "!scanblock" => tokio::task::spawn_blocking(async move || {
+                            "!scanblock" => {
+
+                            let handle = tokio::task::spawn_blocking(async move || {
                                 let bot_pos = bot.position();
                                 let world = bot.world();
                                 let readed_world = world.read();
@@ -64,7 +66,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                         std::thread::sleep(std::time::Duration::from_millis(100));
                                     }
                                 });
-                            })?.await,
+                            }),
+                            }
                             _ => {}
                         }
                     } else {
