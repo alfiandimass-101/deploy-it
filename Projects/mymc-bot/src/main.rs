@@ -1,4 +1,5 @@
 use azalea::{Account, ClientInformation, prelude::*};
+use tracing::info;
 use tracing_subscriber::util::SubscriberInitExt;
 use uuid::uuid;
 
@@ -29,10 +30,12 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
         Event::Chat(content_packet) => {
             if let Some(uuid) = content_packet.sender_uuid() {
                 if uuid == OWNER_UUID {
-                    info!("OWNER CHAT: {}", )
+                    let content = content_packet.content();
+                    info!(name: "OWNER SAID", "{}", content);
                 }
             }
         }
+        _ => {}
     }
     Ok(())
 }
