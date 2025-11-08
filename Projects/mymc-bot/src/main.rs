@@ -55,9 +55,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 let block_from_id = unsafe {
                                     azalea::registry::Block::from_u32_unchecked(command_arg)
                                 };
-                                let block_state = BlockState::from(block_from_id);
-                                let block_states = BlockStates::from(block_state);
-                                let block_find = world.find_blocks(bot_pos, block_state);
+                                let block_states = BlockStates::from(block_from_id);
+                                let block_find = world.find_blocks(bot_pos, &block_states);
                             }).await,
                             _ => {}
                         }
