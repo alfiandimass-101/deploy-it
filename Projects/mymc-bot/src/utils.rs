@@ -32,7 +32,7 @@ pub fn process_owner_command<'a>(content: &'a str) -> Option<OwnerCommand> {
         if let Some(start_index) = trimmed_content.find(command) {
             let end_of_command_index = start_index + command_len;
             if end_of_command_index < trimmed_content.len() {
-                return (command, &trimmed_content[end_of_command_index..].trim_start());
+                return Some((command, trimmed_content[end_of_command_index..].trim_start()));
             }
         }
         return None;
