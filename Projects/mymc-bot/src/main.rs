@@ -2,7 +2,6 @@ use tokio::sync::{Mutex};
 use std::sync::Arc;
 use azalea::{Account, ClientInformation, prelude::*};
 use tracing::info;
-use tracing_subscriber::util::SubscriberInitExt;
 
 const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
 
