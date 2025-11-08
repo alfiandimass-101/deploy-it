@@ -10,6 +10,28 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.FINE_GRAINED_PAT }}  # Use fine-grained PAT for checkout
+      # --- STEP BARU: BUAT SCRIPT AUTO-START PTERODACTYL ---
+      - name: Create Pterodactyl Auto-Start Script
+        run: |
+          mkdir -p ~/scripts
+          cat << 'EOF' > ~/scripts/start_pterodactyl.sh
+          #!/bin/bash
+          
+          # KONFIGURASI PTERODACTYL
+          PANEL_URL="https://panel.magmanode.com"
+          SERVER_UUID="157b94ff-2714-4e02-ba61-2ec5f4d04cb5"
+          API_TOKEN="ptlc_8JGKmhuz2JydQ0Ax8Ko7MKopPTeWln8mJi2cmZm0Uam"
+
+          # Perintah ini mengirim sinyal "start"
+          curl --silent --output /dev/null --location --request POST "${PANEL_URL}/api/client/servers/${SERVER_UUID}/power" \
+          --header "Authorization: Bearer ${API_TOKEN}" \
+          --header 'Accept: application/json' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{"signal": "start"}'
+          EOF
+          chmod +x ~/scripts/start_pterodactyl.sh
+      # --------------------------------------------------------
+          
       - name: Debug pwd
         run: |
           pwd
@@ -149,8 +171,13 @@ jobs:
           (sleep 20 && rm credentials.json) &
           
           while true; do
+            # --- Panggil Script Auto Start Pterodactyl di sini ---
+            echo "Running Pterodactyl Auto-Start check..."
+            ~/scripts/start_pterodactyl.sh
+            # ----------------------------------------------------
+            
             if ! commit_and_push; then
-                echo "Commit and push failed, continuing without stopping the workflow" &> /dev/null
+              echo "Commit and push failed, continuing without stopping the workflow" &> /dev/null
             fi
             delete_auto_commit_workflows
             
@@ -168,7 +195,7 @@ jobs:
               exit 0
             fi
             
-            sleep 30
+            sleep 30 # Menunggu 30 detik sebelum loop berjalan lagi (termasuk cek auto-start)
           done
       - name: Rerun workflow if previous step failed
         if: failure()
