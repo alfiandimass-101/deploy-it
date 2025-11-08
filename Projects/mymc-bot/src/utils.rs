@@ -20,9 +20,9 @@ pub struct BotState {
     task: Arc<Mutex<TaskState>>,
 }
 
-pub fn process_owner_command<'a>(content: &'a str) -> OwnerCommand {
+pub fn process_owner_command<'a>(content: &'a str) -> Option<OwnerCommand> {
     if !content.starts_with("!") {
-        return content;
+        return None;
     }
 
     let trimmed_content = content.trim();
@@ -32,10 +32,10 @@ pub fn process_owner_command<'a>(content: &'a str) -> OwnerCommand {
         if let Some(start_index) = trimmed_content.find(command) {
             let end_of_command_index = start_index + command_len;
             if end_of_command_index < trimmed_content.len() {
-                return &trimmed_content[end_of_command_index..].trim_start();
+                return (command, &trimmed_content[end_of_command_index..].trim_start());
             }
         }
-        return "";
+        return None;
     }
-    ""
+    None
 }
