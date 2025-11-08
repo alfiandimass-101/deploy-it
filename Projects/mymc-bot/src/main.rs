@@ -50,7 +50,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             "!scanblock" => {
                             let command_arg = command.1.parse::<u32>()?;
                             let handle = tokio::task::spawn(async move {
-                                info!("{EXECUTED SCAN BLOCK]");
+                                info!("[EXECUTED SCAN BLOCK]");
                                 let bot_pos = bot.position();
                                 let world = bot.world();
                                 let readed_world = world.read();
@@ -63,7 +63,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 block_find.enumerate().for_each(|(index, block)| {
                                     if !(index > 16) {
                                         bot.chat(format!("{block:?}"));
-                                        std::thread::sleep(std::time::Duration::from_millis(100));
+                                        info!("{block:?}");
+                                        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
                                     }
                                 });
                             });
