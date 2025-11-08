@@ -16,4 +16,6 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn handler(bot: mut Client, event: mut Event, )
+async fn handler(bot: mut Client, event: mut Event, state: BotState) -> anyhow::Result<()> {
+    
+}
