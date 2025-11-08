@@ -58,6 +58,11 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 };
                                 let block_states = BlockStates::from(block_from_id);
                                 let block_find = readed_world.find_blocks(bot_pos, &block_states);
+                                block_find.enumerate().for_each(|(index, block)| {
+                                    if !(index > 16) {
+                                        bot.chat(format!("{block:?}"));
+                                    }
+                                });
                             }).await,
                             _ => {}
                         }
