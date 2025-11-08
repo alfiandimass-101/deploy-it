@@ -44,7 +44,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             },
                             "!health" => {
                                 let health = bot.health();
-                                bot.chat("HEALTH"+health);
+                                bot.chat(format!("HEALTH: {health}"));
                                 info!("BOT HEALTH: {health}");
                             }
                             _ => {}
