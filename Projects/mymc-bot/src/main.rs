@@ -35,6 +35,12 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 1 => state.can_kill = true,
                                 0 => state.can_kill = false,
                                 _ => warn!("Cannot assign killaura to n'either 0 or 1"),
+                            },
+                            "!position" => {
+                                let bot_pos = bot.position();
+                                let pos_str = format!("x: {x},y: {y},z: {z}", y=bot_pos.y, x=bot_pos.x, z=bot_pos.z).as_str();
+                                bot.chat(pos_str);
+                                info!(name: "BOT POSITION", pos_str);
                             }
                             _ => {}
                         }
