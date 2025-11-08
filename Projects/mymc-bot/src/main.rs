@@ -5,7 +5,7 @@ use uuid::uuid;
 
 const OWNER_UUID: uuid::Uuid = uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
 
-#[derive(Debug, Default, Component)]
+#[derive(Debug, Default, Component, Clone)]
 pub struct BotState {
 
 }
@@ -16,8 +16,7 @@ async fn main() -> anyhow::Result<()> {
     let account = Account::offline("itzbot");
     ClientBuilder::new()
     .set_handler(handler)
-    .start(account, "itzyuurz.aternos.me:11068")
-    .await?;
+    .start(account, "itzyuurz.aternos.me:11068");
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
