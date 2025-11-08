@@ -49,7 +49,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                             },
                             "!scanblock" => {
                             let command_arg = command.1.parse::<u32>()?;
-                            let handle = tokio::task::spawn(move || async {
+                            let handle = tokio::task::spawn(async move {
                                 let bot_pos = bot.position();
                                 let world = bot.world();
                                 let readed_world = world.read();
