@@ -48,31 +48,37 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 info!("BOT HEALTH: {health}");
                             },
                             "!scanblock" => {
-                            let bot_clone: Client = bot.clone();
-                            let command_arg = command.1.parse::<u32>()?;
-                            let handle = tokio::task::spawn(async move {
-                                let bot = bot_clone;
-                                info!("[EXECUTED SCAN BLOCK]");
-                                let bot_pos = bot.position();
-                                let world = bot.world();
-                                let readed_world = world.read();
-                                if command_arg > 1165 { panic!("not valid block_id"); }
-                                let block_from_id = unsafe {
-                                    azalea::registry::Block::from_u32_unchecked(command_arg)
-                                };
-                                let block_states = BlockStates::from(block_from_id);
-                                let block_find = readed_world.find_blocks(bot_pos, &block_states);
-                                for(index, block) in block_find.enumerate() {
-                                    if index > 16 {
-                                        break;
-                                    }
-                                    bot.chat(format!("{block:?}"));
-                                    info!("{block:?}");
-                                    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
-                                }
-                            });
-                            handle.await?
-                            }
+    let bot_clone: Client = bot.clone();
+    let command_arg = command.1.parse::<u32>()?;
+    let bot_pos = bot_clone.position();
+    let world = bot_clone.world();
+    
+    let block_locations = {
+        let readed_world = world.read(); 
+        if command_arg > 1165 { panic!("not valid block_id"); }
+        let block_from_id = unsafe {
+            azalea::registry::Block::from_u32_unchecked(command_arg)
+        };
+        let block_states = BlockStates::from(block_from_id);
+        
+        readed_world.find_blocks(bot_pos, &block_states)
+            .enumerate()
+            .take(17)
+            .collect::<Vec<(usize, azalea::BlockPos)>>() 
+    };
+    
+    let handle = tokio::task::spawn(async move {
+        let bot = bot_clone;
+        info!("[EXECUTED SCAN BLOCK]");
+        
+        for (_index, block_pos) in block_locations {
+            bot.chat(format!("Block at {:?}", block_pos));
+            info!("Block at {:?}", block_pos);
+            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        }
+    });
+    handle.await?
+}
                             _ => {}
                         }
                     } else {
