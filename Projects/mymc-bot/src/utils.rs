@@ -12,7 +12,7 @@ pub enum TaskState {
     Attack,
 }
 
-pub struct OwnerCommand<'a>(&'a str, &'a str);
+pub struct OwnerCommand<'a>(pub &'a str, pub &'a str);
 
 #[derive(Debug, Default, Component, Clone)]
 pub struct BotState {

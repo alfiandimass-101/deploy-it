@@ -26,8 +26,12 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
             if let Some(uuid) = content_packet.sender_uuid() {
                 if uuid == OWNER_UUID {
                     let content = content_packet.content();
-                    info!(name: "OWNER LOG", "OWNER SAID: {}", content);
-                    process_owner_command(&content);
+                    let processed = process_owner_command(&content);
+                    if let Some(command) = processed {
+
+                    } else {
+                        info!(name: "OWNER LOG", "OWNER SAID: {}", content);
+                    }
                 }
             }
         }
