@@ -12,20 +12,30 @@ pub enum TaskState {
     Attack,
 }
 
+pub struct OwnerCommand<'a>(&'a str, &'a str);
+
 #[derive(Debug, Default, Component, Clone)]
 pub struct BotState {
     pub can_kill: bool,
     task: Arc<Mutex<TaskState>>,
 }
 
-pub fn process_owner_command<'a>(content: &'a str) -> &'a str {
+pub fn process_owner_command<'a>(content: &'a str) -> OwnerCommand {
     if !content.starts_with("!") {
         return content;
     }
 
-    let whitespace_splited = content.trim().split_whitespace()
-    .next()
-    .take().unwrap();
-    info!("processed_str: {}", whitespace_splited);
-    whitespace_splited
+    let trimmed_content = content.trim();
+    let first_arg = trimmed_content.split_whitespace().next();
+    if let Some(command) = first_arg {
+        let command_len = command.len();
+        if let Some(start_index) = trimmed_content.find(command) {
+            let end_of_command_index = start_index + command_len;
+            if end_of_command_index < trimmed_content.len() {
+                return &trimmed_content[end_of_command_index..].trim_start();
+            }
+        }
+        return "";
+    }
+    ""
 }
