@@ -21,5 +21,7 @@ fn process_owner_command<'a>(content: &'a str) -> &'a str {
     if !content.starts_with("!") {
         return content;
     }
-    
+
+    let whitespace_splited = content.trim().split_whitespace()
+    .next().take().unwrap();
 }
