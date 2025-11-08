@@ -23,17 +23,14 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
-    let mut bot = Arc::new(Mutex::new(bot));
     match event {
         Event::Init => {
-            let bot = bot.lock().await;
             bot.set_client_information(ClientInformation {
                 view_distance: 32u8,
                 ..Default::default()
             });
         }
         Event::Chat(content_packet) => {
-            let bot = bot.lock().await;
             if let Some(uuid) = content_packet.sender_uuid() {
                 if uuid == OWNER_UUID {
                     let content = content_packet.content();
