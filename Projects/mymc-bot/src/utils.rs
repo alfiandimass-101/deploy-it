@@ -18,6 +18,8 @@ pub struct BotState {
 }
 
 fn process_owner_command<'a>(content: &'a str) -> &'a str {
-    if !content.starts_with("!") return content;
+    if !content.starts_with("!") {
+        return content;
+    }
     
 }
