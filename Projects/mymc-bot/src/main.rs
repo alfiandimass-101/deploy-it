@@ -16,8 +16,10 @@ async fn main() -> anyhow::Result<()> {
     let account = Account::offline("itzbot");
     ClientBuilder::new()
         .reconnect_after(1)
-        .start(account, "itzyuurz.aternos.me:11068")
         .set_handler(handler)
+        .start(account, "itzyuurz.aternos.me:11068")
+        .await
+        .unwrap();
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
