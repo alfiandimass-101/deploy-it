@@ -1,3 +1,5 @@
+use tokio::sync::Mutex;
+
 use azalea::{
     Account, ClientInformation,
     blocks::{BlockState, BlockStates},
@@ -19,6 +21,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
+    let mut bot = Arc::
     match event {
         Event::Init => {
             bot.set_client_information(ClientInformation {
