@@ -60,14 +60,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 };
                                 let block_states = BlockStates::from(block_from_id);
                                 let block_find = readed_world.find_blocks(bot_pos, &block_states);
-                                for (index, block) in block_find.enumerate() {
-            if index > 16 {
-                break; // Keluar dari loop jika index > 16
-            }
-            // Di sini adalah konteks async yang valid untuk await
-            bot.chat(format!("{block:?}"));
-            info!("{block:?}");
-            tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+                                
                             });
                             handle.await?
                             }
