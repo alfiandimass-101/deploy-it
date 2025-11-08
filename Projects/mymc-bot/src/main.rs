@@ -47,7 +47,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 bot.chat(format!("HEALTH: {health}"));
                                 info!("BOT HEALTH: {health}");
                             },
-                            "!scanblock" => tokio::task::block_in_place(move || {
+                            "!scanblock" => tokio::task::block_in_place(async move || {
                                 let bot_pos = bot.position();
                                 let world = bot.world();
                                 let readed_world = world.read();
@@ -61,7 +61,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                 block_find.enumerate().for_each(|(index, block)| {
                                     if !(index > 16) {
                                         bot.chat(format!("{block:?}"));
-                                        tokio::time::sleep(tokio::time::Duration::from_millis(100));
+                                        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
                                     }
                                 });
                             }).await,
