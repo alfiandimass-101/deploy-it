@@ -18,7 +18,7 @@ async fn main() -> anyhow::Result<()> {
     let account = Account::offline("itzbot");
     ClientBuilder::new()
         .set_handler(handler)
-        .start(account, "owmcc.minekeep.gg")
+        .start(account, "itzyuurz.aternos.me:11068")
         .await?;
     Ok(())
 }
