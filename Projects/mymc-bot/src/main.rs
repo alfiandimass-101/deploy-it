@@ -2,7 +2,6 @@ use azalea::{Account, ClientInformation, prelude::*};
 use tracing::info;
 
 mod utils;
-
 pub use utils::*;
 
 #[tokio::main]
