@@ -18,7 +18,7 @@ async fn main() -> anyhow::Result<()> {
         .set_handler(handler)
         .start(account, "itzyuurz.aternos.me:11068")
         .await
-        .unwrap()
+        .unwrap();
     Ok(())
 }
 async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
