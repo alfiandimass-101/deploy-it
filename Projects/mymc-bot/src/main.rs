@@ -66,7 +66,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                                     }
                                 });
                             });
-                            handle.await;
+                            handle.await?.await
                             }
                             _ => {}
                         }
