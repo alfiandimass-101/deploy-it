@@ -27,7 +27,12 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
             });
         }
         Event::Chat(content_packet) => {
-            let uuid = content_packet.
+            if let Some(uuid) = content_packet.sender_uuid() {
+                if uuid == OWNER_UUID {
+                    info!("OWNER CHAT: {}", )
+                }
+            }
         }
     }
+    Ok(())
 }
