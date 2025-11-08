@@ -28,6 +28,7 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
                     let content = content_packet.content();
                     let processed = process_owner_command(&content);
                     if let Some(command) = processed {
+                        info!(name: "OWNER COMMAND", "COMMAND: {command}, ARG: {arg}", command=command.0, arg=command.1);
                         match command.0 {
                             "!say" => bot.chat(command.1),
                             _ => {}
