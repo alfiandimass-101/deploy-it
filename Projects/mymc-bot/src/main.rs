@@ -104,6 +104,8 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
     });
     handle.await?.await
 }
+                            _ => {}
+                        }
                     } else {
                         info!(name: "OWNER LOG", "OWNER SAID: {}", content);
                     }
