@@ -78,16 +78,15 @@ async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyh
 
                                     readed_world
                                         .find_blocks(bot_pos, &block_states)
-                                        .enumerate()
                                         .take(17)
-                                        .collect::<Vec<(usize, azalea::BlockPos)>>()
+                                        .collect::<Vec<azalea::BlockPos>>()
                                 };
 
                                 let handle = tokio::task::spawn(async move {
                                     let bot = bot_clone;
                                     info!("[EXECUTED SCAN BLOCK]");
 
-                                    for (_index, block_pos) in block_locations {
+                                    for block_pos in block_locations {
                                         bot.chat(format!("Block at {:?}", block_pos));
                                         info!("Block at {:?}", block_pos);
                                         tokio::time::sleep(tokio::time::Duration::from_millis(500))
