@@ -182,6 +182,28 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
+pub async fn decompress_file(server_identifier: &str, name: &str) -> anyhow::Result<()> {
+    let mut headers = HeaderMap::new();
+
+    let auth_value = format!("Bearer {}", AUTH_TOKEN);
+    headers.insert("Authorization", HeaderValue::from_str(&auth_value).unwrap());
+
+    headers.insert("Accept", HeaderValue::from_static("application/json"));
+    headers.insert("Content-Type", HeaderValue::from_static("application/json"));
+
+    let body = format!(r#"{
+        "root": "/",
+        "file": "plugss.zip"
+    }"#);
+
+    let client = Client::new();
+    client.post(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/decompress"))
+        .body(body)
+        .send().await?;
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
@@ -191,12 +213,11 @@ async fn main() -> anyhow::Result<()> {
         };
         if status {
             execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
-            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.uuid).await?;
-            upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
         } else {
             let id = get_server_magma_id().await.unwrap();
             remove_server(id).await.unwrap();
             create_server().await.unwrap();
+            tokio::time::sleep(tokio::time::Duration::from_mins(1)).await;
             let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.uuid).await?;
             upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
         }
