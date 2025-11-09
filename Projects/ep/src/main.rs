@@ -155,7 +155,7 @@ pub async fn make_upload_url(server_identifier: &str) -> Result<String, serde_js
         Ok(data) => {
             data.attributes.url
         },
-        Err(e) => return e;
+        Err(e) => {return e; };
     };
     Ok(url)
 }
