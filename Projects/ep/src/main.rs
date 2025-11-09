@@ -15,7 +15,7 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
     headers.insert(
         "Authorization", 
-        HeaderValue::from_str(&auth_value)?
+        HeaderValue::from_str(&auth_value).unwrap()
     );
 
     headers.insert("Accept", HeaderValue::from_static("application/json"));
