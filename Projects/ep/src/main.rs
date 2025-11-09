@@ -157,6 +157,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
         },
         Err(e) => panic!("NO UPLOAD URL: {e}"),
     };
+    println!("[MAKE UPLOAD DONE]");
     Ok(url)
 }
 
