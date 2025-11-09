@@ -25,8 +25,9 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
     let url = format!("{}/api/client", PANEL);
 
     let result = client.get(url).headers(headers).send().await.unwrap();
-    println!("[REQUIRED SERVER DATA]: {}", &result.text().await.unwrap());
-    serde_json::from_str::<ServerSummary>(&result.text().await.unwrap())
+    let result_text = result.text().await.unwrap());
+    println!("[REQUIRED SERVER DATA]: {}", &result_text);
+    serde_json::from_str::<ServerSummary>(&result_text)
 }
 
 pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
