@@ -48,43 +48,100 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id() -> Result<u64, &'static str> {
-    let client = Client::new();
-    let response = client.get(format!("{PAGE}/services"))
-        .header("USER_AGENT", "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
-        .header("ACCEPT", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-        .header("ACCEPT_LANGUAGE", "en-US,en;q=0.5")
-        .header("ACCEPT_ENCODING", "gzip, deflate, br, zstd")
-        .header("Sec-GPC", "1")
-        .header("CONNECTION", "keep-alive")
-        .header("COOKIE", "PHPSESSID=7rkskb8ils3s8su7jrrh83q354;")
-        .header("Upgrade-Insecure-Requests", "1")
-        .header("Sec-Fetch-Dest", "document")
-        .header("Sec-Fetch-Mode", "navigate")
-        .header("Sec-Fetch-Site", "none")
-        .header("Sec-Fetch-User", "?1")
-        .header("Priority", "u=0, i")
-        .header("TE", "trailers")
+pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> {
+
+    let mut headers = HeaderMap::new();
+
+    headers.insert(USER_AGENT, HeaderValue::from_static("Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"));
+
+    headers.insert(ACCEPT, HeaderValue::from_static("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+
+    headers.insert(ACCEPT_LANGUAGE, HeaderValue::from_static("en-US,en;q=0.5"));
+
+    headers.insert(ACCEPT_ENCODING, HeaderValue::from_static("gzip, deflate, br, zstd"));
+
+    headers.insert("Sec-GPC", HeaderValue::from_static("1"));
+
+    headers.insert(CONNECTION, HeaderValue::from_static("keep-alive"));
+
+    headers.insert(COOKIE, HeaderValue::from_static("PHPSESSID=7rkskb8ils3s8su7jrrh83q354;"));
+
+    headers.insert("Upgrade-Insecure-Requests", HeaderValue::from_static("1"));
+
+    headers.insert("Sec-Fetch-Dest", HeaderValue::from_static("document"));
+
+    headers.insert("Sec-Fetch-Mode", HeaderValue::from_static("navigate"));
+
+    headers.insert("Sec-Fetch-Site", HeaderValue::from_static("none"));
+
+    headers.insert("Sec-Fetch-User", HeaderValue::from_static("?1"));
+
+    headers.insert("Priority", HeaderValue::from_static("u=0, i"));
+
+    headers.insert("TE", HeaderValue::from_static("trailers"));
+
+
+    let client = Client::builder()
+
+        .default_headers(headers)
+
+        .build()?;
+
+    
+
+    let url = format!("{}/services", page_url);
+
+
+    let response_text = client.get(&url)
+
         .send()
-        .await.unwrap()
+
+        .await?
+
         .text()
-        .await.unwrap();
 
-    let re = regex::Regex::new(r"server\?id=(\d+)").unwrap();
+        .await?;
 
-    Ok(match re.captures(&response) {
+
+    let re = Regex::new(r"server\?id=(\d+)")?; 
+
+
+    match re.captures(&response_text) {
+
         Some(cap) => {
-            let server_id = cap.get(1).map_or("", |m| m.as_str());
-            println!("ID Server yang Ditemukan: {}", server_id);
-            server_id.parse::<u64>().unwrap()
-        },
-        None => {
-            println!("ID Server tidak ditemukan.");
-            return Err("CANT FIND THE SERVER MAGMA ID");
-        }
-    })
-}
 
+            let server_id_str = cap.get(1)
+
+                .ok_or_else(|| Box::<dyn Error>::from("Regex match found but capture group 1 is missing"))?
+
+                .as_str();
+
+            
+
+            println!("ID Server yang Ditemukan: {}", server_id_str);
+
+            
+
+            let server_id = server_id_str.parse::<u64>()
+
+                .map_err(|e| format!("Failed to parse server ID '{}' as u64: {}", server_id_str, e))?;
+
+
+            Ok(server_id)
+
+        },
+
+        None => {
+
+            println!("ID Server tidak ditemukan.");
+
+            Err(Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID in response"))
+
+        }
+
+    }
+
+}
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
