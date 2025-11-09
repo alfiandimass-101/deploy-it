@@ -101,6 +101,9 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     let client = Client::builder().default_headers(headers).build()?;
 
     let url = format!("{PAGE}/services");
+    // Kirim permintaan
+    let response = client.get(&url).send().await?;
+
     // Dapatkan header untuk debug (opsional)
     let content_encoding = response.headers().get("Content-Encoding").and_then(|h| h.to_str().ok());
     
@@ -112,8 +115,6 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     println!("--- RESPONS TEXT (HARUSNYA HTML):");
     println!("{}", &response_text);
     println!("---------------------------------");
-
-    Ok(response_text)
     Ok(0)
 
     // let response_text = client.get(&url).send().await?.text().await?;
