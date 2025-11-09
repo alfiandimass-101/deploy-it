@@ -138,7 +138,7 @@ pub async fn create_server() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn make_upload_url(server_identifier: &str) -> Result<String, serde_json::Error> {
+pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> {
     let mut headers = HeaderMap::new();
 
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
@@ -149,15 +149,14 @@ pub async fn make_upload_url(server_identifier: &str) -> Result<String, serde_js
     let client = Client::new();
     let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2Fplugins%2F"))
     .headers(headers)
-    .send().await.unwrap();
+    .send().await?;
 
-    let url = match serde_json::from_str::<UploaderJson>(&result.text().await.unwrap()) {
+    let url = match serde_json::from_str::<UploaderJson>(result.text().await?) {
         Ok(data) => {
             data.attributes.url
         },
-        Err(e) => {return e; };
+        Err(e) => e,
     };
-    Ok(url)
 }
 
 #[tokio::main]
