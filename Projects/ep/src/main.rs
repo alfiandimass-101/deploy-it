@@ -191,10 +191,10 @@ pub async fn decompress_plugss(server_identifier: &str) -> anyhow::Result<()> {
     headers.insert("Accept", HeaderValue::from_static("application/json"));
     headers.insert("Content-Type", HeaderValue::from_static("application/json"));
 
-    let body = format!(r#"{
+    let body = r#"{
         "root": "/",
-        "file": "plugss.zip"
-    }"#);
+        "file": "backup.zip"
+    }"#;
 
     let client = Client::new();
     client.post(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/decompress"))
