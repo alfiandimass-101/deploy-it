@@ -48,6 +48,43 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
+pub async fn get_server_magma_id() -> Result<u64> {
+    let client = Client::new();
+    let response = client.get(format!("{PAGE}/services"))
+        .header(USER_AGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
+        .header(ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+        .header(ACCEPT_LANGUAGE, "en-US,en;q=0.5")
+        .header(ACCEPT_ENCODING, "gzip, deflate, br, zstd")
+        .header("Sec-GPC", "1")
+        .header(CONNECTION, "keep-alive")
+        .header(COOKIE, "PHPSESSID=7rkskb8ils3s8su7jrrh83q354;")
+        .header("Upgrade-Insecure-Requests", "1")
+        .header("Sec-Fetch-Dest", "document")
+        .header("Sec-Fetch-Mode", "navigate")
+        .header("Sec-Fetch-Site", "none")
+        .header("Sec-Fetch-User", "?1")
+        .header("Priority", "u=0, i")
+        .header("TE", "trailers")
+        .send()
+        .await?
+        .text()
+        .await?;
+
+    let re = regex::Regex::new(r"server\?id=(\d+)")?;
+
+    Ok(match re.captures(&response) {
+        Some(cap) => {
+            let server_id = cap.get(1).map_or("", |m| m.as_str());
+            println!("ID Server yang Ditemukan: {}", server_id);
+            server_id.parse::<u64>()
+        },
+        None => {
+            println!("ID Server tidak ditemukan.");
+            Err("CANT FIND THE ID")
+        }
+    })
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
