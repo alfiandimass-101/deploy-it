@@ -30,7 +30,7 @@ pub async fn get_required_server_data() -> anyhow::Result<ServerSummary> {
         .send()
         .await?;
     
-    serde_json::from_str::<ServerSummary>(result.text().await?)
+    serde_json::from_str::<ServerSummary>(&result.text().await?)
 }
 
 #[tokio::main]
