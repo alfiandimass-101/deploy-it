@@ -3,7 +3,7 @@ use reqwest::{
     header::{HeaderMap, HeaderValue},
 };
 
-use crate::utils::ServerSummary;
+use crate::utils::{ServerSummary, UploaderJson};
 use std::error::Error;
 use tokio::process::Command;
 
@@ -136,6 +136,28 @@ pub async fn create_server() -> Result<(), Box<dyn Error>> {
         ));
     }
     Ok(())
+}
+
+pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> {
+    let mut headers = HeaderMap::new();
+
+    let auth_value = format!("Bearer {}", AUTH_TOKEN);
+    headers.insert("Authorization", HeaderValue::from_str(&auth_value).unwrap());
+
+    headers.insert("Accept", HeaderValue::from_static("application/json"));
+
+    let client = Client::new();
+    let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2Fplugins%2F"))
+    .headers(headers)
+    .send().await?;
+
+    let url = match serde_json::from_str::<UploaderJson>(result.text().await?) {
+        Ok(data) => {
+            data.attributes.url
+        },
+        Err(e) => return e;
+    };
+    Ok(url)
 }
 
 #[tokio::main]
