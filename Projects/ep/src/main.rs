@@ -34,6 +34,7 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    get_server_data().await?;
+    let res = get_required_server_data().await?;
+    
     Ok(())
 }
