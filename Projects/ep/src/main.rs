@@ -46,10 +46,15 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    loop {
     let (status, server_data) = match get_required_server_data().await {
         Ok(result) => (true, result),
         Err(_) => (false, ServerSummary::default()),
     };
-    if status {}
+    if status {
+        execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
+    }
+    tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
+}
     Ok(())
 }
