@@ -103,7 +103,7 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     let url = format!("{PAGE}/services");
 
     let response_text = client.get(&url).send().await?.text().await?;
-
+    println!(response_text);
     // --- LOGIKA PENCARIAN ID (11-12 dengan BASH) ---
 
     let search_key = "server?id=";
