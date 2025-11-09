@@ -50,42 +50,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
 
 pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> {
 
-    let mut headers = HeaderMap::new();
-
-    headers.insert(USER_AGENT, HeaderValue::from_static("Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"));
-
-    headers.insert(ACCEPT, HeaderValue::from_static("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-
-    headers.insert(ACCEPT_LANGUAGE, HeaderValue::from_static("en-US,en;q=0.5"));
-
-    headers.insert(ACCEPT_ENCODING, HeaderValue::from_static("gzip, deflate, br, zstd"));
-
-    headers.insert("Sec-GPC", HeaderValue::from_static("1"));
-
-    headers.insert(CONNECTION, HeaderValue::from_static("keep-alive"));
-
-    headers.insert(COOKIE, HeaderValue::from_static("PHPSESSID=7rkskb8ils3s8su7jrrh83q354;"));
-
-    headers.insert("Upgrade-Insecure-Requests", HeaderValue::from_static("1"));
-
-    headers.insert("Sec-Fetch-Dest", HeaderValue::from_static("document"));
-
-    headers.insert("Sec-Fetch-Mode", HeaderValue::from_static("navigate"));
-
-    headers.insert("Sec-Fetch-Site", HeaderValue::from_static("none"));
-
-    headers.insert("Sec-Fetch-User", HeaderValue::from_static("?1"));
-
-    headers.insert("Priority", HeaderValue::from_static("u=0, i"));
-
-    headers.insert("TE", HeaderValue::from_static("trailers"));
-
-
-    let client = Client::builder()
-
-        .default_headers(headers)
-
-        .build()?;
+    let client = Client::new();
 
     
 
@@ -93,6 +58,34 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
 
     let response_text = client.get(&url)
+
+        .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
+
+        .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+
+        .header("Accept-Language", "en-US,en;q=0.5")
+
+        .header("Accept-Encoding", "gzip, deflate, br, zstd")
+
+        .header("Sec-GPC", "1")
+
+        .header("Connection", "keep-alive")
+
+        .header("Cookie", "PHPSESSID=7rkskb8ils3s8su7jrrh83q354;")
+
+        .header("Upgrade-Insecure-Requests", "1")
+
+        .header("Sec-Fetch-Dest", "document")
+
+        .header("Sec-Fetch-Mode", "navigate")
+
+        .header("Sec-Fetch-Site", "none")
+
+        .header("Sec-Fetch-User", "?1")
+
+        .header("Priority", "u=0, i")
+
+        .header("TE", "trailers")
 
         .send()
 
@@ -103,7 +96,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
         .await?;
 
 
-    let re = Regex::new(r"server\?id=(\d+)")?; 
+    let re = Regex::new(r"server\?id=(\d+)")?;
 
 
     match re.captures(&response_text) {
@@ -135,13 +128,14 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
             println!("ID Server tidak ditemukan.");
 
-            Err(Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID in response"))
+            Err(Box::<dyn std::error::Error>::from("CANT FIND THE SERVER MAGMA ID in response"))
 
         }
 
     }
 
 }
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
