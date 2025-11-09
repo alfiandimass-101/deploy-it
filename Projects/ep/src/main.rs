@@ -162,14 +162,14 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
 }
 
 pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
-    let file = tokio::fs::File::open(path).await?;
+    let mut file = tokio::fs::File::open(path).await?;
     let mut plugss_buffer = Vec::new();
     file.read_to_end(&mut plugss_buffer).await?;
     
     let local_file_part = Part::bytes(plugss_buffer);
     let directory_part = Part::text("/".to_string());
     
-    let mut form = reqwest::multipart::Form::new()
+    let form = reqwest::multipart::Form::new()
         .part("files", local_file_part)
         .part("directory", directory_part);
 
