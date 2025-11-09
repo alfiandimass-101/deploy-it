@@ -28,13 +28,13 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
         .get(url)
         .headers(headers)
         .send()
-        .await?;
+        .await.unwrap();
     serde_json::from_str::<ServerSummary>(&result.text().await.unwrap())
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let res = get_required_server_data().await?;
-    
+
     Ok(())
 }
