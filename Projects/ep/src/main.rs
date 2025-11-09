@@ -5,7 +5,7 @@ use reqwest::{
 
 use crate::utils::{ServerSummary, UploaderJson};
 use std::error::Error;
-use tokio::process::Command;
+use tokio::{process::Command, fs::File};
 
 pub mod utils;
 
@@ -162,13 +162,38 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
 }
 
 pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
+
+    let file_name = path.split('/').last().unwrap_or("file");
+
+    
+
+    let file_part = multipart::Part::file(path)
+
+        .await?
+
+        .file_name(String::from(file_name)); 
+
+
+    let form = multipart::Form::new()
+
+        .part("files", file_part)
+
+        .text("directory", "/"); 
+
+
     let client = Client::new();
+
     client.post(url)
-    .form(&format!("files=@{path}"))
-    .form("directory=/")
-    .send().await?;
+
+        .multipart(form)
+
+        .send().await?
+
+        .error_for_status()?;
+
 
     Ok(())
+
 }
 
 #[tokio::main]
