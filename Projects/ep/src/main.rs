@@ -28,7 +28,18 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
     serde_json::from_str::<ServerSummary>(&result.text().await.unwrap())
 }
 
-pub async fn execute_auto_start() -> anyhow::Result<()> {
+pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
+    let mut headers = HeaderMap::new();
+
+    let auth_value = format!("Bearer {}", AUTH_TOKEN);
+    headers.insert("Authorization", HeaderValue::from_str(&auth_value).unwrap());
+
+    headers.insert("Accept", HeaderValue::from_static("application/json"));
+    headers.insert("Content-Type", HeaderValue::from_static("application/json"));
+    let client = Client::new()
+    .post(format!("{PANEL}/api/client/servers/{server_uuid}/power"))
+    .body("{\"signal\": \"start\"}")
+
     Ok(())
 }
 
