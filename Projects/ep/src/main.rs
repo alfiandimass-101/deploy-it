@@ -48,92 +48,71 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn std::error::Error>> {
-
+pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     let client = Client::new();
 
-    
+    let url = format!("{PAGE}/services");
 
-    let url = format!("{}/services", page_url);
-
-
-    let response_text = client.get(&url)
-
-        .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
-
-        .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-
+    let response_text = client
+        .get(&url)
+        .header(
+            "User-Agent",
+            "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0",
+        )
+        .header(
+            "Accept",
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        )
         .header("Accept-Language", "en-US,en;q=0.5")
-
         .header("Accept-Encoding", "gzip, deflate, br, zstd")
-
         .header("Sec-GPC", "1")
-
         .header("Connection", "keep-alive")
-
         .header("Cookie", "PHPSESSID=7rkskb8ils3s8su7jrrh83q354;")
-
         .header("Upgrade-Insecure-Requests", "1")
-
         .header("Sec-Fetch-Dest", "document")
-
         .header("Sec-Fetch-Mode", "navigate")
-
         .header("Sec-Fetch-Site", "none")
-
         .header("Sec-Fetch-User", "?1")
-
         .header("Priority", "u=0, i")
-
         .header("TE", "trailers")
-
         .send()
-
         .await?
-
         .text()
-
         .await?;
-
 
     let re = regex::Regex::new(r"server\?id=(\d+)")?;
 
-
     match re.captures(&response_text) {
-
         Some(cap) => {
-
-            let server_id_str = cap.get(1)
-
-                .ok_or_else(|| Box::<dyn std::error::Error>::from("Regex match found but capture group 1 is missing"))?
-
+            let server_id_str = cap
+                .get(1)
+                .ok_or_else(|| {
+                    Box::<dyn std::error::Error>::from(
+                        "Regex match found but capture group 1 is missing",
+                    )
+                })?
                 .as_str();
-
-            
 
             println!("ID Server yang Ditemukan: {}", server_id_str);
 
-            
-
-            let server_id = server_id_str.parse::<u64>()
-
-                .map_err(|e| format!("Failed to parse server ID '{}' as u64: {}", server_id_str, e))?;
-
+            let server_id = server_id_str.parse::<u64>().map_err(|e| {
+                format!(
+                    "Failed to parse server ID '{}' as u64: {}",
+                    server_id_str, e
+                )
+            })?;
 
             Ok(server_id)
-
-        },
-
-        None => {
-
-            println!("ID Server tidak ditemukan.");
-
-            Err(Box::<dyn std::error::Error>::from("CANT FIND THE SERVER MAGMA ID in response"))
-
         }
 
-    }
+        None => {
+            println!("ID Server tidak ditemukan.");
 
+            Err(Box::<dyn std::error::Error>::from(
+                "CANT FIND THE SERVER MAGMA ID in response",
+            ))
+        }
+    }
 }
 
 #[tokio::main]
