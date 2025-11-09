@@ -48,71 +48,106 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
-    let client = Client::new();
+pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> {
 
-    let url = format!("{PAGE}/services");
+    let mut headers = HeaderMap::new();
 
-    let response_text = client
-        .get(&url)
-        .header(
-            "User-Agent",
-            "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0",
-        )
-        .header(
-            "Accept",
-            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        )
-        .header("Accept-Language", "en-US,en;q=0.5")
-        .header("Accept-Encoding", "gzip, deflate, br, zstd")
-        .header("Sec-GPC", "1")
-        .header("Connection", "keep-alive")
-        .header("Cookie", "PHPSESSID=7rkskb8ils3s8su7jrrh83q354;")
-        .header("Upgrade-Insecure-Requests", "1")
-        .header("Sec-Fetch-Dest", "document")
-        .header("Sec-Fetch-Mode", "navigate")
-        .header("Sec-Fetch-Site", "none")
-        .header("Sec-Fetch-User", "?1")
-        .header("Priority", "u=0, i")
-        .header("TE", "trailers")
+    // Menggunakan string literal untuk Header
+
+    headers.insert("User-Agent", HeaderValue::from_static("Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"));
+
+    headers.insert("Accept", HeaderValue::from_static("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+
+    headers.insert("Accept-Language", HeaderValue::from_static("en-US,en;q=0.5"));
+
+    headers.insert("Accept-Encoding", HeaderValue::from_static("gzip, deflate, br, zstd"));
+
+    headers.insert("Sec-GPC", HeaderValue::from_static("1"));
+
+    headers.insert("Connection", HeaderValue::from_static("keep-alive"));
+
+    headers.insert("Cookie", HeaderValue::from_static("PHPSESSID=7rkskb8ils3s8su7jrrh83q354;"));
+
+    headers.insert("Upgrade-Insecure-Requests", HeaderValue::from_static("1"));
+
+    headers.insert("Sec-Fetch-Dest", HeaderValue::from_static("document"));
+
+    headers.insert("Sec-Fetch-Mode", HeaderValue::from_static("navigate"));
+
+    headers.insert("Sec-Fetch-Site", HeaderValue::from_static("none"));
+
+    headers.insert("Sec-Fetch-User", HeaderValue::from_static("?1"));
+
+    headers.insert("Priority", HeaderValue::from_static("u=0, i"));
+
+    headers.insert("TE", HeaderValue::from_static("trailers"));
+
+
+    let client = Client::builder()
+
+        .default_headers(headers)
+
+        .build()?;
+
+    
+
+    let url = format!("{}/services", page_url);
+
+
+    let response_text = client.get(&url)
+
         .send()
+
         .await?
+
         .text()
+
         .await?;
 
-    let re = regex::Regex::new(r"server\?id=(\d+)")?;
 
-    match re.captures(&response_text) {
-        Some(cap) => {
-            let server_id_str = cap
-                .get(1)
-                .ok_or_else(|| {
-                    Box::<dyn std::error::Error>::from(
-                        "Regex match found but capture group 1 is missing",
-                    )
-                })?
-                .as_str();
+    // --- LOGIKA PENCARIAN ID (11-12 dengan BASH) ---
 
-            println!("ID Server yang Ditemukan: {}", server_id_str);
+    let search_key = "server?id=";
 
-            let server_id = server_id_str.parse::<u64>().map_err(|e| {
-                format!(
-                    "Failed to parse server ID '{}' as u64: {}",
-                    server_id_str, e
-                )
-            })?;
 
-            Ok(server_id)
-        }
+    // 1. Split_once untuk menemukan ID pertama (mirip grep | head -n 1)
 
-        None => {
-            println!("ID Server tidak ditemukan.");
+    let (_, after_key) = response_text.split_once(search_key)
 
-            Err(Box::<dyn std::error::Error>::from(
-                "CANT FIND THE SERVER MAGMA ID in response",
-            ))
-        }
+        .ok_or_else(|| Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found."))?;
+
+
+    // 2. Ambil karakter hingga karakter non-digit pertama
+
+    let server_id_str: String = after_key.chars()
+
+        .take_while(|c| c.is_ascii_digit())
+
+        .collect();
+
+
+    // 3. Pastikan ID ditemukan dan bukan string kosong
+
+    if server_id_str.is_empty() {
+
+        return Err(Box::<dyn Error>::from("Key 'server?id=' found, but no subsequent digits were present."));
+
     }
+
+
+    // 4. Parse hasilnya menjadi u64
+
+    let server_id = server_id_str.parse::<u64>()
+
+        .map_err(|e| format!("Failed to parse server ID '{}' as u64: {}", server_id_str, e))?;
+
+
+    println!("ID Server yang Ditemukan: {}", server_id);
+
+    
+
+    Ok(server_id)
+
 }
 
 #[tokio::main]
