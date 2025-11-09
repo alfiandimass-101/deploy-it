@@ -101,48 +101,62 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     let client = Client::builder().default_headers(headers).build()?;
 
     let url = format!("{PAGE}/services");
-
-    let response_text = client.get(&url).send().await?.text().await?;
+    // Dapatkan header untuk debug (opsional)
+    let content_encoding = response.headers().get("Content-Encoding").and_then(|h| h.to_str().ok());
+    
+    // Coba baca respons sebagai teks (ini yang menyebabkan error jika terkompresi)
+    let response_text = response.text().await?;
+    
+    // --- OUTPUT DEBUG ---
+    println!("--- Content-Encoding Header: {:?}", content_encoding);
+    println!("--- RESPONS TEXT (HARUSNYA HTML):");
     println!("{}", &response_text);
-    // --- LOGIKA PENCARIAN ID (11-12 dengan BASH) ---
+    println!("---------------------------------");
 
-    let search_key = "server?id=";
+    Ok(response_text)
+    Ok(0)
 
-    // 1. Split_once untuk menemukan ID pertama (mirip grep | head -n 1)
+    // let response_text = client.get(&url).send().await?.text().await?;
+    // println!("{}", &response_text);
+    // // --- LOGIKA PENCARIAN ID (11-12 dengan BASH) ---
 
-    let (_, after_key) = response_text.split_once(search_key).ok_or_else(|| {
-        Box::<dyn std::error::Error>::from(
-            "CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found.",
-        )
-    })?;
+    // let search_key = "server?id=";
 
-    // 2. Ambil karakter hingga karakter non-digit pertama
+    // // 1. Split_once untuk menemukan ID pertama (mirip grep | head -n 1)
 
-    let server_id_str: String = after_key
-        .chars()
-        .take_while(|c| c.is_ascii_digit())
-        .collect();
+    // let (_, after_key) = response_text.split_once(search_key).ok_or_else(|| {
+    //     Box::<dyn std::error::Error>::from(
+    //         "CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found.",
+    //     )
+    // })?;
 
-    // 3. Pastikan ID ditemukan dan bukan string kosong
+    // // 2. Ambil karakter hingga karakter non-digit pertama
 
-    if server_id_str.is_empty() {
-        return Err(Box::<dyn std::error::Error>::from(
-            "Key 'server?id=' found, but no subsequent digits were present.",
-        ));
-    }
+    // let server_id_str: String = after_key
+    //     .chars()
+    //     .take_while(|c| c.is_ascii_digit())
+    //     .collect();
 
-    // 4. Parse hasilnya menjadi u64
+    // // 3. Pastikan ID ditemukan dan bukan string kosong
 
-    let server_id = server_id_str.parse::<u64>().map_err(|e| {
-        format!(
-            "Failed to parse server ID '{}' as u64: {}",
-            server_id_str, e
-        )
-    })?;
+    // if server_id_str.is_empty() {
+    //     return Err(Box::<dyn std::error::Error>::from(
+    //         "Key 'server?id=' found, but no subsequent digits were present.",
+    //     ));
+    // }
 
-    println!("ID Server yang Ditemukan: {}", server_id);
+    // // 4. Parse hasilnya menjadi u64
 
-    Ok(server_id)
+    // let server_id = server_id_str.parse::<u64>().map_err(|e| {
+    //     format!(
+    //         "Failed to parse server ID '{}' as u64: {}",
+    //         server_id_str, e
+    //     )
+    // })?;
+
+    // println!("ID Server yang Ditemukan: {}", server_id);
+
+    // Ok(server_id)
 }
 
 #[tokio::main]
