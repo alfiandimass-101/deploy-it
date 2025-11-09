@@ -9,7 +9,7 @@ const PAGE: &'static str = "https://magmanode.com";
 const PANEL: &'static str = "https://panel.magmanode.com";
 const AUTH_TOKEN: &str = "ptlc_8JGKmhuz2JydQ0Ax8Ko7MKopPTeWln8mJi2cmZm0Uam";
 
-pub async fn get_required_server_data() -> anyhow::Result<ServerSummary> {
+pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Error> {
     let mut headers = HeaderMap::new();
 
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
@@ -29,7 +29,7 @@ pub async fn get_required_server_data() -> anyhow::Result<ServerSummary> {
         .headers(headers)
         .send()
         .await?;
-    serde_json::from_str::<ServerSummary>(result.text().await?)
+    serde_json::from_str::<ServerSummary>(&result.text().await.unwrap())
 }
 
 #[tokio::main]
