@@ -39,7 +39,8 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     let client = Client::new()
     .post(format!("{PANEL}/api/client/servers/{server_uuid}/power"))
     .body("{\"signal\": \"start\"}")
-
+    .headers(headers)
+    .send().await?;
     Ok(())
 }
 
