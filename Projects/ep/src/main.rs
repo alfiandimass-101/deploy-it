@@ -105,10 +105,10 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
     let response = client.get(&url).send().await?;
 
     // Dapatkan header untuk debug (opsional)
-    let content_encoding = response.headers().get("Content-Encoding").and_then(|h| h.to_str().ok());
+    let content_encoding = response.headers().get("Content-Encoding").and_then(|h| h.to_str().ok()).clone();
     
     // Coba baca respons sebagai teks (ini yang menyebabkan error jika terkompresi)
-    let response_text = &response.text().await?;
+    let response_text = response.text().await?;
     
     // --- OUTPUT DEBUG ---
     println!("--- Content-Encoding Header: {:?}", content_encoding);
