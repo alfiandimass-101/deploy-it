@@ -24,3 +24,14 @@ pub struct MinimalServerAttributes {
     #[serde(flatten)]
     extra: Value,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct UploaderJson {
+    pub object: String,
+    pub attributes: UploadAttributes,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct UploadAttributes {
+    pub url: String,
+}
