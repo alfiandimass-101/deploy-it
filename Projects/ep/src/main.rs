@@ -124,7 +124,9 @@ async fn main() -> anyhow::Result<()> {
         };
         if status {
             execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
+        } else {
             let id = get_server_magma_id().await.unwrap();
+            remove_server(id).await.unwrap();
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
