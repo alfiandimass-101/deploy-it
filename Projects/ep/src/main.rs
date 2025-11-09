@@ -9,8 +9,8 @@ use std::error::Error;
 
 pub mod utils;
 
-const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
-const PAGE: &'static str = "https://magmanode.com";
+// const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
+// const PAGE: &'static str = "https://magmanode.com";
 const PANEL: &'static str = "https://panel.magmanode.com";
 const AUTH_TOKEN: &str = "ptlc_8JGKmhuz2JydQ0Ax8Ko7MKopPTeWln8mJi2cmZm0Uam";
 
@@ -40,7 +40,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
 
     headers.insert("Accept", HeaderValue::from_static("application/json"));
     headers.insert("Content-Type", HeaderValue::from_static("application/json"));
-    let client = Client::new()
+    let _ = Client::new()
         .post(format!("{PANEL}/api/client/servers/{server_uuid}/power"))
         .body("{\"signal\": \"start\"}")
         .headers(headers)
@@ -148,7 +148,7 @@ async fn main() -> anyhow::Result<()> {
         } else {
             let id = get_server_magma_id().await.unwrap();
             remove_server(id).await.unwrap();
-
+            create_server().await.unwrap();
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
