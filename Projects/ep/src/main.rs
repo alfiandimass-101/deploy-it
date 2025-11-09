@@ -70,13 +70,13 @@ pub async fn get_server_magma_id() -> Result<u64, &'static str> {
         .text()
         .await.unwrap();
 
-    let re = regex::Regex::new(r"server\?id=(\d+)")?;
+    let re = regex::Regex::new(r"server\?id=(\d+)").unwrap();
 
     Ok(match re.captures(&response) {
         Some(cap) => {
             let server_id = cap.get(1).map_or("", |m| m.as_str());
             println!("ID Server yang Ditemukan: {}", server_id);
-            server_id.parse::<u64>()?
+            server_id.parse::<u64>().unwrap()
         },
         None => {
             println!("ID Server tidak ditemukan.");
