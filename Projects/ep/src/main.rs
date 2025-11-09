@@ -175,7 +175,7 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
 
     let client = Client::new();
     client.post(url)
-    .form(&form)
+    .multipart(form)
     .send().await?;
 
     Ok(())
