@@ -4,6 +4,8 @@ use reqwest::{
 };
 
 use crate::utils::ServerSummary;
+use tokio::process::Command;
+use std::error::Error;
 
 pub mod utils;
 
@@ -48,13 +50,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-use tokio::process::Command;
-
-use std::error::Error;
-
-
 pub async fn get_server_magma_id() -> Result<u64, Box<dyn Error>> {
-
     let command_shell = "curl 'https://magmanode.com/services' \\
 
         --compressed \\
@@ -91,54 +87,45 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn Error>> {
 
         | head -n 1";
 
-
     let output = Command::new("sh")
-
         .arg("-c")
-
         .arg(command_shell)
-
         .output()
-
         .await?;
 
-
     if !output.status.success() {
-
         let stderr = String::from_utf8_lossy(&output.stderr);
 
         eprintln!("Error saat menjalankan perintah curl: {}", stderr);
 
-        return Err(Box::<dyn Error>::from("Failed to execute curl command successfully"));
-
+        return Err(Box::<dyn Error>::from(
+            "Failed to execute curl command successfully",
+        ));
     }
-
 
     let stdout = String::from_utf8_lossy(&output.stdout);
 
-    
-
     let server_id_str = stdout.trim();
 
-
     if server_id_str.is_empty() {
-
-        return Err(Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID: Output was empty after running curl/grep."));
-
+        return Err(Box::<dyn Error>::from(
+            "CANT FIND THE SERVER MAGMA ID: Output was empty after running curl/grep.",
+        ));
     }
 
+    let server_id = server_id_str.parse::<u64>().map_err(|e| {
+        format!(
+            "Failed to parse server ID '{}' as u64: {}",
+            server_id_str, e
+        )
+    })?;
 
-    let server_id = server_id_str.parse::<u64>()
-
-        .map_err(|e| format!("Failed to parse server ID '{}' as u64: {}", server_id_str, e))?;
-
-
-    println!("ID Server yang Ditemukan (via curl child process): {}", server_id);
-
-    
+    println!(
+        "ID Server yang Ditemukan (via curl child process): {}",
+        server_id
+    );
 
     Ok(server_id)
-
 }
 
 #[tokio::main]
