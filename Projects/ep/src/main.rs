@@ -218,8 +218,9 @@ async fn main() -> anyhow::Result<()> {
             remove_server(id).await.unwrap();
             create_server().await.unwrap();
             tokio::time::sleep(tokio::time::Duration::from_mins(1)).await;
-            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.uuid).await?;
+            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.identifier).await?;
             upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
+            decompress_plugss(&server_data.data.first().unwrap().attributes.identifier).await?;
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
