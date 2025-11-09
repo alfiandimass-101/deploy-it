@@ -1,4 +1,4 @@
-use reqwest::{Client, header::HeaderMap};
+use reqwest::{Client, header::{HeaderMap, HeaderValue}};
 
 const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
 const PAGE: &'static str = "https://magmanode.com";
@@ -17,7 +17,7 @@ pub async fn get_server_data() -> Result<()> {
     headers.insert("Content-Type", HeaderValue::from_static("application/json"));
 
     let client = Client::new();
-    let url = format!("{}/api/client", PANEL_URL);
+    let url = format!("{}/api/client", PANEL);
 
     let result = client
         .get(url)
