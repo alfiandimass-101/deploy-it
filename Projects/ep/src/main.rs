@@ -115,6 +115,27 @@ pub async fn remove_server(server_id: u64) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+pub async fn create_server() -> Result<(), Box<dyn Error>> {
+    let command_shell = "curl 'https://magmanode.com/free_version'   -X POST   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0'   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'   -H 'Accept-Language: en-US,en;q=0.5'   -H 'Accept-Encoding: gzip, deflate, br, zstd'   -H 'Content-Type: application/x-www-form-urlencoded'   -H 'Origin: https://magmanode.com'   -H 'Sec-GPC: 1'   -H 'Connection: keep-alive'   -H 'Referer: https://magmanode.com/free_version'   -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354'   -H 'Upgrade-Insecure-Requests: 1'   -H 'Sec-Fetch-Dest: document'   -H 'Sec-Fetch-Mode: navigate'   -H 'Sec-Fetch-Site: same-origin'   -H 'Sec-Fetch-User: ?1'   -H 'Priority: u=0, i'   -H 'TE: trailers'   --data-raw 'select=Select+Version&version_name=Paper&server_name=ItzWoow&version=1.8.8' ";
+
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg(command_shell)
+        .output()
+        .await?;
+    
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        eprintln!("Error saat menjalankan perintah curl: {}", stderr);
+
+        return Err(Box::<dyn Error>::from(
+            "Failed to execute curl command successfully",
+        ));
+    }
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
@@ -127,6 +148,7 @@ async fn main() -> anyhow::Result<()> {
         } else {
             let id = get_server_magma_id().await.unwrap();
             remove_server(id).await.unwrap();
+
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
