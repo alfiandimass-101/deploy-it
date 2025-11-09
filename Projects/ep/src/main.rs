@@ -1,5 +1,7 @@
 use reqwest::{Client, header::{HeaderMap, HeaderValue}};
 
+use crate::utils::ServerSummary;
+
 pub mod utils;
 
 const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
@@ -28,7 +30,7 @@ pub async fn get_required_server_data() -> anyhow::Result<()> {
         .send()
         .await?;
     
-    utils::ServerSummary::from(result.text().await?);
+    serde_json::from_str::<ServerSummary>(result.text().await?)?
 
     Ok(())
 }
