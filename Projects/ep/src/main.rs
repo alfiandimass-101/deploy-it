@@ -178,6 +178,7 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     .multipart(form)
     .send().await?;
 
+    println!("upload done");
     Ok(())
 }
 
