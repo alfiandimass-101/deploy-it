@@ -44,6 +44,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
         .headers(headers)
         .send()
         .await?;
+    println!("[AUTO START EXECUTED]");
     Ok(())
 }
 
