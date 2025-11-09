@@ -147,7 +147,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     headers.insert("Accept", HeaderValue::from_static("application/json"));
 
     let client = Client::new();
-    let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2Fplugins%2F"))
+    let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2F"))
     .headers(headers)
     .send().await?;
 
@@ -167,7 +167,7 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     file.read_to_end(&mut plugss_buffer).await?;
     
     let local_file_part = Part::bytes(plugss_buffer);
-    let directory_part = Part::text("/".to_string());
+    let directory_part = Part::text("/plugins/".to_string());
     
     let form = reqwest::multipart::Form::new()
         .part("files", local_file_part)
