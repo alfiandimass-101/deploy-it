@@ -19,5 +19,6 @@ async fn get_server_data() -> anyhow::Result<()> {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    get_server_data().await?;
     Ok(())
 }
