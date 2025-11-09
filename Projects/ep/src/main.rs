@@ -96,7 +96,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
         .await?;
 
 
-    let re = Regex::new(r"server\?id=(\d+)")?;
+    let re = regex::Regex::new(r"server\?id=(\d+)")?;
 
 
     match re.captures(&response_text) {
@@ -105,7 +105,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
             let server_id_str = cap.get(1)
 
-                .ok_or_else(|| Box::<dyn Error>::from("Regex match found but capture group 1 is missing"))?
+                .ok_or_else(|| Box::<dyn std::error::Error>::from("Regex match found but capture group 1 is missing"))?
 
                 .as_str();
 
