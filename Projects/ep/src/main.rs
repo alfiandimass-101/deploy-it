@@ -76,11 +76,11 @@ pub async fn get_server_magma_id() -> Result<u64> {
         Some(cap) => {
             let server_id = cap.get(1).map_or("", |m| m.as_str());
             println!("ID Server yang Ditemukan: {}", server_id);
-            server_id.parse::<u64>()
+            server_id.parse::<u64>()?
         },
         None => {
             println!("ID Server tidak ditemukan.");
-            Err("CANT FIND THE ID")
+            return Err("CANT FIND THE SERVER MAGMA ID");
         }
     })
 }
