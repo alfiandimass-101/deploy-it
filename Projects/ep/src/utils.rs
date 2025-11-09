@@ -11,14 +11,14 @@ pub struct ServerSummary {
 }
 
 #[derive(Debug, Deserialize)]
-struct ServerAttributesContainer {
+pub struct ServerAttributesContainer {
     pub attributes: MinimalServerAttributes,
     #[serde(flatten)]
     extra: Value,
 }
 
 #[derive(Debug, Deserialize)]
-struct MinimalServerAttributes {
+pub struct MinimalServerAttributes {
     pub uuid: String,
     pub identifier: String,
     #[serde(flatten)]
