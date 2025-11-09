@@ -28,7 +28,7 @@ pub async fn get_required_server_data() -> anyhow::Result<()> {
         .send()
         .await?;
     
-    let server_id = result.text().await?.find(pat)
+    utils::ServerSummary::from(result.text().await?);
 
     Ok(())
 }
