@@ -3,7 +3,7 @@
 use serde::Deserialize;
 use serde_json::Value;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Default)]
 pub struct ServerSummary {
     pub data: Vec<ServerAttributesContainer>, 
     #[serde(flatten)]

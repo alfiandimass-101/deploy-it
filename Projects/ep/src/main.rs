@@ -32,9 +32,18 @@ pub async fn get_required_server_data() -> Result<ServerSummary, serde_json::Err
     serde_json::from_str::<ServerSummary>(&result.text().await.unwrap())
 }
 
+pub async fn 
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let res = get_required_server_data().await?;
+    let (status, server_data) = match get_required_server_data().await {
+        Ok(result) => (true, result),
+        Err(_) => (false, ServerSummary::default())
+    };
+    
+    let server_id = server_data.data.first().unwrap().attributes.identifier;
+    let server_uuid = server_data.data.first().unwrap().attributes.uuid;
+
 
     Ok(())
 }
