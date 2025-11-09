@@ -155,7 +155,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
         Ok(data) => {
             data.attributes.url
         },
-        Err(e) => { return e.to_string(); },
+        Err(e) => { return anyhow::Error::new(e.to_string()); },
     };
     Ok(url)
 }
