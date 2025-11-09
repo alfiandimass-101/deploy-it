@@ -151,12 +151,13 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     .headers(headers)
     .send().await?;
 
-    let url = match serde_json::from_str::<UploaderJson>(result.text().await?) {
+    let url = match serde_json::from_str::<UploaderJson>(&result.text().await?) {
         Ok(data) => {
             data.attributes.url
         },
         Err(e) => e,
     };
+    Ok(url)
 }
 
 #[tokio::main]
