@@ -3,8 +3,9 @@ use reqwest::{Client, header::{HeaderMap, HeaderValue}};
 const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
 const PAGE: &'static str = "https://magmanode.com";
 const PANEL: &'static str = "https://panel.magmanode.com";
+const AUTH_TOKEN: &str = "ptlc_8JGKmhuz2JydQ0Ax8Ko7MKopPTeWln8mJi2cmZm0Uam";
 
-pub async fn get_server_data() -> Result<()> {
+pub async fn get_server_data() -> anyhow::Result<()> {
     let mut headers = HeaderMap::new();
 
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
