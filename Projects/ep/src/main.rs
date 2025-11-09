@@ -48,7 +48,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id() -> Result<u64, &str> {
+pub async fn get_server_magma_id() -> Result<u64, &'static str> {
     let client = Client::new();
     let response = client.get(format!("{PAGE}/services"))
         .header("USER_AGENT", "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
@@ -66,9 +66,9 @@ pub async fn get_server_magma_id() -> Result<u64, &str> {
         .header("Priority", "u=0, i")
         .header("TE", "trailers")
         .send()
-        .await?
+        .await.unwrap()
         .text()
-        .await?;
+        .await.unwrap();
 
     let re = regex::Regex::new(r"server\?id=(\d+)")?;
 
