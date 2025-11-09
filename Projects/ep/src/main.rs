@@ -138,7 +138,7 @@ pub async fn create_server() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> {
+pub async fn make_upload_url(server_identifier: &str) -> Result<String, serde_json::Error> {
     let mut headers = HeaderMap::new();
 
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
@@ -149,13 +149,13 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     let client = Client::new();
     let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2Fplugins%2F"))
     .headers(headers)
-    .send().await?;
+    .send().await.unwrap();
 
-    let url = match serde_json::from_str::<UploaderJson>(&result.text().await?) {
+    let url = match serde_json::from_str::<UploaderJson>(&result.text().await.unwrap()) {
         Ok(data) => {
             data.attributes.url
         },
-        Err(e) => { return anyhow::Error::new(e.to_string()); },
+        Err(e) => return e;
     };
     Ok(url)
 }
