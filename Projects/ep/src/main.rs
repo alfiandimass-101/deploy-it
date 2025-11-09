@@ -48,7 +48,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> {
+pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
 
     let mut headers = HeaderMap::new();
 
@@ -91,7 +91,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
     
 
-    let url = format!("{}/services", page_url);
+    let url = format!("{PAGE}/services", page_url);
 
 
     let response_text = client.get(&url)
@@ -114,7 +114,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
     let (_, after_key) = response_text.split_once(search_key)
 
-        .ok_or_else(|| Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found."))?;
+        .ok_or_else(|| Box::<dyn std::error::Error>::from("CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found."))?;
 
 
     // 2. Ambil karakter hingga karakter non-digit pertama
@@ -130,7 +130,7 @@ pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> 
 
     if server_id_str.is_empty() {
 
-        return Err(Box::<dyn Error>::from("Key 'server?id=' found, but no subsequent digits were present."));
+        return Err(Box::<dyn std::error::Error>::from("Key 'server?id=' found, but no subsequent digits were present."));
 
     }
 
