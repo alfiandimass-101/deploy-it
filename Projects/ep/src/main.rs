@@ -160,6 +160,16 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     Ok(url)
 }
 
+pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
+    let client = Client::new();
+    client.post(url)
+    .form(format!("files=@{path}"))
+    .form("directory=/")
+    .send().await?;
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     loop {
@@ -173,6 +183,8 @@ async fn main() -> anyhow::Result<()> {
             let id = get_server_magma_id().await.unwrap();
             remove_server(id).await.unwrap();
             create_server().await.unwrap();
+            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.uuid).await?;
+
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
