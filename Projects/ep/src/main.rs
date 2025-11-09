@@ -53,7 +53,7 @@ use tokio::process::Command;
 use std::error::Error;
 
 
-pub async fn get_server_magma_id_via_curl() -> Result<u64, Box<dyn Error>> {
+pub async fn get_server_magma_id() -> Result<u64, Box<dyn Error>> {
 
     let command_shell = "curl 'https://magmanode.com/services' \\
 
