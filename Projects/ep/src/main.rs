@@ -4,8 +4,8 @@ use reqwest::{
 };
 
 use crate::utils::ServerSummary;
-use tokio::process::Command;
 use std::error::Error;
+use tokio::process::Command;
 
 pub mod utils;
 
@@ -95,14 +95,16 @@ pub async fn get_server_magma_id() -> Result<u64, Box<dyn Error>> {
 }
 
 pub async fn remove_server(server_id: u64) -> Result<(), Box<dyn Error>> {
-    let command_shell = format!("curl 'https://magmanode.com/services'   --compressed   -X POST   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0'   -H 'Accept: */*'   -H 'Accept-Language: en-US,en;q=0.5'   -H 'Accept-Encoding: gzip, deflate, br, zstd'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'X-Requested-With: XMLHttpRequest'   -H 'Origin: https://magmanode.com'   -H 'Sec-GPC: 1'   -H 'Connection: keep-alive'   -H 'Referer: https://magmanode.com/services'   -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354'   -H 'Sec-Fetch-Dest: empty'   -H 'Sec-Fetch-Mode: cors'   -H 'Sec-Fetch-Site: same-origin'   -H 'Priority: u=0'   --data-raw 'delete_server=true&server_id={server_id}'");
-    
+    let command_shell = format!(
+        "curl 'https://magmanode.com/services'   --compressed   -X POST   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0'   -H 'Accept: */*'   -H 'Accept-Language: en-US,en;q=0.5'   -H 'Accept-Encoding: gzip, deflate, br, zstd'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'X-Requested-With: XMLHttpRequest'   -H 'Origin: https://magmanode.com'   -H 'Sec-GPC: 1'   -H 'Connection: keep-alive'   -H 'Referer: https://magmanode.com/services'   -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354'   -H 'Sec-Fetch-Dest: empty'   -H 'Sec-Fetch-Mode: cors'   -H 'Sec-Fetch-Site: same-origin'   -H 'Priority: u=0'   --data-raw 'delete_server=true&server_id={server_id}'"
+    );
+
     let output = Command::new("sh")
         .arg("-c")
         .arg(command_shell)
         .output()
         .await?;
-    
+
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
 
@@ -123,7 +125,7 @@ pub async fn create_server() -> Result<(), Box<dyn Error>> {
         .arg(command_shell)
         .output()
         .await?;
-    
+
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
 
