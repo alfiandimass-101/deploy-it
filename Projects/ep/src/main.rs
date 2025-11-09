@@ -1,6 +1,7 @@
 use reqwest::{
     Client,
-    header::{HeaderMap, HeaderValue}, multipart::Part,
+    header::{HeaderMap, HeaderValue},
+    multipart::Part,
 };
 
 use crate::utils::{ServerSummary, UploaderJson};
@@ -152,9 +153,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     .send().await?;
 
     let url = match serde_json::from_str::<UploaderJson>(&result.text().await?) {
-        Ok(data) => {
-            data.attributes.url
-        },
+        Ok(data) => data.attributes.url,
         Err(e) => panic!("NO UPLOAD URL: {e}"),
     };
     println!("[MAKE UPLOAD DONE]");
@@ -165,18 +164,16 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     let mut file = tokio::fs::File::open(path).await?;
     let mut plugss_buffer = Vec::new();
     file.read_to_end(&mut plugss_buffer).await?;
-    
+
     let local_file_part = Part::bytes(plugss_buffer).file_name("plugss.zip");
     let directory_part = Part::text("/".to_string());
-    
+
     let form = reqwest::multipart::Form::new()
         .part("files", local_file_part)
         .part("directory", directory_part);
 
     let client = Client::new();
-    client.post(url)
-    .multipart(form)
-    .send().await?;
+    client.post(url).multipart(form).send().await?;
 
     println!("upload done");
     Ok(())
@@ -197,9 +194,13 @@ pub async fn decompress_plugss(server_identifier: &str) -> anyhow::Result<()> {
     }"#;
 
     let client = Client::new();
-    client.post(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/decompress"))
+    client
+        .post(format!(
+            "https://panel.magmanode.com/api/client/servers/{server_identifier}/files/decompress"
+        ))
         .body(body)
-        .send().await?;
+        .send()
+        .await?;
 
     Ok(())
 }
@@ -218,8 +219,13 @@ async fn main() -> anyhow::Result<()> {
             remove_server(id).await.unwrap();
             create_server().await.unwrap();
             tokio::time::sleep(tokio::time::Duration::from_mins(1)).await;
-            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.identifier).await?;
-            upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
+            let upload_url =
+                make_upload_url(&server_data.data.first().unwrap().attributes.identifier).await?;
+            upload_file(
+                &upload_url,
+                "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip",
+            )
+            .await?;
             decompress_plugss(&server_data.data.first().unwrap().attributes.identifier).await?;
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
