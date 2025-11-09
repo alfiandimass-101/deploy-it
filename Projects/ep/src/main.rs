@@ -48,116 +48,97 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id() -> Result<u64, Box<dyn std::error::Error>> {
-    let mut headers = HeaderMap::new();
+use tokio::process::Command;
 
-    // Menggunakan string literal untuk Header
+use std::error::Error;
 
-    headers.insert(
-        "User-Agent",
-        HeaderValue::from_static(
-            "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0",
-        ),
-    );
 
-    headers.insert(
-        "Accept",
-        HeaderValue::from_static("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
-    );
+pub async fn get_server_magma_id_via_curl() -> Result<u64, Box<dyn Error>> {
 
-    headers.insert(
-        "Accept-Language",
-        HeaderValue::from_static("en-US,en;q=0.5"),
-    );
+    let command_shell = "curl 'https://magmanode.com/services' \\
 
-    headers.insert(
-        "Accept-Encoding",
-        HeaderValue::from_static("gzip, deflate, br, zstd"),
-    );
+        --compressed \\
 
-    headers.insert("Sec-GPC", HeaderValue::from_static("1"));
+        -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0' \\
 
-    headers.insert("Connection", HeaderValue::from_static("keep-alive"));
+        -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \\
 
-    headers.insert(
-        "Cookie",
-        HeaderValue::from_static("PHPSESSID=7rkskb8ils3s8su7jrrh83q354;"),
-    );
+        -H 'Accept-Language: en-US,en;q=0.5' \\
 
-    headers.insert("Upgrade-Insecure-Requests", HeaderValue::from_static("1"));
+        -H 'Accept-Encoding: gzip, deflate, br, zstd' \\
 
-    headers.insert("Sec-Fetch-Dest", HeaderValue::from_static("document"));
+        -H 'Sec-GPC: 1' \\
 
-    headers.insert("Sec-Fetch-Mode", HeaderValue::from_static("navigate"));
+        -H 'Connection: keep-alive' \\
 
-    headers.insert("Sec-Fetch-Site", HeaderValue::from_static("none"));
+        -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354;' \\
 
-    headers.insert("Sec-Fetch-User", HeaderValue::from_static("?1"));
+        -H 'Upgrade-Insecure-Requests: 1' \\
 
-    headers.insert("Priority", HeaderValue::from_static("u=0, i"));
+        -H 'Sec-Fetch-Dest: document' \\
 
-    headers.insert("TE", HeaderValue::from_static("trailers"));
+        -H 'Sec-Fetch-Mode: navigate' \\
 
-    let client = Client::builder().default_headers(headers).build()?;
+        -H 'Sec-Fetch-Site: none' \\
 
-    let url = format!("{PAGE}/services");
-    // Kirim permintaan
-    let response = client.get(&url).send().await?;
+        -H 'Sec-Fetch-User: ?1' \\
 
-    // Dapatkan header untuk debug (opsional)
-    // let content_encoding = response.headers().get("Content-Encoding").and_then(|h| h.to_str().ok());
+        -H 'Priority: u=0, i' \\
+
+        -H 'TE: trailers' \\
+
+        | grep -oP 'server\\?id=\\K\\d+' \\
+
+        | head -n 1";
+
+
+    let output = Command::new("sh")
+
+        .arg("-c")
+
+        .arg(command_shell)
+
+        .output()
+
+        .await?;
+
+
+    if !output.status.success() {
+
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        eprintln!("Error saat menjalankan perintah curl: {}", stderr);
+
+        return Err(Box::<dyn Error>::from("Failed to execute curl command successfully"));
+
+    }
+
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
     
-    // Coba baca respons sebagai teks (ini yang menyebabkan error jika terkompresi)
-    let response_text = response.text().await?;
+
+    let server_id_str = stdout.trim();
+
+
+    if server_id_str.is_empty() {
+
+        return Err(Box::<dyn Error>::from("CANT FIND THE SERVER MAGMA ID: Output was empty after running curl/grep."));
+
+    }
+
+
+    let server_id = server_id_str.parse::<u64>()
+
+        .map_err(|e| format!("Failed to parse server ID '{}' as u64: {}", server_id_str, e))?;
+
+
+    println!("ID Server yang Ditemukan (via curl child process): {}", server_id);
+
     
-    // --- OUTPUT DEBUG ---
-    // println!("--- Content-Encoding Header: {:?}", content_encoding);
-    println!("--- RESPONS TEXT (HARUSNYA HTML):");
-    println!("{}", &response_text);
-    println!("---------------------------------");
-    Ok(0)
 
-    // let response_text = client.get(&url).send().await?.text().await?;
-    // println!("{}", &response_text);
-    // // --- LOGIKA PENCARIAN ID (11-12 dengan BASH) ---
+    Ok(server_id)
 
-    // let search_key = "server?id=";
-
-    // // 1. Split_once untuk menemukan ID pertama (mirip grep | head -n 1)
-
-    // let (_, after_key) = response_text.split_once(search_key).ok_or_else(|| {
-    //     Box::<dyn std::error::Error>::from(
-    //         "CANT FIND THE SERVER MAGMA ID in response. Key 'server?id=' not found.",
-    //     )
-    // })?;
-
-    // // 2. Ambil karakter hingga karakter non-digit pertama
-
-    // let server_id_str: String = after_key
-    //     .chars()
-    //     .take_while(|c| c.is_ascii_digit())
-    //     .collect();
-
-    // // 3. Pastikan ID ditemukan dan bukan string kosong
-
-    // if server_id_str.is_empty() {
-    //     return Err(Box::<dyn std::error::Error>::from(
-    //         "Key 'server?id=' found, but no subsequent digits were present.",
-    //     ));
-    // }
-
-    // // 4. Parse hasilnya menjadi u64
-
-    // let server_id = server_id_str.parse::<u64>().map_err(|e| {
-    //     format!(
-    //         "Failed to parse server ID '{}' as u64: {}",
-    //         server_id_str, e
-    //     )
-    // })?;
-
-    // println!("ID Server yang Ditemukan: {}", server_id);
-
-    // Ok(server_id)
 }
 
 #[tokio::main]
