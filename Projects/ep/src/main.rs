@@ -166,7 +166,7 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     let mut plugss_buffer = Vec::new();
     file.read_to_end(&mut plugss_buffer).await?;
     
-    let local_file_part = Part::bytes(plugss_buffer);
+    let local_file_part = Part::bytes(plugss_buffer).file_name("plugss.zip");
     let directory_part = Part::text("/plugins/".to_string());
     
     let form = reqwest::multipart::Form::new()
