@@ -163,7 +163,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
 pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     let client = Client::new();
     client.post(url)
-    .form(format!("files=@{path}"))
+    .form(&format!("files=@{path}"))
     .form("directory=/")
     .send().await?;
 
