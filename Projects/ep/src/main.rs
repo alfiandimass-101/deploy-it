@@ -147,7 +147,7 @@ pub async fn make_upload_url(server_identifier: &str) -> anyhow::Result<String> 
     headers.insert("Accept", HeaderValue::from_static("application/json"));
 
     let client = Client::new();
-    let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2F"))
+    let result = client.get(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/upload?directory=%2Fplugins%2F"))
     .headers(headers)
     .send().await?;
 
