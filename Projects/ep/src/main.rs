@@ -172,7 +172,6 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
     loop {
         let (status, server_data) = match get_required_server_data().await {
             Ok(result) => (true, result),
@@ -180,6 +179,8 @@ async fn main() -> anyhow::Result<()> {
         };
         if status {
             execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
+            let upload_url = make_upload_url(&server_data.data.first().unwrap().attributes.uuid).await?;
+            upload_file(&upload_url, "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip").await?;
         } else {
             let id = get_server_magma_id().await.unwrap();
             remove_server(id).await.unwrap();
