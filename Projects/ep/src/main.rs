@@ -48,7 +48,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn Error>> {
+pub async fn get_server_magma_id(page_url: &str) -> Result<u64, Box<dyn std::error::Error>> {
 
     let client = Client::new();
 
