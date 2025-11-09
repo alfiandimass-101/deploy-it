@@ -182,7 +182,7 @@ pub async fn upload_file(url: &str, path: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn decompress_file(server_identifier: &str, name: &str) -> anyhow::Result<()> {
+pub async fn decompress_plugss(server_identifier: &str) -> anyhow::Result<()> {
     let mut headers = HeaderMap::new();
 
     let auth_value = format!("Bearer {}", AUTH_TOKEN);
@@ -191,10 +191,10 @@ pub async fn decompress_file(server_identifier: &str, name: &str) -> anyhow::Res
     headers.insert("Accept", HeaderValue::from_static("application/json"));
     headers.insert("Content-Type", HeaderValue::from_static("application/json"));
 
-    let body = r#"{
+    let body = format!(r#"{
         "root": "/",
-        "file": "backup.zip"
-    }"#;
+        "file": "plugss.zip"
+    }"#);
 
     let client = Client::new();
     client.post(format!("https://panel.magmanode.com/api/client/servers/{server_identifier}/files/decompress"))
