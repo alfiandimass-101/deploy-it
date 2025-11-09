@@ -4,16 +4,31 @@ const PHPSESID: &'static str = "7rkskb8ils3s8su7jrrh83q354";
 const PAGE: &'static str = "https://magmanode.com";
 const PANEL: &'static str = "https://panel.magmanode.com";
 
-async fn get_server_data() -> anyhow::Result<()> {
-    let mut ptero_info_header = HeaderMap::new();
-    ptero_info_header.insert("Authorization", "Bearer ptlc_8JGKmhuz2JydQ0Ax8Ko7MKopPTeWln8mJi2cmZm0Uam".parse()?);
-    ptero_info_header.insert("Accept", "application/json".parse()?);
-    ptero_info_header.insert("application/json", "application/json".parse()?);
-    let client = Client::new()
-    .get(format!("{PANEL}/api/client"))
-    .headers(ptero_info_header);
-    let result = client.send().await?;
-    println!("{:?}", result);
+pub async fn get_server_data() -> Result<()> {
+    let mut headers = HeaderMap::new();
+
+    let auth_value = format!("Bearer {}", AUTH_TOKEN);
+    headers.insert(
+        "Authorization", 
+        HeaderValue::from_str(&auth_value)?
+    );
+
+    headers.insert("Accept", HeaderValue::from_static("application/json"));
+    headers.insert("Content-Type", HeaderValue::from_static("application/json"));
+
+    let client = Client::new();
+    let url = format!("{}/api/client", PANEL_URL);
+
+    let result = client
+        .get(url)
+        .headers(headers)
+        .send()
+        .await?;
+    
+    println!("Status Respons: {:?}", result.status());
+    let body = result.text().await?;
+    println!("Isi Respons:\n{}", body);
+
     Ok(())
 }
 
