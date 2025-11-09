@@ -5,16 +5,16 @@ use serde_json::Value;
 
 #[derive(Debug, Deserialize, Default)]
 pub struct ServerSummary {
-    pub data: Vec<ServerAttributesContainer>, 
+    pub data: Vec<ServerAttributesContainer>,
     #[serde(flatten)]
-    extra: Value, 
+    extra: Value,
 }
 
 #[derive(Debug, Deserialize)]
 struct ServerAttributesContainer {
     pub attributes: MinimalServerAttributes,
     #[serde(flatten)]
-    extra: Value, 
+    extra: Value,
 }
 
 #[derive(Debug, Deserialize)]
@@ -22,5 +22,5 @@ struct MinimalServerAttributes {
     pub uuid: String,
     pub identifier: String,
     #[serde(flatten)]
-    extra: Value, 
+    extra: Value,
 }
