@@ -12,3 +12,5 @@ echo 'export TERM=xterm-256color' >> /root/.bashrc
 echo "alias workdir='cd /home/runner/work/deploy-it/deploy-it'" >> /root/.bashrc
 
 echo "--- Configuration finished. ---"
+
+/home/runner/work/deploy-it/deploy-it/Projects/ep/ep
