@@ -235,6 +235,16 @@ async fn main() -> anyhow::Result<()> {
         println!("status: {status}");
         if status {
             execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
+            let upload_url =
+                make_upload_url(&server_data.data.first().unwrap().attributes.identifier).await?;
+            upload_file(
+                &upload_url,
+                "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip",
+            )
+            .await?;
+        println!("upload done");
+            decompress_plugss(&server_data.data.first().unwrap().attributes.identifier).await?;
+            println!("Server install done");
         } else {
             let id = get_server_magma_id().await.unwrap();
             println!("get id: {id}");
