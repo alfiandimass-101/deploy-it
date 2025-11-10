@@ -52,7 +52,7 @@ pub async fn execute_auto_start(server_uuid: &str) -> anyhow::Result<()> {
 }
 
 pub async fn get_server_magma_id() -> Result<u64, Box<dyn Error>> {
-    let command_shell = r"curl 'https://magmanode.com/services'     --compressed     -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0'     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'     -H 'Accept-Language: en-US,en;q=0.5'     -H 'Accept-Encoding: gzip, deflate, br, zstd'     -H 'Sec-GPC: 1'     -H 'Connection: keep-alive'     -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354;'     -H 'Upgrade-Insecure-Requests: 1'     -H 'Sec-Fetch-Dest: document'     -H 'Sec-Fetch-Mode: navigate'     -H 'Sec-Fetch-Site: none'     -H 'Sec-Fetch-User: ?1'     -H 'Priority: u=0, i'     -H 'TE: trailers'     | grep -oP 'server\?id=\K\d+'     | head -n 1";
+    let command_shell = "curl 'https://magmanode.com/services'     --compressed     -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0'     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'     -H 'Accept-Language: en-US,en;q=0.5'     -H 'Accept-Encoding: gzip, deflate, br, zstd'     -H 'Sec-GPC: 1'     -H 'Connection: keep-alive'     -H 'Cookie: PHPSESSID=7rkskb8ils3s8su7jrrh83q354;'     -H 'Upgrade-Insecure-Requests: 1'     -H 'Sec-Fetch-Dest: document'     -H 'Sec-Fetch-Mode: navigate'     -H 'Sec-Fetch-Site: none'     -H 'Sec-Fetch-User: ?1'     -H 'Priority: u=0, i'     -H 'TE: trailers'     | grep -oP 'server\?id=\K\d+'     | head -n 1";
 
     let output = Command::new("sh")
         .arg("-c")
