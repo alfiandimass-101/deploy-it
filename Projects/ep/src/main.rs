@@ -226,8 +226,8 @@ pub async fn decompress_plugss(server_identifier: &str) -> anyhow::Result<()> {
 async fn main() -> anyhow::Result<()> {
     loop {
         let (status, server_data) = match get_required_server_data().await {
-            Ok(result) if !result.data.first().iter().is_empty() => (true, result),
             Ok(result) if result.data.first().iter().is_empty() => (false, ServerSummary::default()),
+            Ok(result) => (true, result),
             Err(_) => (false, ServerSummary::default()),
         };
         println!("status: {status}");
