@@ -229,6 +229,7 @@ async fn main() -> anyhow::Result<()> {
             Ok(result) => (true, result),
             Err(_) => (false, ServerSummary::default()),
         };
+        println!("status: {status}");
         if status {
             execute_auto_start(&server_data.data.first().unwrap().attributes.uuid).await?;
         } else {
