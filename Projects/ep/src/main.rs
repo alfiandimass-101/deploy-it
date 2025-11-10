@@ -239,7 +239,9 @@ async fn main() -> anyhow::Result<()> {
             let id = get_server_magma_id().await.unwrap();
             println!("get id: {id}");
             remove_server(id).await.unwrap();
+            println!("Remove server done");
             create_server().await.unwrap();
+            println!("Create Server Done");
             tokio::time::sleep(tokio::time::Duration::from_mins(1)).await;
             let upload_url =
                 make_upload_url(&server_data.data.first().unwrap().attributes.identifier).await?;
@@ -248,7 +250,9 @@ async fn main() -> anyhow::Result<()> {
                 "/home/runner/work/deploy-it/deploy-it/Projects/ep/plugss.zip",
             )
             .await?;
+        println!("upload done");
             decompress_plugss(&server_data.data.first().unwrap().attributes.identifier).await?;
+            println!("Server install done");
         }
         tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
     }
