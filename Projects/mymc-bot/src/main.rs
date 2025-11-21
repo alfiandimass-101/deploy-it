@@ -14,7 +14,7 @@ async fn main() -> anyhow::Result<()> {
         .await?;
     Ok(())
 }
-async fn handler(mut bot: Client, event: Event, mut state: BotState) -> anyhow::Result<()> {
+async fn handler(bot: Client, event: Event, mut state: BotState) -> anyhow::Result<()> {
     match event {
         Event::Init => {
             bot.set_client_information(ClientInformation {
