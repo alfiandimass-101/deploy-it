@@ -1,12 +1,4 @@
-use std::sync::Arc;
-
-use tokio::sync::Mutex;
-
-use azalea::{
-    Account, ClientInformation,
-    blocks::BlockStates,
-    prelude::*,
-};
+use azalea::{Account, ClientInformation, blocks::BlockStates, prelude::*};
 use tracing::{info, warn};
 
 mod utils;
@@ -22,7 +14,7 @@ async fn main() -> anyhow::Result<()> {
         .await?;
     Ok(())
 }
-async fn handler(mut bot: Client, mut event: Event, mut state: BotState) -> anyhow::Result<()> {
+async fn handler(mut bot: Client, event: Event, state: BotState) -> anyhow::Result<()> {
     match event {
         Event::Init => {
             bot.set_client_information(ClientInformation {

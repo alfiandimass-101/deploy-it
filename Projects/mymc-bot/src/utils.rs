@@ -1,7 +1,4 @@
 use azalea::prelude::Component;
-use std::sync::Arc;
-use tokio::sync::Mutex;
-use tracing::info;
 
 pub const OWNER_UUID: uuid::Uuid = uuid::uuid!("452cb59a-adf3-3ebe-814b-53015c4e4279");
 
@@ -17,7 +14,7 @@ pub struct OwnerCommand<'a>(pub &'a str, pub &'a str);
 #[derive(Debug, Default, Component, Clone)]
 pub struct BotState {
     pub can_kill: bool,
-    task: Arc<Mutex<TaskState>>,
+    _task: Arc<Mutex<TaskState>>,
 }
 
 pub fn process_owner_command<'a>(content: &'a str) -> Option<OwnerCommand<'a>> {
