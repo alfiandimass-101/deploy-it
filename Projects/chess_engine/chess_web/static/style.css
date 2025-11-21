@@ -1,0 +1,143 @@
+:root {
+    --light-square: #eeeed2;
+    --dark-square: #769656;
+    --highlight: rgba(255, 255, 0, 0.5);
+    --bg-color: #302e2b;
+    --text-color: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    border: 5px solid #444;
+    user-select: none;
+}
+
+.square {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    position: relative;
+}
+
+.square.light {
+    background-color: var(--light-square);
+    color: black; /* For unicode pieces if used */
+}
+
+.square.dark {
+    background-color: var(--dark-square);
+    color: black;
+}
+
+.square.selected {
+    background-color: rgba(186, 202, 68, 0.8) !important;
+}
+
+.square.highlight {
+    position: relative;
+}
+
+.square.highlight::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
+
+.piece {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+}
+
+/* Unicode Piece Styling fallback */
+.piece-text {
+    font-size: 45px;
+    line-height: 60px;
+}
+
+#game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 480px;
+    font-size: 1.2rem;
+}
+
+#controls {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #81b64c;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #a3d160;
+}
+
+#move-history {
+    width: 480px;
+    height: 100px;
+    overflow-y: auto;
+    background-color: #262421;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#moves-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.move-item {
+    background-color: #444;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.9rem;
+}

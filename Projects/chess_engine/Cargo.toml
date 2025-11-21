@@ -1,6 +1,6 @@
-[package]
-name = "chess_engine"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
+[workspace]
+members = [
+    "chess_web",
+    "chess_ai",
+]
+resolver = "2"
