@@ -12,3 +12,8 @@ struct XorModel<B: Backend> {
     output_layer_activation: Sigmoid,
     loss: BinaryCrossEntropyLoss<B>,
 }
+
+#[derive(Config, Debug)]
+struct XorModelConfig {
+    hidden_size: usize,
+}
