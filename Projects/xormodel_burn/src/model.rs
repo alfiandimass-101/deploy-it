@@ -1,5 +1,8 @@
 use burn::{
-    nn::{Linear, LinearConfig, Relu, Sigmoid, loss::BinaryCrossEntropyLoss},
+    nn::{
+        Linear, LinearConfig, Relu, Sigmoid,
+        loss::{BinaryCrossEntropyLoss, BinaryCrossEntropyLossConfig},
+    },
     prelude::*,
 };
 
@@ -26,7 +29,7 @@ impl XorModelConfig {
             hidden_layer_activation: Relu::new(),
             output_layer: LinearConfig::new(1, 1).init(device),
             output_layer_activation: Sigmoid::new(),
-            loss: BinaryCrossEntropyLoss::new(),
+            loss: BinaryCrossEntropyLossConfig::new().init(device),
         }
     }
 }
