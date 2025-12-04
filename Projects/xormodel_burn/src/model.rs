@@ -7,7 +7,7 @@ use burn::{
 };
 
 #[derive(Module, Debug)]
-struct XorModel<B: Backend> {
+pub struct XorModel<B: Backend> {
     input: Linear<B>,
     hidden_layer: Linear<B>,
     hidden_layer_activation: Relu,
