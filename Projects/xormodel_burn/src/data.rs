@@ -56,3 +56,14 @@ fn test_xor_logic() {
         );
     }
 }
+
+#[test]
+fn test_batcher() {
+    use burn::backend::Wgpu;
+    let batcher = XorBatcher::default();
+    let items = vec![(true, false), (false, true)];
+    let device = Default::default();
+    let batch: XorBatch<Wgpu> = batcher.batch(items, &device);
+    assert_eq!(batch.inputs.shape().dims, [2, 2]);
+    assert_eq!(batch.targets.shape().dims, [2]);
+}
