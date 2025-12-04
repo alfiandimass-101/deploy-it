@@ -1,4 +1,5 @@
-use burn::{Tensor, data::dataloader::batcher::Batcher, prelude::Backend};
+use burn::data::dataloader::batcher::Batcher;
+use burn::{Tensor, prelude::Backend};
 use rand::random_bool;
 
 #[derive(Debug, Clone)]
