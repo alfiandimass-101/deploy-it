@@ -1,5 +1,5 @@
 use burn::data::dataloader::batcher::Batcher;
-use burn::{Tensor, prelude::Backend};
+use burn::{Tensor, prelude::Backend, tensor::TensorData};
 use rand::random_bool;
 
 #[derive(Debug, Clone)]
@@ -15,7 +15,7 @@ impl<B: Backend> Batcher<B, (bool, bool), XorBatch<B>> for XorBatcher {
     fn batch(&self, items: Vec<(bool, bool)>, device: &<B as Backend>::Device) -> XorBatch<B> {
         let inputs = items
             .iter()
-            .map(|(a, b)| [*a as i32 as f32, *b as i32 as f32])
+            .flat_map(|(a, b)| [*a as i32 as f32, *b as i32 as f32])
             .collect::<Vec<_>>();
 
         let targets = items
@@ -23,7 +23,8 @@ impl<B: Backend> Batcher<B, (bool, bool), XorBatch<B>> for XorBatcher {
             .map(|(a, b)| (*a ^ *b) as i32 as f32)
             .collect::<Vec<_>>();
 
-        let inputs = Tensor::from_data(inputs.as_slice(), device);
+        let shape = [items.len(), 2];
+        let inputs = Tensor::from_data(TensorData::new(inputs, shape), device);
 
         let targets = Tensor::from_data(targets.as_slice(), device);
 
