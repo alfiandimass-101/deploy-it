@@ -14,7 +14,10 @@ impl<B: Backend> Batcher<B, (bool, bool), XorBatch<B>> for XorBatcher {
     fn batch(&self, items: Vec<(bool, bool)>, device: &<B as Backend>::Device) -> XorBatch<B> {
         let inputs = Tensor::from_data(
             device,
-            items.iter().map(|(a, b)| [*a as f32, *b as f32]).collect(),
+            items
+                .iter()
+                .map(|(a, b)| [*a as i32 as f32, *b as i32 as f32])
+                .collect(),
         );
     }
 }
