@@ -4,6 +4,9 @@ use burn::{backend::Wgpu, prelude::*};
 
 type Backend = Wgpu<f32, i32, u32>;
 
+#[derive(Module, Debug)]
+struct XorModel {}
+
 fn main() {
     let device = Default::default();
 
