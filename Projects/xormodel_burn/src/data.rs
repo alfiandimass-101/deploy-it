@@ -13,13 +13,21 @@ pub struct XorBatcher {}
 
 impl<B: Backend> Batcher<B, (bool, bool), XorBatch<B>> for XorBatcher {
     fn batch(&self, items: Vec<(bool, bool)>, device: &<B as Backend>::Device) -> XorBatch<B> {
-        let inputs = Tensor::from_data(
-            device,
-            items
-                .iter()
-                .map(|(a, b)| [*a as i32 as f32, *b as i32 as f32])
-                .collect(),
-        );
+        let inputs = items
+            .iter()
+            .map(|(a, b)| [*a as i32 as f32, *b as i32 as f32])
+            .collect::<Vec<_>>();
+
+        let targets = items
+            .iter()
+            .map(|(a, b)| (*a ^ *b) as i32 as f32)
+            .collect::<Vec<_>>();
+
+        let inputs = Tensor::from_data(inputs.as_slice(), device);
+
+        let targets = Tensor::from_data(targets.as_slice(), device);
+
+        XorBatch { inputs, targets }
     }
 }
 
