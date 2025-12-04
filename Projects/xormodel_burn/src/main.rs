@@ -3,7 +3,6 @@
 use burn::{
     backend::Wgpu,
     nn::{Linear, Relu, Sigmoid, loss::BinaryCrossEntropyLoss},
-    optim::Adam,
     prelude::*,
 };
 
@@ -14,7 +13,6 @@ struct XorModel<B: Backend> {
     hidden_layer_activation: Relu,
     output_layer: Linear<B>,
     output_layer_activation: Sigmoid,
-    optimizer: Adam,
     loss: BinaryCrossEntropyLoss<B>,
 }
 
