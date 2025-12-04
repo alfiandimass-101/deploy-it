@@ -17,7 +17,7 @@ struct XorModel<B: Backend> {
 }
 
 #[derive(Config, Debug)]
-struct XorModelConfig {
+pub struct XorModelConfig {
     hidden_size: usize,
 }
 
