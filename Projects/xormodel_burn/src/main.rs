@@ -1,11 +1,14 @@
 #![recursion_limit = "256"]
 
-use burn::{backend::Wgpu, prelude::*};
+use burn::{
+    backend::Wgpu,
+    prelude::{Backend, *},
+};
 
 type Backend = Wgpu<f32, i32, u32>;
 
 #[derive(Module, Debug)]
-struct XorModel {}
+struct XorModel<B: Backend> {}
 
 fn main() {
     let device = Default::default();
