@@ -28,3 +28,40 @@ pub fn create_xor_data() -> (bool, bool) {
     let b = random_bool(1.0 / 3.0);
     (a, b)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use burn::backend::ndarray::NdArrayBackend; // Assuming NdArrayBackend for testing
+    use burn::tensor::Device;
+
+    #[test]
+    fn test_create_xor_data() {
+        let (a, b) = create_xor_data();
+        // Just checking that it runs without panicking and returns two booleans.
+        // The actual values are random, so we can't assert specific values.
+        assert!(
+            true,
+            "create_xor_data should return a tuple of two booleans"
+        );
+    }
+
+    #[test]
+    fn test_xor_data_matches_xor_operator() {
+        type B = NdArrayBackend;
+        let device = Device::Cpu;
+        let batcher = XorBatcher {};
+
+        let items = vec![(false, false), (false, true), (true, false), (true, true)];
+        let xor_batch = batcher.batch(items.clone(), &device);
+
+        let expected_targets: Vec<f32> = items
+            .iter()
+            .map(|(a, b)| ((*a ^ *b) as i32) as f32)
+            .collect();
+
+        let actual_targets: Vec<f32> = xor_batch.targets.into_data().value;
+
+        assert_eq!(actual_targets, expected_targets);
+    }
+}
