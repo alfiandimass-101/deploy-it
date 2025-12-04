@@ -1,8 +1,9 @@
 #![recursion_limit = "256"]
 
 use burn::backend::Wgpu;
-use burn::prelude::*;
+// use burn::prelude::*;
 
+mod data;
 mod model;
 
 type InferenceBackend = Wgpu;
