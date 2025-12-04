@@ -26,7 +26,7 @@ impl<B: Backend> Batcher<B, (bool, bool), XorBatch<B>> for XorBatcher {
         let shape = [items.len(), 2];
         let inputs = Tensor::from_data(TensorData::new(inputs, shape), device);
 
-        let targets = Tensor::from_data(targets.as_slice(), device);
+        let targets = Tensor::from_data(TensorData::new(targets, [items.len()]), device);
 
         XorBatch { inputs, targets }
     }
@@ -59,11 +59,11 @@ fn test_xor_logic() {
 
 #[test]
 fn test_batcher() {
-    use burn::backend::Wgpu;
+    use burn_ndarray::NdArray;
     let batcher = XorBatcher::default();
     let items = vec![(true, false), (false, true)];
     let device = Default::default();
-    let batch: XorBatch<Wgpu> = batcher.batch(items, &device);
+    let batch: XorBatch<NdArray> = batcher.batch(items, &device);
     assert_eq!(batch.inputs.shape().dims, [2, 2]);
     assert_eq!(batch.targets.shape().dims, [2]);
 }
