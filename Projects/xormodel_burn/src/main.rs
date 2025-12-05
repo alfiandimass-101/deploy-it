@@ -12,5 +12,5 @@ fn main() {
     let device = burn::backend::wgpu::WgpuDevice::Cpu;
 
     let model = model::XorModelConfig::new(4).init::<InferenceBackend>(&device);
-    println!("Model: {:#?}", model);
+    println!("Model: {}", model);
 }
