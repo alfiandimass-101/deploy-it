@@ -9,7 +9,7 @@ mod model;
 type InferenceBackend = Wgpu;
 
 fn main() {
-    let device = burn::backend::wgpu::WgpuDevice::VirtualGpu(0);
+    let device = burn::backend::wgpu::WgpuDevice::DefaultDevice;
 
     let model = model::XorModelConfig::new(4).init::<InferenceBackend>(&device);
     println!("Model: {}", model);
