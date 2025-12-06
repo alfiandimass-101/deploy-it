@@ -59,11 +59,22 @@ impl RequestIter {
         }
     }
 
-    pub async fn check_url(url: &str) -> bool {
-        if let Ok(req) = reqwest::get(url).await {
-            req.status().is_success()
-        } else {
-            false
+    pub async fn check_url(client: &reqwest::Client, url: &str) -> bool {
+        match client.get(url).send().await {
+            Ok(resp) => {
+                if resp.status().is_success() {
+                    true
+                } else {
+                    if resp.status() != reqwest::StatusCode::NOT_FOUND {
+                        eprintln!("Warning: {} returned status {}", url, resp.status());
+                    }
+                    false
+                }
+            }
+            Err(e) => {
+                eprintln!("Error checking {}: {}", url, e);
+                false
+            }
         }
     }
 }
@@ -116,6 +127,12 @@ pub async fn main() {
         }
     });
 
+    // Shared client
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(10))
+        .build()
+        .expect("Failed to build client");
+
     // Limit concurrent requests
     const MAX_CONCURRENT_REQUESTS: usize = 50;
     let semaphore = Arc::new(Semaphore::new(MAX_CONCURRENT_REQUESTS));
@@ -123,9 +140,10 @@ pub async fn main() {
     while let Some(url) = iter.next() {
         let permit = semaphore.clone().acquire_owned().await.unwrap();
         let tx_clone = tx.clone();
+        let client_clone = client.clone();
         
         tokio::spawn(async move {
-            if RequestIter::check_url(&url).await {
+            if RequestIter::check_url(&client_clone, &url).await {
                 let _ = tx_clone.send(url).await;
             }
             drop(permit);
