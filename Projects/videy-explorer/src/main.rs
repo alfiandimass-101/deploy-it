@@ -133,7 +133,7 @@ pub async fn main() {
         });
 
         count += 1;
-        if count % 1000 == 0 {
+        if count % 10 == 0 {
             let session = SessionData {
                 last_path: iter.current_path.clone(),
             };
