@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_json;
 
+const TARGET_URL: &'static str = "https://cdn.videy.co";
+
 #[derive(Serialize, Deserialize)]
 pub struct SessionData {
     pub last_path: String,
@@ -20,7 +22,7 @@ impl<'a> RequestIter<'a> {
             serde_json::from_str(&session_str).expect("Failed to parse session.json");
         let last_path = session_data.last_path;
         // Use the last_path as base URL
-        let url = format!("{}{}", last_path, extension);
+        let url = format!("{}/{}.{}", TARGET_URL, last_path, extension);
         RequestIter { url, extension }
     }
 
