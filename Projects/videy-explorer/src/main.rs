@@ -1,19 +1,27 @@
 use serde::{Deserialize, Serialize};
 
+const TARGET_URL: &'static str = "https://cdn.videy.co";
+
+#[derive(Serialize, Deserialize)]
+pub struct SessionData {
+    pub last_path: String,
+}
+
 pub struct RequestIter<'a> {
     url: String,
     extension: &'a str,
 }
 
 impl<'a> RequestIter<'a> {
-    pub fn new(url: &'a str) -> RequestIter<'a> {
+    pub fn new(extension: &'a str) -> RequestIter<'a> {
+        let url = format!("{}{}", TARGET_URL, extension);
         RequestIter {
-            url: url.to_string(),
-            extension: "mp4",
+            url,
+            extension,
         }
     }
 
-    pub async fn valid_url(url: &'a str) -> bool {
+    pub async fn valid_url(&) -> bool {
         let req = reqwest::get(url).await.unwrap();
 
         req.status().is_success()
@@ -23,7 +31,9 @@ impl<'a> RequestIter<'a> {
 impl<'a> Iterator for RequestIter<'a> {
     type Item = String;
 
-    fn next(&mut self) -> Option<Self::Item> {}
+    fn next(&mut self) -> Option<Self::Item> {
+        if 
+    }
 }
 
 #[tokio::main]
