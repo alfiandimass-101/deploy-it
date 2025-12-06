@@ -8,25 +8,22 @@ pub struct SessionData {
     pub last_path: String,
 }
 
-pub struct RequestIter<'a> {
+pub struct RequestIter {
     url: String,
-    extension: &'a str,
 }
 
-impl<'a> RequestIter<'a> {
-    pub fn new(extension: &'a str) -> RequestIter<'a> {
-        // Read session data from session.json
+impl RequestIter {
+    pub fn new<'a>(extension: &'a str) -> RequestIter<'a> {
         let session_str =
             std::fs::read_to_string("session.json").expect("Failed to read session.json");
         let session_data: SessionData =
             serde_json::from_str(&session_str).expect("Failed to parse session.json");
         let last_path = session_data.last_path;
-        // Use the last_path as base URL
         let url = format!("{}/{}.{}", TARGET_URL, last_path, extension);
         RequestIter { url, extension }
     }
 
-    pub async fn valid_url(url: &'a str) -> bool {
+    pub async fn valid_url<'a>(url: &'a str) -> bool {
         let req = reqwest::get(url).await.unwrap();
 
         req.status().is_success()
