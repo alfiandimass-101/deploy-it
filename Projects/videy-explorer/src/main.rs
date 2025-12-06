@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-
+use std::fs;
 const TARGET_URL: &'static str = "https://cdn.videy.co";
 
 #[derive(Serialize, Deserialize)]
@@ -14,7 +14,7 @@ pub struct RequestIter<'a> {
 
 impl<'a> RequestIter<'a> {
     pub fn new(extension: &'a str) -> RequestIter<'a> {
-        let last_path = SessionData::last_path;
+        let last_path = SessionData::deserialize(deserializer);
         let url = format!("{}{}", TARGET_URL, extension);
         RequestIter { url, extension }
     }
