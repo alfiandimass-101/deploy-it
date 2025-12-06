@@ -86,6 +86,10 @@ impl Iterator for RequestIter {
     }
 }
 
+use std::sync::Arc;
+use tokio::sync::{mpsc, Semaphore};
+use tokio::io::AsyncWriteExt;
+
 #[tokio::main]
 pub async fn main() {
     let mut iter = RequestIter::new("mp4".to_string());
@@ -93,37 +97,40 @@ pub async fn main() {
 
     println!("Starting exploration from: {}", iter.current_path);
 
-    // We need to access current_path from the iterator, but next() advances it.
-    // So we should probably save the *previous* path or the one we just generated.
-    // Actually, `next()` returns the URL for the *current* state, then increments.
-    // Wait, my implementation of next() constructs URL from `current_path` THEN increments.
-    // So the URL returned corresponds to the path BEFORE increment.
-    // So if we save `iter.current_path`, we are saving the *next* path to be checked.
-    // That's actually good for resuming.
+    // Channel for writing found URLs to file
+    let (tx, mut rx) = mpsc::channel::<String>(100);
 
-    while let Some(url) = iter.next() {
-        // We need the path component to save it. 
-        // Since `iter` owns the state, we can peek at it if we change the loop structure 
-        // or just rely on the fact that `iter.current_path` is now the NEXT one.
-        // But we want to save the one we just processed if we crash? 
-        // Or save the next one to start from?
-        // "resave path terakhir setiap n % 1000 iterasi" -> save the last visited path.
-        
-        // Let's extract the path from the URL or just keep track of it.
-        // Actually, `iter.current_path` is already advanced. 
-        // So if we save `iter.current_path`, we resume from the NEXT one. This is correct.
-
-        if RequestIter::check_url(&url).await {
-            println!("FOUND: {}", url);
-            use std::io::Write;
-            if let Ok(mut file) = std::fs::OpenOptions::new()
-                .create(true)
-                .append(true)
-                .open("list_videos.txt") 
-            {
-                let _ = writeln!(file, "{}", url);
+    // Spawn a separate task to handle file writing
+    tokio::spawn(async move {
+        if let Ok(mut file) = tokio::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open("list_videos.txt")
+            .await 
+        {
+            while let Some(url) = rx.recv().await {
+                println!("FOUND: {}", url);
+                if let Err(e) = file.write_all(format!("{}\n", url).as_bytes()).await {
+                    eprintln!("Failed to write to file: {}", e);
+                }
             }
         }
+    });
+
+    // Limit concurrent requests
+    const MAX_CONCURRENT_REQUESTS: usize = 50;
+    let semaphore = Arc::new(Semaphore::new(MAX_CONCURRENT_REQUESTS));
+
+    while let Some(url) = iter.next() {
+        let permit = semaphore.clone().acquire_owned().await.unwrap();
+        let tx_clone = tx.clone();
+        
+        tokio::spawn(async move {
+            if RequestIter::check_url(&url).await {
+                let _ = tx_clone.send(url).await;
+            }
+            drop(permit);
+        });
 
         count += 1;
         if count % 1000 == 0 {
