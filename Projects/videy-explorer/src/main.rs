@@ -144,7 +144,7 @@ mod tests {
         // 'Z' -> 'a'
         assert_eq!(increment_path("AAAAAAAAZ"), Some("AAAAAAAAa".to_string()));
         // 'z' -> '0'
-        assert_eq!(increment_path("AAAAAAAAz"), Some("AAAAAAA0".to_string()));
+        assert_eq!(increment_path("AAAAAAAAz"), Some("AAAAAAAA0".to_string()));
         // '9' -> carry over to next char
         assert_eq!(increment_path("AAAAAAA9"), Some("AAAAAABA".to_string()));
         
