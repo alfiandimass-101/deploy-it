@@ -2,8 +2,6 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::fs;
 
-const TARGET_URL: &'static str = "https://cdn.videy.co";
-
 #[derive(Serialize, Deserialize)]
 pub struct SessionData {
     pub last_path: String,
