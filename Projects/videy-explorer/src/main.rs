@@ -129,12 +129,13 @@ pub async fn main() {
 
     // Shared client
     let client = reqwest::Client::builder()
+        .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         .timeout(std::time::Duration::from_secs(10))
         .build()
         .expect("Failed to build client");
 
     // Limit concurrent requests
-    const MAX_CONCURRENT_REQUESTS: usize = 50;
+    const MAX_CONCURRENT_REQUESTS: usize = 20;
     let semaphore = Arc::new(Semaphore::new(MAX_CONCURRENT_REQUESTS));
 
     while let Some(url) = iter.next() {
