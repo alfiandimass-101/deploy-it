@@ -20,7 +20,7 @@ impl RequestIter {
             serde_json::from_str(&session_str).expect("Failed to parse session.json");
         let last_path = session_data.last_path;
         let url = format!("{}/{}.{}", TARGET_URL, last_path, extension);
-        RequestIter { url, extension }
+        RequestIter { url }
     }
 
     pub async fn valid_url<'a>(url: &'a str) -> bool {
