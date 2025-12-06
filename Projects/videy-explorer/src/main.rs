@@ -135,7 +135,7 @@ pub async fn main() {
         .expect("Failed to build client");
 
     // Limit concurrent requests
-    const MAX_CONCURRENT_REQUESTS: usize = 20;
+    const MAX_CONCURRENT_REQUESTS: usize = 40;
     let semaphore = Arc::new(Semaphore::new(MAX_CONCURRENT_REQUESTS));
 
     while let Some(url) = iter.next() {
