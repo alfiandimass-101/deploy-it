@@ -14,6 +14,7 @@ pub struct RequestIter<'a> {
 
 impl<'a> RequestIter<'a> {
     pub fn new(extension: &'a str) -> RequestIter<'a> {
+        let last_path = SessionData::last_path;
         let url = format!("{}{}", TARGET_URL, extension);
         RequestIter { url, extension }
     }
