@@ -130,3 +130,25 @@ pub async fn main() {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_increment_path() {
+        assert_eq!(increment_path("AAAAAAAAA"), Some("AAAAAAAAB".to_string()));
+        assert_eq!(increment_path("AAAAAAAAB"), Some("AAAAAAAAC".to_string()));
+        // Check boundary of charset
+        // CHARSET: A...Z a...z 0...9
+        // 'Z' -> 'a'
+        assert_eq!(increment_path("AAAAAAAAZ"), Some("AAAAAAAAa".to_string()));
+        // 'z' -> '0'
+        assert_eq!(increment_path("AAAAAAAAz"), Some("AAAAAAA0".to_string()));
+        // '9' -> carry over to next char
+        assert_eq!(increment_path("AAAAAAA9"), Some("AAAAAABA".to_string()));
+        
+        // Test carry over multiple
+        assert_eq!(increment_path("AAAAAA99"), Some("AAAAABAA".to_string()));
+    }
+}
