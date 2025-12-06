@@ -15,26 +15,23 @@ pub struct RequestIter<'a> {
 impl<'a> RequestIter<'a> {
     pub fn new(extension: &'a str) -> RequestIter<'a> {
         let url = format!("{}{}", TARGET_URL, extension);
-        RequestIter {
-            url,
-            extension,
-        }
+        RequestIter { url, extension }
     }
 
-    pub async fn valid_url(&) -> bool {
+    pub async fn valid_url(url: &'a str) -> bool {
         let req = reqwest::get(url).await.unwrap();
 
         req.status().is_success()
     }
 }
 
-impl<'a> Iterator for RequestIter<'a> {
-    type Item = String;
+// impl<'a> Iterator for RequestIter<'a> {
+//     type Item = String;
 
-    fn next(&mut self) -> Option<Self::Item> {
-        if 
-    }
-}
+//     fn next(&mut self) -> Option<Self::Item> {
+//         if
+//     }
+// }
 
 #[tokio::main]
 pub async fn main() {
