@@ -115,7 +115,14 @@ pub async fn main() {
 
         if RequestIter::check_url(&url).await {
             println!("FOUND: {}", url);
-            // Maybe append to a results file?
+            use std::io::Write;
+            if let Ok(mut file) = std::fs::OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open("list_videos.txt") 
+            {
+                let _ = writeln!(file, "{}", url);
+            }
         }
 
         count += 1;
