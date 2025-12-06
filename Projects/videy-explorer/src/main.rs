@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 
 const TARGET_URL: &'static str = "https://cdn.videy.co";
-const VALID_PATH: &'static str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 #[derive(Serialize, Deserialize)]
 pub struct SessionData {
