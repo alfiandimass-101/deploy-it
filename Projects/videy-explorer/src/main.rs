@@ -13,7 +13,7 @@ pub struct RequestIter {
 }
 
 impl RequestIter {
-    pub fn new<'a>(extension: &'a str) -> RequestIter<'a> {
+    pub fn new<'a>(extension: &'a str) -> RequestIter {
         let session_str =
             std::fs::read_to_string("session.json").expect("Failed to read session.json");
         let session_data: SessionData =
@@ -23,8 +23,8 @@ impl RequestIter {
         RequestIter { url }
     }
 
-    pub async fn valid_url<'a>(url: &'a str) -> bool {
-        let req = reqwest::get(url).await.unwrap();
+    pub async fn valid_url(&self) -> bool {
+        let req = reqwest::get(&self.url).await.unwrap();
 
         req.status().is_success()
     }
