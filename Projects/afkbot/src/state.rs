@@ -13,7 +13,6 @@ pub struct BotStateData {
     pub state: StateEnum,
     pub last_phase: Instant,
     pub is_afk: bool,
-    pub tick_counter: u64,
     pub afk_target: Option<Vec3>,
     pub afk_timer: Option<Instant>,
 }
@@ -33,7 +32,6 @@ impl Default for BotState {
                 state: StateEnum::JustJoined,
                 last_phase: Instant::now(),
                 is_afk: true,
-                tick_counter: 0,
                 afk_target: None,
                 afk_timer: None,
             })),

@@ -56,7 +56,8 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
             let new_target = pos + azalea::Vec3::new(offset_x, 0.0, offset_z);
             let target_block_pos = azalea::BlockPos::from(new_target);
 
-            bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos));
+            bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos))
+                .await;
 
             data.afk_target = Some(new_target);
             data.afk_timer = Some(std::time::Instant::now());
