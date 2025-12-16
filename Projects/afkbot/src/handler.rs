@@ -51,6 +51,7 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
             StateEnum::SwitchedServer => {
                 if data.last_phase.elapsed() >= Duration::from_secs(2) {
                     data.state = StateEnum::Active;
+                    bot.chat("/tpa KyuzzRz");
                 }
                 false
             }
