@@ -41,14 +41,14 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
 
             if needs_new_target {
                 use rand::Rng; // Ensure rand is imported or available
-                let mut rng = rand::thread_rng();
+                let mut rng = rand::rng();
 
                 let pos = bot.position();
                 // Random offset 5-10 blocks
                 // We want a random point in an annulus (ring) between 5 and 10 radius.
                 // Simplified: random angle, random distance 5-10
-                let angle = rng.gen_range(0.0..std::f64::consts::TAU);
-                let distance = rng.gen_range(5.0..10.0);
+                let angle = rng.random_range(0.0..std::f64::consts::TAU);
+                let distance = rng.random_range(5.0..10.0);
 
                 let offset_x = angle.cos() * distance;
                 let offset_z = angle.sin() * distance;
@@ -121,8 +121,6 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
     }
 
     if dodging {
-        drop(data);
-
         let target = bot_pos + dodge_vec * 3.0;
         bot.look_at(target);
         bot.walk(WalkDirection::Forward);
