@@ -19,6 +19,9 @@ pub async fn handle(mut bot: Client, event: AzaleaEvent, state: BotState) -> any
         AzaleaEvent::Chat(chat) => {
             handle_chat(&mut bot, chat).await?;
         }
+        AzaleaEvent::Spawn => {
+            bot.chat("/home raid");
+        }
         _ => {}
     }
     Ok(())
@@ -51,7 +54,7 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
             StateEnum::SwitchedServer => {
                 if data.last_phase.elapsed() >= Duration::from_secs(2) {
                     data.state = StateEnum::Active;
-                    bot.chat("/tpa KyuzzRz");
+                    bot.chat("/home raid")
                 }
                 false
             }
