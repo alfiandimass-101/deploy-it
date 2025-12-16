@@ -54,11 +54,9 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
             let offset_z = angle.sin() * distance;
 
             let new_target = pos + azalea::Vec3::new(offset_x, 0.0, offset_z);
-            // We keep y same as bot for now, assuming flat ground or pathfinder handles it.
-            // Better to let pathfinder handle y?
-            // azalea::BlockPos might be safer but goto takes Vec3 usually.
+            let target_block_pos = azalea::BlockPos::from(new_target);
 
-            bot.goto(new_target); // azalea-pathfinder extension method
+            bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos));
 
             data.afk_target = Some(new_target);
             data.afk_timer = Some(std::time::Instant::now());
