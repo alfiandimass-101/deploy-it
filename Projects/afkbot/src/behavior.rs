@@ -4,7 +4,7 @@ use azalea::{SprintDirection, WalkDirection};
 use crate::state::BotStateData;
 use azalea::ecs::prelude::*; // For With, Query
 use azalea::entity::Position;
-use azalea::entity::metadata::{Arrow, SpectralArrow, ThrownTrident}; // Trident is ThrownTrident usually?
+use azalea::entity::metadata::{Arrow, SpectralArrow, Trident}; // Trident is ThrownTrident usually?
 use parking_lot::Mutex;
 use std::sync::Arc;
 
