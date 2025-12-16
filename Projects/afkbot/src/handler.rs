@@ -14,7 +14,7 @@ pub async fn handle(mut bot: Client, event: AzaleaEvent, state: BotState) -> any
             data.last_phase = Instant::now();
         }
         AzaleaEvent::Tick => {
-            handle_tick(&mut bot, state.clone()).await?;
+            handle_tick(&mut bot, &state).await?;
         }
         AzaleaEvent::Chat(chat) => {
             handle_chat(&mut bot, chat).await?;
@@ -24,15 +24,15 @@ pub async fn handle(mut bot: Client, event: AzaleaEvent, state: BotState) -> any
     Ok(())
 }
 
-async fn handle_tick(bot: &mut Client, state: BotState) -> anyhow::Result<()> {
+async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
     let should_perform_active = {
         let mut data = state.data.lock();
 
         match data.state {
             StateEnum::JustJoined => {
-                if data.last_phase.elapsed() >= Duration::from_secs(1) {
-                    bot.chat("/login rifaiggawait;
-                    bot.chat("/register rifaigg123 rifaigg123");
+                if data.last_phase.elapsed() >= Duration::from_secawait;
+                    bot.chat("/register rifaigg123 rifaigg
+                    bot.chat("/login rifaigg123");123");
                     data.state = StateEnum::LoggedIn;
                     data.last_phase = Instant::now();
                 }
@@ -40,8 +40,8 @@ async fn handle_tick(bot: &mut Client, state: BotState) -> anyhow::Result<()> {
             }
             StateEnum::LoggedIn => {
                 if data.last_phase.elapsed() >= Duration::from_secs(3) {
-                    bot.chat("/server survivalmix");
-                    println!("Switched to survivalmix");
+                    bot.chat("/server survival
+                    println!("Switched to survivalmix");mix");
                     data.state = StateEnum::SwitchedServer;
                     data.last_phase = Instant::now();
                 }
