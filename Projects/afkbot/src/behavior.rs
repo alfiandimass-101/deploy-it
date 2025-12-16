@@ -10,58 +10,67 @@ use parking_lot::Mutex;
 use std::sync::Arc;
 
 pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotStateData>>) {
-    let mut data = data_arc.lock();
+    let target_to_go = {
+        let mut data = data_arc.lock();
 
-    // Anti-AFK Logic
-    // Anti-AFK Logic
-    if data.is_afk {
-        let mut needs_new_target = false;
+        // Anti-AFK Logic
+        if data.is_afk {
+            let mut needs_new_target = false;
 
-        if let Some(target) = data.afk_target {
-            let pos = bot.position();
-            let dist = pos.distance_to(target);
+            if let Some(target) = data.afk_target {
+                let pos = bot.position();
+                let dist = pos.distance_to(target);
 
-            // Reached target?
-            if dist < 1.0 {
+                // Reached target?
+                if dist < 1.0 {
+                    needs_new_target = true;
+                }
+
+                // Timeout?
+                if let Some(timer) = data.afk_timer {
+                    if timer.elapsed() >= std::time::Duration::from_secs(6) {
+                        needs_new_target = true;
+                    }
+                } else {
+                    // Should have a timer if we have a target, but just in case
+                    data.afk_timer = Some(std::time::Instant::now());
+                }
+            } else {
                 needs_new_target = true;
             }
 
-            // Timeout?
-            if let Some(timer) = data.afk_timer {
-                if timer.elapsed() >= std::time::Duration::from_secs(6) {
-                    needs_new_target = true;
-                }
-            } else {
-                // Should have a timer if we have a target, but just in case
+            if needs_new_target {
+                use rand::Rng; // Ensure rand is imported or available
+                let mut rng = rand::thread_rng();
+
+                let pos = bot.position();
+                // Random offset 5-10 blocks
+                // We want a random point in an annulus (ring) between 5 and 10 radius.
+                // Simplified: random angle, random distance 5-10
+                let angle = rng.gen_range(0.0..std::f64::consts::TAU);
+                let distance = rng.gen_range(5.0..10.0);
+
+                let offset_x = angle.cos() * distance;
+                let offset_z = angle.sin() * distance;
+
+                let new_target = pos + azalea::Vec3::new(offset_x, 0.0, offset_z);
+                let target_block_pos = azalea::BlockPos::from(new_target);
+
+                data.afk_target = Some(new_target);
                 data.afk_timer = Some(std::time::Instant::now());
+
+                Some(target_block_pos)
+            } else {
+                None
             }
         } else {
-            needs_new_target = true;
+            None
         }
+    };
 
-        if needs_new_target {
-            use rand::Rng; // Ensure rand is imported or available
-            let mut rng = rand::rng();
-
-            let pos = bot.position();
-            // Random offset 5-10 blocks
-            // We want a random point in an annulus (ring) between 5 and 10 radius.
-            // Simplified: random angle, random distance 5-10
-            let angle = rng.random_range(0.0..std::f64::consts::TAU);
-            let distance = rng.random_range(5.0..10.0);
-
-            let offset_x = angle.cos() * distance;
-            let offset_z = angle.sin() * distance;
-
-            let new_target = pos + azalea::Vec3::new(offset_x, 0.0, offset_z);
-            let target_block_pos = azalea::BlockPos::from(new_target);
-
-            bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos))
-                .await;
-
-            data.afk_target = Some(new_target);
-            data.afk_timer = Some(std::time::Instant::now());
-        }
+    if let Some(target_block_pos) = target_to_go {
+        bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos))
+            .await;
     }
 
     // Projectile Avoidance Logic
