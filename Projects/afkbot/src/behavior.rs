@@ -1,4 +1,3 @@
-use azalea::pathfinder::PathfinderClientExt;
 use azalea::prelude::*;
 use azalea::{SprintDirection, WalkDirection};
 // Guessing path: metadata contains the specific entity components
@@ -53,7 +52,6 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
 
     if dodging {
         // Stop any pathfinding immediately to take full control
-        bot.force_stop_pathfinding();
 
         let target = bot_pos + dodge_vec * 3.0;
         bot.look_at(target);
@@ -62,69 +60,10 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
         return;
     }
 
-    let target_to_go = {
-        let mut data = data_arc.lock();
-
-        // Anti-AFK Logic
+    {
+        let data = data_arc.lock();
         if data.is_afk {
-            let mut needs_new_target = false;
-
-            if let Some(target) = data.afk_target {
-                let pos = bot.position();
-                let dist = pos.distance_to(target);
-
-                // Reached target?
-                if dist < 1.0 {
-                    needs_new_target = true;
-                }
-
-                // Timeout?
-                if let Some(timer) = data.afk_timer {
-                    if timer.elapsed() >= std::time::Duration::from_secs(6) {
-                        needs_new_target = true;
-                    }
-                } else {
-                    // Should have a timer if we have a target, but just in case
-                    data.afk_timer = Some(std::time::Instant::now());
-                }
-            } else {
-                needs_new_target = true;
-            }
-
-            if needs_new_target {
-                use rand::Rng; // Ensure rand is imported or available
-                let mut rng = rand::rng();
-
-                let pos = bot.position();
-                // Random offset 5-10 blocks
-                // We want a random point in an annulus (ring) between 5 and 10 radius.
-                // Simplified: random angle, random distance 5-10
-                let angle = rng.random_range(0.0..std::f64::consts::TAU);
-                let distance = rng.random_range(5.0..10.0);
-
-                let offset_x = angle.cos() * distance;
-                let offset_z = angle.sin() * distance;
-
-                let new_target = pos + azalea::Vec3::new(offset_x, 0.0, offset_z);
-                let target_block_pos = azalea::BlockPos::from(new_target);
-
-                data.afk_target = Some(new_target);
-                data.afk_timer = Some(std::time::Instant::now());
-
-                Some(target_block_pos)
-            } else {
-                None
-            }
-        } else {
-            None
+            bot.jump();
         }
-    };
-
-    if let Some(target_block_pos) = target_to_go {
-        let opts = azalea::pathfinder::PathfinderOpts::new().allow_mining(false);
-        bot.start_goto_with_opts(
-            azalea::pathfinder::goals::BlockPosGoal(target_block_pos),
-            opts,
-        );
     }
 }
