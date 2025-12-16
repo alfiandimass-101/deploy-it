@@ -9,8 +9,8 @@ use handler::handle;
 #[tokio::main]
 async fn main() {
     // unsafe {
-        std::env::set_var("RUST_LOG", "off");
-    }
+    //     std::env::set_var("RUST_LOG", "off");
+    // }
     let account = Account::offline("botaqlepad");
 
     ClientBuilder::new()
