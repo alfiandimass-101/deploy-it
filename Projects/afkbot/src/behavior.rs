@@ -1,12 +1,11 @@
 use crate::state::BotStateData;
+use azalea::entities::{Arrow, SpectralArrow, Trident};
 use azalea::entity::Position;
 use azalea::prelude::*;
-use azalea::registry::EntityKind;
 use azalea::{SprintDirection, WalkDirection};
 use parking_lot::Mutex;
 use std::sync::Arc;
 
-#[allow(deprecated)]
 pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotStateData>>) {
     let mut data = data_arc.lock();
 
@@ -18,10 +17,6 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
         let should_jump = data.tick_counter % 100 == 0;
         let should_walk = data.tick_counter % 400 == 0;
         let should_stop = data.tick_counter % 400 == 20;
-
-        // We drop lock if we are going to do async bot actions?
-        // bot.look_at etc might be fast.
-        // But bot.position() touches ECS.
 
         if should_look {
             let pos = bot.position();
@@ -46,34 +41,42 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
 
     {
         let mut ecs = bot.ecs.lock();
-        let mut query = ecs.query::<(&Position, &EntityKind)>();
 
-        for (pos, kind) in query.iter(&ecs) {
-            // pos is &Position (derefs to &Vec3)
-            let entity_pos = **pos; // Position wraps Vec3
+        // Helper closure to process entities
+        let mut process_entity = |entity_pos: azalea::Vec3| {
             let dist = bot_pos.distance_to(entity_pos);
-
             if dist < 10.0 {
-                match kind {
-                    EntityKind::Arrow | EntityKind::SpectralArrow | EntityKind::Trident => {
-                        let to_projectile = entity_pos - bot_pos;
-                        if to_projectile.length_squared() > 0.1 {
-                            let cross = to_projectile
-                                .cross(azalea::Vec3::new(0.0, 1.0, 0.0))
-                                .normalize();
-                            dodge_vec = dodge_vec + cross;
-                            dodging = true;
-                        }
-                    }
-                    _ => {}
+                let to_projectile = entity_pos - bot_pos;
+                if to_projectile.length_squared() > 0.1 {
+                    let cross = to_projectile
+                        .cross(azalea::Vec3::new(0.0, 1.0, 0.0))
+                        .normalize();
+                    dodge_vec = dodge_vec + cross;
+                    dodging = true;
                 }
             }
+        };
+
+        // Query Arrows
+        let mut query_arrow = ecs.query_filtered::<&Position, With<Arrow>>();
+        for pos in query_arrow.iter(&ecs) {
+            process_entity(**pos);
+        }
+
+        // Query Spectral Arrows
+        let mut query_spectral = ecs.query_filtered::<&Position, With<SpectralArrow>>();
+        for pos in query_spectral.iter(&ecs) {
+            process_entity(**pos);
+        }
+
+        // Query Tridents
+        let mut query_trident = ecs.query_filtered::<&Position, With<Trident>>();
+        for pos in query_trident.iter(&ecs) {
+            process_entity(**pos);
         }
     }
 
     if dodging {
-        // Drop state lock before actions? Not strictly needed for these methods but good practice if safe.
-        // data is not used here.
         drop(data);
 
         let target = bot_pos + dodge_vec * 3.0;
