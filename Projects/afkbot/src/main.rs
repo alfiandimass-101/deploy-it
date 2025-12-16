@@ -13,5 +13,5 @@ async fn main() {
     ClientBuilder::new()
         .set_handler(handle)
         .start(account, "bakwanjagung.my.id")
-        .await;
+        .await?;
 }
