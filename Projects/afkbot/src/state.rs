@@ -1,3 +1,4 @@
+use azalea::Vec3;
 use azalea::prelude::*;
 use parking_lot::Mutex;
 use std::sync::Arc;
