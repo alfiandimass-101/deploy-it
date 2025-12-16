@@ -1,4 +1,3 @@
-use azalea::Vec3;
 use azalea::prelude::*;
 use parking_lot::Mutex;
 use std::sync::Arc;
@@ -13,8 +12,6 @@ pub struct BotStateData {
     pub state: StateEnum,
     pub last_phase: Instant,
     pub is_afk: bool,
-    pub afk_target: Option<Vec3>,
-    pub afk_timer: Option<Instant>,
 }
 
 #[derive(PartialEq, Clone, Copy, Debug)]
@@ -32,8 +29,6 @@ impl Default for BotState {
                 state: StateEnum::JustJoined,
                 last_phase: Instant::now(),
                 is_afk: true,
-                afk_target: None,
-                afk_timer: None,
             })),
         }
     }
