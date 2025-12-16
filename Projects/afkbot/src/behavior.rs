@@ -69,8 +69,11 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
     };
 
     if let Some(target_block_pos) = target_to_go {
-        bot.goto(azalea::pathfinder::goals::BlockPosGoal(target_block_pos))
-            .await;
+        let opts = azalea::pathfinder::PathfinderOpts::new().allow_mining(false);
+        bot.start_goto_with_opts(
+            azalea::pathfinder::goals::BlockPosGoal(target_block_pos),
+            opts,
+        );
     }
 
     // Projectile Avoidance Logic

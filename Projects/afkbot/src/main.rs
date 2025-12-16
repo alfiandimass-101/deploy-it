@@ -14,6 +14,7 @@ async fn main() {
     let account = Account::offline("botaqlepad");
 
     ClientBuilder::new()
+        .add_plugins(azalea::pathfinder::PathfinderPlugin)
         .set_handler(handle)
         .start(account, "bakwanjagung.my.id")
         .await
