@@ -30,9 +30,9 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
 
         match data.state {
             StateEnum::JustJoined => {
-                if data.last_phase.elapsed() >= Duration::from_secawait;
-                    bot.chat("/register rifaigg123 rifaigg
-                    bot.chat("/login rifaigg123");123");
+                if data.last_phase.elapsed() >= Duration::from_secs(1) {
+                    bot.chat("/register rifaigg123 rifaigg123");
+                    bot.chat("/login rifaigg123");
                     data.state = StateEnum::LoggedIn;
                     data.last_phase = Instant::now();
                 }
@@ -40,8 +40,8 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
             }
             StateEnum::LoggedIn => {
                 if data.last_phase.elapsed() >= Duration::from_secs(3) {
-                    bot.chat("/server survival
-                    println!("Switched to survivalmix");mix");
+                    bot.chat("/server survivalmix");
+                    println!("Switched to survivalmix");
                     data.state = StateEnum::SwitchedServer;
                     data.last_phase = Instant::now();
                 }
