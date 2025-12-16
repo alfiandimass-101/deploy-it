@@ -1,0 +1,49 @@
+   Compiling afkbot v0.1.0 (/home/runner/work/deploy-it/deploy-it/Projects/afkbot)
+warning: use of deprecated type alias `azalea::azalea_registry::EntityKind`: moved to `azalea_registry::builtin::EntityKind`
+ --> src/behavior.rs:3:23
+  |
+3 | use azalea::registry::EntityKind;
+  |                       ^^^^^^^^^^
+  |
+  = note: `#[warn(deprecated)]` on by default
+
+error[E0599]: no method named `pos` found for reference `&azalea::bevy_ecs::entity::Entity` in the current scope
+  --> src/behavior.rs:46:47
+   |
+46 |                 let entity_pos = *entity_data.pos(); // EntityData pos() returns &Vec3 usually
+   |                                               ^^^ method not found in `&azalea::bevy_ecs::entity::Entity`
+
+error[E0609]: no field `kind` on type `&azalea::bevy_ecs::entity::Entity`
+  --> src/behavior.rs:50:39
+   |
+50 |                     match entity_data.kind {
+   |                                       ^^^^ unknown field
+
+error: future cannot be sent between threads safely
+   --> src/main.rs:14:22
+    |
+ 14 |         .set_handler(handle)
+    |                      ^^^^^^ future returned by `handle` is not `Send`
+    |
+    = help: within `impl Future<Output = std::result::Result<(), anyhow::Error>>`, the trait `std::marker::Send` is not implemented for `*mut ()`
+note: future is not `Send` as this value is used across an await
+   --> src/handler.rs:55:59
+    |
+ 28 |     let mut data = state.data.lock();
+    |         -------- has type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>` which is not `Send`
+...
+ 55 |             perform_active_logic(bot, state.data.clone()).await;
+    |                                                           ^^^^^ await occurs here, with `mut data` maybe used later
+note: required by a bound in `ClientBuilder::<NoState, ()>::set_handler`
+   --> /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea/src/builder.rs:115:35
+    |
+112 |     pub fn set_handler<S, Fut, R>(self, handler: HandleFn<S, Fut>) -> ClientBuilder<S, R>
+    |            ----------- required by a bound in this associated function
+...
+115 |         Fut: Future<Output = R> + Send + 'static,
+    |                                   ^^^^ required by this bound in `ClientBuilder::<NoState, ()>::set_handler`
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+warning: `afkbot` (bin "afkbot") generated 1 warning
+error: could not compile `afkbot` (bin "afkbot") due to 3 previous errors; 1 warning emitted

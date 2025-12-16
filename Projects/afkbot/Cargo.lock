@@ -23,8 +23,12 @@ dependencies = [
 name = "afkbot"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "azalea",
+ "parking_lot",
+ "rand 0.9.2",
  "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -41,6 +45,12 @@ name = "android_log-sys"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84521a3cf562bc62942e294181d9eef17eb38ceb8c68677bc49f144e4c3d4f8d"
+
+[[package]]
+name = "anyhow"
+version = "1.0.100"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "arrayvec"

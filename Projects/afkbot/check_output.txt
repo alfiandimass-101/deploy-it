@@ -1,0 +1,115 @@
+    Checking afkbot v0.1.0 (/home/runner/work/deploy-it/deploy-it/Projects/afkbot)
+warning: unused import: `StateEnum`
+ --> src/behavior.rs:1:30
+  |
+1 | use crate::state::{BotState, StateEnum};
+  |                              ^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `azalea::player::GameProfileComponent`
+ --> src/behavior.rs:2:5
+  |
+2 | use azalea::player::GameProfileComponent;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `BlockPos` and `SprintDirection`
+ --> src/behavior.rs:5:14
+  |
+5 | use azalea::{BlockPos, SprintDirection, WalkDirection};
+  |              ^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: use of deprecated type alias `azalea::azalea_registry::EntityKind`: moved to `azalea_registry::builtin::EntityKind`
+ --> src/behavior.rs:4:23
+  |
+4 | use azalea::registry::EntityKind;
+  |                       ^^^^^^^^^^
+  |
+  = note: `#[warn(deprecated)]` on by default
+
+error[E0609]: no field `is_afk` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:15:13
+   |
+15 |     if data.is_afk {
+   |             ^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `tick_counter` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:16:14
+   |
+16 |         data.tick_counter += 1;
+   |              ^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `tick_counter` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:19:17
+   |
+19 |         if data.tick_counter % 200 == 0 {
+   |                 ^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `tick_counter` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:28:17
+   |
+28 |         if data.tick_counter % 100 == 0 {
+   |                 ^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `tick_counter` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:33:17
+   |
+33 |         if data.tick_counter % 400 == 0 {
+   |                 ^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `tick_counter` on type `parking_lot::lock_api::MutexGuard<'_, parking_lot::RawMutex, BotStateData>`
+  --> src/behavior.rs:35:24
+   |
+35 |         } else if data.tick_counter % 400 == 20 {
+   |                        ^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `state`, `last_phase`
+
+error[E0609]: no field `entities` on type `parking_lot::lock_api::RwLockReadGuard<'_, parking_lot::RawRwLock, Instance>`
+  --> src/behavior.rs:52:60
+   |
+52 |             for (_entity_id, entity_data) in instance_lock.entities.iter() {
+   |                                                            ^^^^^^^^ unknown field
+   |
+   = note: available fields are: `chunks`, `entities_by_chunk`, `entity_by_id`, `registries`
+
+error[E0282]: type annotations needed
+  --> src/behavior.rs:53:35
+   |
+53 |                 let entity_pos = *entity_data.pos();
+   |                                   ^^^^^^^^^^^ cannot infer type
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+  --> src/handler.rs:55:13
+   |
+55 |             perform_active_logic(bot);
+   |             ^^^^^^^^^^^^^^^^^^^^-----
+   |                                 ||
+   |                                 |expected `Client`, found `&mut Client`
+   |                                 argument #2 of type `Arc<parking_lot::lock_api::Mutex<parking_lot::RawMutex, BotState>>` is missing
+   |
+note: function defined here
+  --> src/behavior.rs:10:14
+   |
+10 | pub async fn perform_active_logic(mut bot: Client, state: Arc<Mutex<BotState>>) {
+   |              ^^^^^^^^^^^^^^^^^^^^ ---------------  ---------------------------
+help: provide the argument
+   |
+55 -             perform_active_logic(bot);
+55 +             perform_active_logic(/* azalea::Client */, /* Arc<parking_lot::lock_api::Mutex<parking_lot::RawMutex, BotState>> */);
+   |
+
+Some errors have detailed explanations: E0061, E0282, E0609.
+For more information about an error, try `rustc --explain E0061`.
+warning: `afkbot` (bin "afkbot") generated 4 warnings
+error: could not compile `afkbot` (bin "afkbot") due to 9 previous errors; 4 warnings emitted
