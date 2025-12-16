@@ -12,6 +12,7 @@ pub async fn handle_chat(bot: &mut Client, chat: azalea::chat::ChatPacket) -> an
     };
 
     // Target: 6f6e29fe-30c2-30ae-86ac-73a9e331ab35
+    println!("{}", sender_uuid.to_string());
     let target_uuid_str = "6f6e29fe-30c2-30ae-86ac-73a9e331ab35";
 
     if sender_uuid.to_string() == target_uuid_str {
