@@ -76,8 +76,8 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
             process_entity(**pos);
         }
 
-        // Query ThrownTrident
-        let mut query_trident = ecs.query_filtered::<&Position, With<ThrownTrident>>();
+        // Query Trident
+        let mut query_trident = ecs.query_filtered::<&Position, With<Trident>>();
         for pos in query_trident.iter(&ecs) {
             process_entity(**pos);
         }
