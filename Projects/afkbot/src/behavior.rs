@@ -1,8 +1,10 @@
-use crate::state::BotStateData;
-use azalea::entities::{Arrow, SpectralArrow, Trident};
-use azalea::entity::Position;
 use azalea::prelude::*;
 use azalea::{SprintDirection, WalkDirection};
+// Guessing path: metadata contains the specific entity components
+use crate::state::BotStateData;
+use azalea::ecs::prelude::*; // For With, Query
+use azalea::entity::Position;
+use azalea::entity::metadata::{Arrow, SpectralArrow, ThrownTrident}; // Trident is ThrownTrident usually?
 use parking_lot::Mutex;
 use std::sync::Arc;
 
@@ -42,15 +44,20 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
     {
         let mut ecs = bot.ecs.lock();
 
-        // Helper closure to process entities
         let mut process_entity = |entity_pos: azalea::Vec3| {
             let dist = bot_pos.distance_to(entity_pos);
             if dist < 10.0 {
                 let to_projectile = entity_pos - bot_pos;
                 if to_projectile.length_squared() > 0.1 {
-                    let cross = to_projectile
-                        .cross(azalea::Vec3::new(0.0, 1.0, 0.0))
-                        .normalize();
+                    // Manual cross product with UP (0,1,0)
+                    // (y1*z2 - z1*y2, z1*x2 - x1*z2, x1*y2 - y1*x2)
+                    // u = to_p, v = (0,1,0)
+                    // x = u.y*0 - u.z*1 = -u.z
+                    // y = u.z*0 - u.x*0 = 0
+                    // z = u.x*1 - u.y*0 = u.x
+                    // Result: (-u.z, 0, u.x)
+                    let cross =
+                        azalea::Vec3::new(-to_projectile.z, 0.0, to_projectile.x).normalize();
                     dodge_vec = dodge_vec + cross;
                     dodging = true;
                 }
@@ -69,8 +76,8 @@ pub async fn perform_active_logic(bot: &mut Client, data_arc: Arc<Mutex<BotState
             process_entity(**pos);
         }
 
-        // Query Tridents
-        let mut query_trident = ecs.query_filtered::<&Position, With<Trident>>();
+        // Query ThrownTrident
+        let mut query_trident = ecs.query_filtered::<&Position, With<ThrownTrident>>();
         for pos in query_trident.iter(&ecs) {
             process_entity(**pos);
         }
