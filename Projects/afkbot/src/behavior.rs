@@ -1,4 +1,4 @@
-use azalea::pathfinder::prelude::*;
+use azalea::pathfinder::PathfinderClientExt;
 use azalea::prelude::*;
 use azalea::{SprintDirection, WalkDirection};
 // Guessing path: metadata contains the specific entity components
