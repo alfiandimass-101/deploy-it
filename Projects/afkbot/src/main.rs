@@ -8,7 +8,7 @@ use handler::handle;
 
 #[tokio::main]
 async fn main() {
-    let account = Account::offline("bot");
+    let account = Account::offline("botaqlepad");
 
     ClientBuilder::new()
         .set_handler(handle)
