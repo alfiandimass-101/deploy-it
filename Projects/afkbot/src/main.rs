@@ -8,7 +8,7 @@ use handler::handle;
 
 #[tokio::main]
 async fn main() {
-    unsafe {
+    // unsafe {
         std::env::set_var("RUST_LOG", "off");
     }
     let account = Account::offline("botaqlepad");
