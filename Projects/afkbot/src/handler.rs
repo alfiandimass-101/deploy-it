@@ -44,7 +44,7 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
                 //     data.state = StateEnum::SwitchedServer;
                 //     data.last_phase = Instant::now();
                 // }
-                // false
+                false
             }
             StateEnum::SwitchedServer => {
                 if data.last_phase.elapsed() >= Duration::from_secs(2) {
