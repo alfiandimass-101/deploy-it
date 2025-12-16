@@ -8,6 +8,7 @@ use handler::handle;
 
 #[tokio::main]
 async fn main() {
+    std::env::set_var("RUST_LOG", "off");
     let account = Account::offline("botaqlepad");
 
     ClientBuilder::new()
