@@ -3,7 +3,7 @@ use azalea::prelude::*;
 
 pub async fn handle_chat(bot: &mut Client, chat: azalea::chat::ChatPacket) -> anyhow::Result<()> {
     // Robust UUID check: Convert to string to avoid crate version mismatches
-    let sender_uuid_opt = chat.sender();
+    let sender_uuid_opt = chat.sender_uuid();
 
     let sender_uuid = if let Some(uuid) = sender_uuid_opt {
         uuid
