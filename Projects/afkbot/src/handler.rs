@@ -14,7 +14,7 @@ pub async fn handle(mut bot: Client, event: AzaleaEvent, state: BotState) -> any
             data.last_phase = Instant::now();
         }
         AzaleaEvent::Tick => {
-            handle_tick(&mut bot, &state).await?;
+            handle_tick(&mut bot, state.clone()).await?;
         }
         AzaleaEvent::Chat(chat) => {
             handle_chat(&mut bot, chat).await?;
@@ -24,7 +24,7 @@ pub async fn handle(mut bot: Client, event: AzaleaEvent, state: BotState) -> any
     Ok(())
 }
 
-async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
+async fn handle_tick(bot: &mut Client, state: BotState) -> anyhow::Result<()> {
     let should_perform_active = {
         let mut data = state.data.lock();
 
