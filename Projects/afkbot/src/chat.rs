@@ -17,17 +17,9 @@ pub async fn handle_chat(bot: &mut Client, chat: azalea::chat::ChatPacket) -> an
     if sender_uuid.to_string() == target_uuid_str {
         let msg = chat.message().to_string();
         println!("{}", msg);
-        // Extract command after "!say" even if surrounded by extra formatting
-        if let Some(start) = msg.find("!say ") {
-            // Capture everything after "!say "
-            let mut args = &msg[start + 5..];
-            // Trim possible trailing '>' and surrounding whitespace
-            args = args.trim_end_matches('>').trim();
-            // Optionally trim leading whitespace
-            let args = args.trim_start();
-            if !args.is_empty() {
-                bot.chat(args);
-            }
+        if msg.starts_with("!say ") {
+            let args = msg.trim_start_matches("!say ");
+            bot.chat(args);
         }
     }
     Ok(())
