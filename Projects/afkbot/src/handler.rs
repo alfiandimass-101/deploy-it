@@ -32,7 +32,7 @@ async fn handle_tick(bot: &mut Client, state: &BotState) -> anyhow::Result<()> {
             StateEnum::JustJoined => {
                 if data.last_phase.elapsed() >= Duration::from_secs(1) {
                     bot.chat("/login rifaigg123");
-                    tokio::time::sleep(Duration::from_secs(1)).await;
+                    std::thread::sleep(Duration::from_secs(1));
                     bot.chat("/register rifaigg123 rifaigg123");
                     data.state = StateEnum::LoggedIn;
                     data.last_phase = Instant::now();
