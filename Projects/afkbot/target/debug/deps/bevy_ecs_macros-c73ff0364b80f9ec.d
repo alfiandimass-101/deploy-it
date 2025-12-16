@@ -1,0 +1,11 @@
+/home/runner/work/deploy-it/deploy-it/Projects/afkbot/target/debug/deps/bevy_ecs_macros-c73ff0364b80f9ec.d: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/component.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/event.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/message.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_data.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_filter.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/world_query.rs
+
+/home/runner/work/deploy-it/deploy-it/Projects/afkbot/target/debug/deps/libbevy_ecs_macros-c73ff0364b80f9ec.so: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/component.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/event.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/message.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_data.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_filter.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/world_query.rs
+
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/lib.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/component.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/event.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/message.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_data.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/query_filter.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bevy_ecs_macros-0.17.3/src/world_query.rs:

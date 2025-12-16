@@ -1,0 +1,9 @@
+/home/runner/work/deploy-it/deploy-it/Projects/afkbot/target/debug/deps/azalea_block_macros-d282e22f7972d616.d: /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/lib.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/mod.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/generate.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/parse.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/utils.rs
+
+/home/runner/work/deploy-it/deploy-it/Projects/afkbot/target/debug/deps/libazalea_block_macros-d282e22f7972d616.so: /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/lib.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/mod.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/generate.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/parse.rs /root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/utils.rs
+
+/root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/lib.rs:
+/root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/mod.rs:
+/root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/generate.rs:
+/root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/property/parse.rs:
+/root/.cargo/git/checkouts/azalea-55f499961895c5bc/281a810/azalea-block/azalea-block-macros/src/utils.rs:
